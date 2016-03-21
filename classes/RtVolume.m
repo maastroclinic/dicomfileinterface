@@ -1,4 +1,4 @@
-classdef (Abstract) RtVolume
+classdef RtVolume
     
     properties (SetAccess  = 'protected', GetAccess = 'public')
         name;
@@ -22,6 +22,26 @@ classdef (Abstract) RtVolume
     end
     
     methods
+        function me = RtVolume(name, varargin)
+            me.volume = NaN;
+            me = me.setName(name);
+            
+            [i_calc, i_rtdose, i_rtstruct] = me.parseVargarin(varargin);
+            
+            if isempty(i_calc)
+                return;
+            end
+            
+            me = me.setcalcGrid(varargin{i_calc});
+            if ~isempty(i_rtstruct)
+                me = me.parseRtStruct(varargin{i_rtstruct}, name);
+                if ~isempty(i_rtdose)
+                    me = me.parseRtDose(varargin{i_rtdose});
+                end
+                me = me.compress();
+            end            
+        end
+        
         function [i_calc, i_value, i_rtstruct] = parseVargarin(~, variableInput)
             i_calc = [];
             i_value = [];
@@ -174,6 +194,19 @@ classdef (Abstract) RtVolume
     end
     
     methods (Access = protected)
+        function me = parseRtDose(me, dose)
+            if ~me.hasFittedRoiValues
+                if me.calcGrid == dose.calcGrid
+                    me.hasFittedRoiValues = true;
+                    me.roiValues = me.calculateRoiValues(dose.fittedDoseCube);
+                else
+                    throw(MException('RtVolume:DimensionMismatch', 'RtDose does not match RtVolume calcGrid'));
+                end
+            else
+                throw(MException('RtVolume:rtDoseOverwrite', 'This rtVolume already has a fitted dose, cannot overwrite.'));
+            end
+        end
+        
         function me = setcalcGrid(me, calcGrid)
             me.calcGrid = calcGrid;
         end

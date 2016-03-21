@@ -1,0 +1,157 @@
+<deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
+  <configuration file="D:\roiCalculationLibrary.prj" location="D:\" name="roiCalculationLibrary" target="target.ezdeploy.library" target-name="Library Compiler">
+    <param.appname>roiCalculationLibrary</param.appname>
+    <param.icon />
+    <param.icons />
+    <param.version>1.0</param.version>
+    <param.authnamewatermark>Maastro SDT</param.authnamewatermark>
+    <param.email />
+    <param.company>MAASTRO</param.company>
+    <param.summary>matlab functions to do dvh-d, dvh-v, volume and dose computations.</param.summary>
+    <param.description />
+    <param.screenshot />
+    <param.guid />
+    <param.installpath.string>\MAASTRO\roiCalculationLibrary\</param.installpath.string>
+    <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
+    <param.logo /> fd
+    <param.install.notes />
+    <param.target.install.notes />
+    <param.intermediate>${PROJECT_ROOT}\roiCalculationLibrary\for_testing</param.intermediate>
+    <param.files.only>${PROJECT_ROOT}\roiCalculationLibrary\for_redistribution_files_only</param.files.only>
+    <param.output>${PROJECT_ROOT}\roiCalculationLibrary\for_redistribution</param.output>
+    <param.enable.clean.build>false</param.enable.clean.build>
+    <param.user.defined.mcr.options />
+    <param.embed.ctf>true</param.embed.ctf>
+    <param.target.type>subtarget.java.package</param.target.type>
+    <param.support.packages />
+    <param.required.mcr.products>
+      <item>35000</item>
+      <item>35010</item>
+    </param.required.mcr.products>
+    <param.namespace>nl.maastro.iap.dicomcomputation</param.namespace>
+    <param.classorg />
+    <param.web.mcr>false</param.web.mcr>
+    <param.package.mcr>false</param.package.mcr>
+    <param.no.mcr>false</param.no.mcr>
+    <param.web.mcr.name>MyAppInstaller_web</param.web.mcr.name>
+    <param.package.mcr.name>MyAppInstaller_mcr</param.package.mcr.name>
+    <param.no.mcr.name>MyAppInstaller_app</param.no.mcr.name>
+    <param.windows.command.prompt>true</param.windows.command.prompt>
+    <param.create.log>false</param.create.log>
+    <param.log.file />
+    <param.user.only.registration>false</param.user.only.registration>
+    <param.net.framework>option.net.framework.default</param.net.framework>
+    <param.assembly.type>false</param.assembly.type>
+    <param.encryption.key.file />
+    <param.net.enable.remoting>false</param.net.enable.remoting>
+    <param.net.tsa.enable>false</param.net.tsa.enable>
+    <param.net.tsa.assembly />
+    <param.net.tsa.interface />
+    <param.net.tsa.namespace>nl.maastro.iap.dicomcomputation</param.net.tsa.namespace>
+    <param.net.tsa.superclass>StructureData</param.net.tsa.superclass>
+    <param.net.tsa.metadata />
+    <param.net.tsa.metadata.assembly>C:\Program Files\MATLAB\R2015b\bin</param.net.tsa.metadata.assembly>
+    <param.net.saved.interface />
+    <unset>
+      <param.icon />
+      <param.icons />
+      <param.version />
+      <param.email />
+      <param.description />
+      <param.screenshot />
+      <param.guid />
+      <param.installpath.string />
+      <param.installpath.combo />
+      <param.logo />
+      <param.target.install.notes />
+      <param.intermediate />
+      <param.files.only />
+      <param.output />
+      <param.enable.clean.build />
+      <param.user.defined.mcr.options />
+      <param.embed.ctf />
+      <param.support.packages />
+      <param.classorg />
+      <param.package.mcr />
+      <param.no.mcr />
+      <param.web.mcr.name />
+      <param.package.mcr.name />
+      <param.no.mcr.name />
+      <param.windows.command.prompt />
+      <param.create.log />
+      <param.log.file />
+      <param.user.only.registration />
+      <param.net.framework />
+      <param.assembly.type />
+      <param.encryption.key.file />
+      <param.net.enable.remoting />
+      <param.net.tsa.enable />
+      <param.net.tsa.assembly />
+      <param.net.tsa.interface />
+      <param.net.tsa.namespace />
+      <param.net.tsa.superclass />
+      <param.net.tsa.metadata />
+      <param.net.tsa.metadata.assembly />
+      <param.net.saved.interface />
+    </unset>
+    <fileset.exports>
+      <file>${PROJECT_ROOT}\functionsJava\createCombinedRoiDose.m</file>
+      <file>${PROJECT_ROOT}\functionsJava\createCombinedRoiImage.m</file>
+      <file>${PROJECT_ROOT}\functionsJava\createMatlabDicomObjects.m</file>
+      <file>${PROJECT_ROOT}\functionsJava\createMatlabSerializedRoiObj.m</file>
+      <file>${PROJECT_ROOT}\functionsJava\calculateVolume.m</file>
+      <file>${PROJECT_ROOT}\functionsJava\calculateDose.m</file>
+      <file>${PROJECT_ROOT}\functionsJava\calculateDvhV.m</file>
+      <file>${PROJECT_ROOT}\functionsJava\calculateDvhD.m</file>
+      <file>${PROJECT_ROOT}\functionsJava\calculateDvhCurve.m</file>
+    </fileset.exports>
+    <fileset.classes>
+      <entity.package name="">
+        <entity.class name="StructureData">
+          <file>${PROJECT_ROOT}\functionsJava\createCombinedRoiDose.m</file>
+          <file>${PROJECT_ROOT}\functionsJava\createCombinedRoiImage.m</file>
+          <file>${PROJECT_ROOT}\functionsJava\createMatlabDicomObjects.m</file>
+          <file>${PROJECT_ROOT}\functionsJava\createMatlabSerializedRoiObj.m</file>
+          <file>${PROJECT_ROOT}\functionsJava\calculateVolume.m</file>
+          <file>${PROJECT_ROOT}\functionsJava\calculateDose.m</file>
+          <file>${PROJECT_ROOT}\functionsJava\calculateDvhV.m</file>
+          <file>${PROJECT_ROOT}\functionsJava\calculateDvhD.m</file>
+          <file>${PROJECT_ROOT}\functionsJava\calculateDvhCurve.m</file>
+        </entity.class>
+      </entity.package>
+    </fileset.classes>
+    <fileset.resources>
+      <file>${PROJECT_ROOT}\classes</file>
+      <file>${PROJECT_ROOT}\dependencies</file>
+      <file>${PROJECT_ROOT}\diuMatlab</file>
+      <file>${PROJECT_ROOT}\functionsJava</file>
+    </fileset.resources>
+    <fileset.depfun />
+    <fileset.package />
+    <build-deliverables>
+      <file location="${PROJECT_ROOT}\roiCalculationLibrary\for_testing" name="dicomcomputation.jar" optional="false">D:\SourceCode\dicomComputation\roiCalculationLibrary\for_testing\dicomcomputation.jar</file>
+      <file location="${PROJECT_ROOT}\roiCalculationLibrary\for_testing" name="readme.txt" optional="true">D:\SourceCode\dicomComputation\roiCalculationLibrary\for_testing\readme.txt</file>
+      <file location="${PROJECT_ROOT}\roiCalculationLibrary\for_testing" name="doc" optional="false">D:\SourceCode\dicomComputation\roiCalculationLibrary\for_testing\doc</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2015b</root>
+      <toolboxes />
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>6.0</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

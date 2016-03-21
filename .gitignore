@@ -1,0 +1,42 @@
+Matlab calculations/test.m
+*.asv
+Matlab calculations/Computation Modules/matlabCalculations/
+Matlab calculations/javaInterfaceMatlabCalculations/
+Matlab calculations/JavaPipelineModule/logfile.txt
+Matlab calculations/logfile.txt
+Matlab calculations/JavaPipelineModule/logs/
+Matlab calculations/JavaPipelineModule/doc/
+Matlab Calculations/log4m.log
+Matlab Calculations/JavaPipelineModule/testset/testCT1
+Matlab Calculations/JavaPipelineModule/testset/testCT2
+Matlab Calculations/JavaPipelineModule/testset/testCT3
+Matlab Calculations/Dependabilities/DICOM/logfile.txt
+Matlab Calculations/.gitignore
+Matlab Calculations/.classpath
+Matlab Calculations/.project
+Matlab Calculations/.settings/org.eclipse.jdt.core.prefs
+Matlab Calculations/.settings/org.eclipse.m2e.core.prefs
+Matlab Calculations/.settings/Calculations/RTVolume.m
+Matlab Calculations/Dependabilities/DICOM/read_dicomrtdose.m.rej
+Matlab Calculations/Dependabilities/DICOM/slicechecker.m
+Matlab Calculations/Dependabilities/DICOM/logfile.txt
+Matlab Calculations/JavaPipelineModule/testset/testCT1
+Matlab Calculations/JavaPipelineModule/testset/testCT2
+Matlab Calculations/JavaPipelineModule/testset/testCT3
+Matlab Calculations/log4m.log
+Matlab Calculations/.settings/Calculations/RTVolume.m
+Matlab Calculations/.settings/org.eclipse.jdt.core.prefs
+Matlab Calculations/.settings/org.eclipse.m2e.core.prefs
+Matlab Calculations/Dependabilities/DICOM/read_dicomrtdose.m.rej
+Matlab Calculations/Dependabilities/DICOM/rtstruct.dcm
+Matlab Calculations/Dependabilities/DICOM/slicechecker.m
+Matlab Calculations/.classpath
+Matlab Calculations/.gitignore
+Matlab Calculations/.project
+Matlab Calculations/JavaPipelineModule/matlab.log
+log4m.log
+.project
+/.settings/
+.classpath
+matlablog.txt
+/target/

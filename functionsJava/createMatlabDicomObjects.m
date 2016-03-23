@@ -70,7 +70,7 @@ function outputStruct = createMatlabDicomObjects(pathStruct, pathDose, ct, volum
     outputStruct.calcGrid = calcGrid;
 
     try
-        rtStruct = RtStruct(pathStruct, calcGrid);
+        rtStruct = RtStruct(pathStruct, calcGrid.PixelSpacing, calcGrid.Origin, calcGrid.Axis, calcGrid.Dimensions);
     catch EM
         throw(EM)
     end
@@ -91,7 +91,7 @@ function outputStruct = createMatlabDicomObjects(pathStruct, pathDose, ct, volum
     outputStruct.rtDose = [];
     if isempty(outputStruct.hasFittedDose)
         try
-            rtDose   = RtDose(pathDose, calcGrid);
+            rtDose   = RtDose(pathDose, calcGrid.PixelSpacing, calcGrid.Origin, calcGrid.Axis, calcGrid.Dimensions);
             outputStruct.hasFittedDose = true;
         catch EM
             throw(EM)

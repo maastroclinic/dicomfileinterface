@@ -69,20 +69,26 @@ classdef testImage < matlab.unittest.TestCase
     end    
  
     methods(Test)
-%         function testParseDoseSeperately(me)
-%             Gtv = RoiDose('GTV-1', me.calcGrid, me.rtStruct);
-%             Gtv = Gtv.addRtDose(me.rtDose);
-%             verifyEqual(me, me.Gtv1.dose('min'), Gtv.dose('min'), 'RelTol', me.relativeError);
-%             verifyEqual(me, me.volume48GyGtv1, Gtv.volumePercentageWithDoseOf(48), 'RelTol', me.relativeError);            
-%             verifyEqual(me, me.dose2PercentGtv1, Gtv.doseToCertainVolumePercentage(2), 'RelTol', me.relativeError); 
-%         end
-%         
-%         function testCtVolumeGtv1(me)
-%             ct = Ct(fullfile(me.BasePath, 'CT'), 'folder', true);
-%             GtvCt = RoiDose('GTV-1', me.calcGrid, me.rtStruct, ct);
-%             verifyEqual(me, double(~isnan(GtvCt.bitmaskCt)), GtvCt.bitmask);
-%         end
-%         
+        function testParseDoseSeperately(me)
+            Gtv = Image('GTV-1', me.rtStruct.getRoiMask('GTV-1'), [], me.calcGrid.PixelSpacing, me.calcGrid.Origin, me.calcGrid.Axis, me.calcGrid.Dimensions);
+            Gtv = Gtv.addImageData(me.rtDose.fittedDoseCube);
+            
+            dMin = minMeanMaxImage(Gtv.maskedData, 'min');
+            verifyEqual(me, dMin, me.doseMinGtv1, 'RelTol', me.relativeError);
+            
+            v48 = volumeWithDoseOf(Gtv.maskedData, Gtv.PixelSpacing, 48, true, Gtv.volume);
+            verifyEqual(me, v48, me.volume48GyGtv1, 'RelTol', me.relativeError);            
+            
+            d2 = doseToCertainVolume(Gtv.maskedData, Gtv.PixelSpacing, 2, true, Gtv.volume, false, []);
+            verifyEqual(me, d2, me.dose2PercentGtv1, 'RelTol', me.relativeError);
+        end
+        
+        function testCtVolumeGtv1(me)
+            ct = Ct(fullfile(me.BasePath, 'CT'), 'folder', true);
+            GtvCt =Image('GTV-1', me.rtStruct.getRoiMask('GTV-1'), ct.imageData, me.calcGrid.PixelSpacing, me.calcGrid.Origin, me.calcGrid.Axis, me.calcGrid.Dimensions);
+            verifyEqual(me, double(~isnan(GtvCt.maskedData)), GtvCt.bitmask);
+        end
+        
         function testGtv1(me)
             verifyEqual(me, me.Gtv1.name, 'GTV-1'); 
             verifyEqual(me, me.Gtv1.volume, me.volumeGtv1, 'RelTol', me.relativeError); 
@@ -146,12 +152,12 @@ classdef testImage < matlab.unittest.TestCase
 %             verifyEqual(me, me.volume48GyDifference, difference.volumePercentageWithDoseOf(48), 'RelTol', me.relativeError);             
 %             verifyEqual(me, me.dose2PercentDifference, difference.doseToCertainVolumePercentage(2), 'RelTol', me.relativeError);
         end
-%         
-%         function testCompressionCloseToCtBoundries(me)
-%             body = RoiDose('Body', me.calcGrid, me.rtStruct);
-%             verifyEqual(me, body.volume, me.bodyVolume, 'RelTol', me.relativeError);
-%         end
-%         
+        
+        function testCompressionCloseToCtBoundries(me)
+            body = Image('Body', me.rtStruct.getRoiMask('Body'), me.rtDose.fittedDoseCube, me.calcGrid.PixelSpacing, me.calcGrid.Origin, me.calcGrid.Axis, me.calcGrid.Dimensions);
+            verifyEqual(me, body.volume, me.bodyVolume, 'RelTol', me.relativeError);
+        end
+        
 %         function testDoseOverwrite(me)
 %             try
 %                 me.Gtv1.addRtDose(me.rtDose);

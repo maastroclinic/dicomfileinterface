@@ -44,7 +44,9 @@ classdef Image
             me = me.setName(name);      
             me = me.setcalcGrid(pixelSpacing, Origin, Axis, Dimensions);
             me = me.parseImageBitmask(imageBitmask);
-            me = me.parseImage(imageData);
+            if ~isempty(imageData)
+                me = me.parseImage(imageData);
+            end
             me = me.compress();
         end
         
@@ -86,6 +88,10 @@ classdef Image
         
         function me = addRtStructIndex(me, struct, index)
             me = me.parseRtStruct(struct, index);
+        end
+        
+        function me = addImageData(me, imageData)
+            me = me.parseImage(imageData);
         end
         
         function out = get.name(me)

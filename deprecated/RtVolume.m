@@ -91,7 +91,7 @@ classdef RtVolume
         function out = get.volume(me)
             % in cc/ml
             if me.hasDelineation
-                out = nansum(me.bitmask(:)) * prod(me.calcGrid.PixelSpacing);
+                out = imageVolume(me.bitmask(:),me.calcGrid.PixelSpacing);
             else
                 out = NaN;
             end

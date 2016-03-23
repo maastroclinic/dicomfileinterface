@@ -1,4 +1,4 @@
-function out = minMeanMaxImage( image, operation )
+function out = imageDataStatistics( image, operation )
     switch strtrim(lower(operation))
         case 'mean'
             out = nanmean(image(:));

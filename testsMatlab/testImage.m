@@ -73,7 +73,7 @@ classdef testImage < matlab.unittest.TestCase
             Gtv = Image('GTV-1', me.rtStruct.getRoiMask('GTV-1'), [], me.calcGrid.PixelSpacing, me.calcGrid.Origin, me.calcGrid.Axis, me.calcGrid.Dimensions);
             Gtv = Gtv.addImageData(me.rtDose.fittedDoseCube);
             
-            dMin = minMeanMaxImage(Gtv.maskedData, 'min');
+            dMin = imageDataStatistics(Gtv.maskedData, 'min');
             verifyEqual(me, dMin, me.doseMinGtv1, 'RelTol', me.relativeError);
             
             v48 = volumeWithDoseOf(Gtv.maskedData, Gtv.PixelSpacing, 48, true, Gtv.volume);
@@ -93,14 +93,14 @@ classdef testImage < matlab.unittest.TestCase
             verifyEqual(me, me.Gtv1.name, 'GTV-1'); 
             verifyEqual(me, me.Gtv1.volume, me.volumeGtv1, 'RelTol', me.relativeError); 
             
-            dMin = minMeanMaxImage(me.Gtv1.maskedData, 'min');
+            dMin = imageDataStatistics(me.Gtv1.maskedData, 'min');
             verifyEqual(me, dMin, me.doseMinGtv1, 'RelTol', me.relativeError);    
             
-            dMean = minMeanMaxImage(me.Gtv1.maskedData, 'mean');
+            dMean = imageDataStatistics(me.Gtv1.maskedData, 'mean');
             verifyEqual(me, dMean, me.doseMeanGtv1, 'RelTol', me.relativeError);
             verifyGreaterThanOrEqual(me, dMean, dMin); 
             
-            dMax = minMeanMaxImage(me.Gtv1.maskedData, 'max');
+            dMax = imageDataStatistics(me.Gtv1.maskedData, 'max');
             verifyEqual(me, dMax, me.doseMaxGtv1, 'RelTol', me.relativeError);             
             verifyGreaterThanOrEqual(me, dMax, dMean);
             
@@ -117,7 +117,7 @@ classdef testImage < matlab.unittest.TestCase
             verifyEqual(me, me.Gtv2.name, 'GTV-2'); 
             verifyEqual(me, me.Gtv2.volume, me.volumeGtv2, 'RelTol', me.relativeError);
             
-            dMin = minMeanMaxImage(me.Gtv2.maskedData, 'min');
+            dMin = imageDataStatistics(me.Gtv2.maskedData, 'min');
             verifyEqual(me, dMin, me.doseMinGtv2, 'RelTol', me.relativeError);
             
             v48 = volumeWithDoseOf(me.Gtv2.maskedData, me.Gtv2.PixelSpacing, 48, true, me.Gtv2.volume);
@@ -131,7 +131,7 @@ classdef testImage < matlab.unittest.TestCase
             sum = me.Gtv1 + me.Gtv2;            
             verifyEqual(me, sum.name, 'GTV-1+GTV-2'); 
             
-            dMean = minMeanMaxImage(sum.maskedData, 'mean');
+            dMean = imageDataStatistics(sum.maskedData, 'mean');
             verifyEqual(me, dMean, me.doseMeanSum, 'RelTol', me.relativeError);
             
             v48 = volumeWithDoseOf(sum.maskedData, sum.PixelSpacing, 48, true, sum.volume);

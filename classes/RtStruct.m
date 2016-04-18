@@ -10,14 +10,31 @@ classdef RtStruct
 		rendered;
         nrOfRois;
         
-        calcGrid;
+        Origin;
+        Dimensions;
+        
+        % i = lateral direction in image coordinate system
+        % j = transversal direction in image coordinate system
+        % k = axial direction in image coordinate system
+        Axis;
+        Axisi; 
+        Axisj; 
+        Axisk;
+        
+        PixelSpacing = [0,0,0];
+        PixelSpacingi;
+        PixelSpacingj;
+        PixelSpacingk;
 
         hasCalcGrid = false;
     end
     
     methods
-        function me = RtStruct(struct, calcGrid)
-            me = me.parseGrid(calcGrid);
+        function me = RtStruct(struct, pixelSpacing, Origin, Axis, Dimensions)
+            me = me.setPixelSpacing(pixelSpacing);
+            me = me.setOrigin(Origin);
+            me = me.setAxis(Axis);
+            me = me.setDimensions(Dimensions);
             me = me.parseRTStruct(struct);
         end
         
@@ -45,7 +62,7 @@ classdef RtStruct
 		function image = addRoiToGrayScaleMap(me, image, ctSlice, in)
             ContourMask = me.getRoiMask(in);
             ContourMaskSlice = double(flipud(squeeze(ContourMask(:,ctSlice,:))'));
-            ContourList = contourc(double(1:me.calcGrid.Dimensions(1)), double(1:me.calcGrid.Dimensions(3))...
+            ContourList = contourc(double(1:me.Dimensions(1)), double(1:me.Dimensions(3))...
                 , ContourMaskSlice, [1.0 1.0]);
             ColorMap = me.getColorMap(in);
             
@@ -65,7 +82,7 @@ classdef RtStruct
         function sliceNrs = findUsedSlices(me, in, first)
             ContourMask = me.getRoiMask(in);
             sliceNrs = [];
-            for i = 1:me.calcGrid.Dimensions(2)
+            for i = 1:me.Dimensions(2)
                 ContourMaskSlice = squeeze(ContourMask(:,i,:));
                 if max(max(ContourMaskSlice)) == 1
                     sliceNrs = [sliceNrs, i]; %#ok<AGROW>
@@ -75,15 +92,51 @@ classdef RtStruct
                 end
             end
         end
+        
+        function out = get.PixelSpacingi(me)
+            out = me.PixelSpacing(1);
+        end
+        
+        function out = get.PixelSpacingj(me)
+            out = me.PixelSpacing(2);
+        end
+        
+        function out = get.PixelSpacingk(me)
+            out = me.PixelSpacing(3);
+        end
+        
+        function out = get.Axis(me)
+            out.Axisi = me.Axisi;
+            out.Axisj = me.Axisj;
+            out.Axisk = me.Axisk;
+        end 
     end
     
     methods (Access = private)
-        function me = parseGrid(me, grid)
-            if grid.hasAllProperties
-                me.calcGrid = grid;
-                me.bitMasks = zeros(grid.Dimensions ,'uint64');
-                me.hasCalcGrid = true;
-            end
+%         function me = parseGrid(me, grid)
+%             if grid.hasAllProperties
+%                 me.calcGrid = grid;
+%                 me.bitMasks = zeros(grid.Dimensions ,'uint64');
+%                 me.hasCalcGrid = true;
+%             end
+%         end
+        function me = setPixelSpacing(me, pixelSpacing)
+            me.PixelSpacing = pixelSpacing;
+        end
+        
+        function me = setOrigin(me, Origin)
+            me.Origin = Origin;
+        end
+        
+        function me = setDimensions(me, Dimensions)
+            me.Dimensions = Dimensions;
+            me.bitMasks = zeros(me.Dimensions ,'uint64');
+        end
+
+        function me = setAxis(me, Axis)
+            me.Axisi = Axis.Axisi;
+            me.Axisj = Axis.Axisj;
+            me.Axisk = Axis.Axisk;
         end
         
         function me = parseRTStruct(me, struct)
@@ -136,8 +189,8 @@ classdef RtStruct
   
         function out = calculateBitmask(me, Slices)
             %improves readablity of the calculations
-            i = me.calcGrid.PixelSpacingi;
-            k = me.calcGrid.PixelSpacingk;
+            i = me.PixelSpacingi;
+            k = me.PixelSpacingk;
 
             % reshuffle structure data
             Contours = cell(length(Slices),1);
@@ -179,7 +232,7 @@ classdef RtStruct
 
             if length(XStruct) > 1 && length(YStruct) > 1 && length(ZStruct) > 1
                 % re-sample 3D volume
-                out = VolumeResample(structureData,XStruct,YStruct,ZStruct,me.calcGrid.Axisi,me.calcGrid.Axisj,me.calcGrid.Axisk);
+                out = VolumeResample(structureData,XStruct,YStruct,ZStruct,me.Axisi,me.Axisj,me.Axisk);
                 out (out >= 0.5) = 1;
                 out (out < 0.5) = 0;
             else

@@ -1,26 +1,117 @@
 classdef Contour
-    %CONTOUR Summary of this class goes here
-    %   Detailed explanation goes here
+    %CONTOUR ...
     
     properties
-        number
-        item
-        name
+        dicomHeader;
         
-        realX
-        realY
-        realZ
-        
-        
+        number;
+        name;
+        contourSlices = ContourSlice();
+        closedPlanar;
+        forced;
+        relativeElectronDensity;
+        numberOfSlices;
+        volume;
+        colorRgb;
+        referencedFrameOfReferenceUid;
     end
     
     methods
-        function this = Contour(varargin)
+        function this = Contour(dicomHeader)
             if nargin == 0 %preserve standard empty constructor
                 return;
             end
+            this.dicomHeader = dicomHeader;
+        end
+        
+        function this = set.dicomHeader(this, header)
+            if isfield(header, 'ROIName') && ...
+               isfield(header, 'ROINumber') && ...
+               isfield(header, 'ContourSequence') && ...
+               isfield(header, 'ROIDisplayColor')
+                
+                this.dicomHeader = header;
+            else
+                thrown(MException('MATLAB:Contour', 'invalid partial dicom header input'));
+            end
+        end
+        
+        function out = get.name(this)
+            out = this.dicomHeader.ROIName;
+        end
+        
+        function out = get.number(this)
+            out = this.dicomHeader.ROINumber;
+        end
+        
+        function out = get.contourSlices(this)
+            items = fieldnames(this.dicomHeader.ContourSequence);
+            out(1:length(items)) = ContourSlice();
+            for i = 1:length(items)
+                out(i) = ContourSlice(this.dicomHeader.ContourSequence.(items{1}));
+            end
+        end
+        
+        function out = get.referencedFrameOfReferenceUid(this)
+            if isfield(this.dicomHeader, 'ReferencedFrameOfReferenceUID')
+                out = this.dicomHeader.ReferencedFrameOfReferenceUID;
+            else
+                out = [];
+            end
+        end
+        
+        function out = get.numberOfSlices(this)
+            out = length(this.contourSlices); 
+        end
+        
+        function out = get.closedPlanar(this)
+            out = true;
+            if this.numberOfSlices > 0
+                for i = 1:this.numberOfSlices
+                     if ~this.contourSlices(i).closedPlanar
+                         out = false;
+                         return;
+                     end
+                end
+            else
+                out = [];
+            end
+        end
+        
+        function out = get.colorRgb(this)
+            if isfield(this.dicomHeader, 'ROIDisplayColor')
+                out = this.dicomHeader.ROIDisplayColor./256;
+            else
+                %when no color settings are available set to white. 
+                out = [1 1 1]; 
+            end
+        end
+        
+        function out = get.volume(this)
+            if isfield(this.dicomHeader, 'ROIVolume')
+                out = this.dicomHeader.ROIVolume;
+            else
+                out = NaN;
+            end
+        end
+        
+        function out = get.forced(this)
+            if isempty(this.relativeElectronDensity)
+                out = false;
+            else
+                out = true;
+            end
+        end
+        
+        function out = get.relativeElectronDensity(this)
+            if isfield(this.dicomHeader, 'ROIPhysicalPropertiesSequence');
+                items = fieldnames(this.dicomHeader, 'ROIPhysicalPropertiesSequence');
+                for i = 1:length(items)
+                    out(i) = this.dicomHeader.ROIPhysicalPropertyValue.(items{1}).ROIPhysicalPropertyValue; %#ok<AGROW>
+                end
+            else
+                out = [];
+            end
         end
     end
-    
 end
-

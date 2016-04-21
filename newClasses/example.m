@@ -8,6 +8,6 @@ ctScan = CtScan('D:\TestData\12345\CT', false, '*.dcm');
 plan = RtPlan('D:\TestData\12345\RTPLAN\FO-3630512758406762316.dcm', false);
 
 %% create the objects required to calculate
-GTV1 = createContour(struct, 'GTV-1');
+gtv1 = createContour(struct, 'GTV-1');
 
 %% calculate some reference values

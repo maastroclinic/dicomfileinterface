@@ -10,7 +10,7 @@ classdef Image
         realY %in cm
         realZ %in cm
         
-        
+        imageData;
     end
     
     methods

@@ -14,10 +14,12 @@ classdef DicomObj
     end
     
     methods
-        function this = DicomObj(varargin) %do not know if this should be varargin
-           if nargin > 0 %preserve standard empty constructor
-               this = this.readDicomFile(varargin{1}, varargin{2});
-           end
+        function this = DicomObj(fileStr, useVrHeuristic) %do not know if this should be varargin
+            if nargin == 0 %preserve standard empty constructor
+                return;
+            end
+            
+            this = this.readDicomFile(fileStr, useVrHeuristic);
         end
         
         function this = readDicomFile(this, fileName, useVrHeuristic)
@@ -33,7 +35,7 @@ classdef DicomObj
             if isfield(header, 'Format') && strcmpi(header.Format, 'dicom')
                 this.dicomHeader = header;
             else
-                throw(MException('MATLAB:dicomObj:set.dicomHeader','the provided input is an invalid dicom header'));
+                throw(MException('MATLAB:dicomObj:setdicomHeader','the provided input is an invalid dicom header'));
             end
         end
         

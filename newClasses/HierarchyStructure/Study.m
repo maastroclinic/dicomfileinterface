@@ -1,5 +1,5 @@
-classdef RtDose < DicomObj
-    %RTDOSE Summary of this class goes here
+classdef Study
+    %STUDY Summary of this class goes here
     %   Detailed explanation goes here
     
     properties

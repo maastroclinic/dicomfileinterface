@@ -1,5 +1,5 @@
-classdef RtPlan < DicomObj
-    %RTPLAN Summary of this class goes here
+classdef Series
+    %SERIES Summary of this class goes here
     %   Detailed explanation goes here
     
     properties

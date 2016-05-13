@@ -1,6 +1,23 @@
 classdef CtScan < DicomObj
     %CTSCAN representation of an entire DICOM CT-SCAN
     
+    % This CT is given in the image coordinate system
+    %               -----------         IEC
+    %              /|         /|         Z
+    %             / |        / |        /|\
+    %            /  |       /  |         |   /|\ Y
+    %           /   |      /   |         |   /
+    %          /    ------/----          |  /
+    %          ----/------    /          | /
+    %         |   /      |   /           |/
+    %         |  /       |  /     X------|----------------->
+    %         | /        | /            /|
+    %         |/         |/            / |
+    %         ------------
+    %
+    % Origin coordinates will be the bottom-left-corner. The CT cube will
+    % be addressed in the following way pixelData(1:columns,1:numberOfSlices,1:rows)
+    
     properties
         ctSlices = CtSlice();
         instanceSortedCtSlices;
@@ -8,8 +25,15 @@ classdef CtScan < DicomObj
         numberOfSlices;
         sliceThickness;
         hasUniformThickness;
-        pixelSpacing;
-        hasUniformPixelSpacing;
+        pixelSpacingX;
+        pixelSpacingY;
+        pixelSpacingZ;
+        originX;
+        originY;
+        originZ;
+        realX;
+        realY;
+        realZ;
     end
     
     methods
@@ -96,21 +120,66 @@ classdef CtScan < DicomObj
             out = unique(out);
         end
         
-        function out = get.hasUniformPixelSpacing(this)
-            out = false;
-            if length(this.pixelSpacing) == 2
-                out = true;
+        function out = get.pixelSpacingY(this)
+            out = this.sliceThickness/10; %convert to IEC (cm)
+        end
+        
+        function out = get.pixelSpacingX(this)
+            slices = this.ySortedCtSlices();
+            out = zeros(this.numberOfSlices,1);
+            for i = 1:this.numberOfSlices
+                out(i) = slices(i).pixelSpacing(1);
+            end
+            out = unique(out)/10; %convert to IEC (cm)
+        end
+        
+        function out = get.pixelSpacingZ(this)
+            slices = this.ySortedCtSlices();
+            out = zeros(this.numberOfSlices,1);
+            for i = 1:this.numberOfSlices
+                out(i) = slices(i).pixelSpacing(2);
+            end
+            out = unique(out)/10; %convert to IEC (cm)
+        end
+        
+        function out = get.originX(this)
+            if this.ctSlices(1).imageOrientationPatient(1) == 1
+                out = this.ctSlices(1).x;
+            elseif this.ySortedCtSlices(1).imageOrientationPatient(1) == -1
+                out = this.ctSlices(1).x - ...
+                        (this.pixelSpacingX * this.ctSlices(1).rows);
+            else
+                out = [];
+                warning('unsupported ImageOrientationPatient detected, cannot provide origin');
             end
         end
         
-        function out = get.pixelSpacing(this)
-            slices = this.ySortedCtSlices();
-            out = zeros(this.numberOfSlices,2);
-            for i = 1:this.numberOfSlices
-                out(i,1) = slices(i).pixelSpacing(1);
-                out(i,2) = slices(i).pixelSpacing(2);
-            end
-            out = unique(out, 'rows');
+        function out = get.originY(this)
+            out = this.ySortedCtSlices(1).y; 
+        end
+        
+        function out = get.originZ(this)
+            if this.ctSlices(1).imageOrientationPatient(5) == -1
+                out = -this.ctSlices(1).z;
+            elseif this.ctSlices(1).imageOrientationPatient(5) == 1
+                out = -this.ctSlices(1).z - ...
+                        (this.pixelSpacingZ * (this.ySortedCtSlices(1).columns - 1));
+            else
+                out = [];
+                warning('unsupported ImageOrientationPatient detected, cannot provide origin');
+            end 
+        end
+        
+        function out = get.realX(this)
+            out = (this.originX : this.pixelSpacingX : (this.originX + (this.ctSlices(1).rows - 1) * this.pixelSpacingX))';
+        end
+        
+        function out = get.realY(this)
+            out = (this.originY : this.pixelSpacingY : (this.originY + (this.numberOfSlices - 1) * this.pixelSpacingY))';
+        end
+        
+        function out = get.realZ(this)
+            out = (this.originZ : this.pixelSpacingZ : (this.originZ + (this.ctSlices(1).columns - 1) * this.pixelSpacingZ))';
         end
         
         %OVERWRITE read function to read the entire scan
@@ -123,7 +192,6 @@ classdef CtScan < DicomObj
             for i = 1:this.numberOfSlices
                 this.ctSlices(i) = this.ctSlices(i).readDicomData();
             end
-            
             this.pixelData = this.createIecImage();
         end
         
@@ -138,8 +206,7 @@ classdef CtScan < DicomObj
                 image(:,:,i) = slices(i).scaledImageData;
             end
                         
-            %convert image to IEC format
-            %copied this VOODOO from DGRT code, should try to understand this one day...
+            %convert image to IEC format (see top comment for more info)
             image(:,:,:) = image(end:-1:1,:,:);
             image = permute(image,[ 2 1 3 ]);
             image = permute(image,[ 1 3 2 ]);

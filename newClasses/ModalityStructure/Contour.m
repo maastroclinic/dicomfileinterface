@@ -3,7 +3,6 @@ classdef Contour
     
     properties
         dicomHeader;
-        
         number;
         name;
         contourSlices = ContourSlice();
@@ -14,6 +13,14 @@ classdef Contour
         volume;
         colorRgb;
         referencedFrameOfReferenceUid;
+        bitmask;
+        y;
+        lowerX;
+        lowerY;
+        lowerZ;
+        upperX;
+        upperY;
+        upperZ;
     end
     
     methods
@@ -48,7 +55,7 @@ classdef Contour
             items = fieldnames(this.dicomHeader.ContourSequence);
             out(1:length(items)) = ContourSlice();
             for i = 1:length(items)
-                out(i) = ContourSlice(this.dicomHeader.ContourSequence.(items{1}));
+                out(i) = ContourSlice(this.dicomHeader.ContourSequence.(items{i}));
             end
         end
         
@@ -111,6 +118,49 @@ classdef Contour
                 end
             else
                 out = [];
+            end
+        end
+        
+        function out = get.y(this)
+            out = zeros(this.numberOfSlices,1);
+            for i = 1:this.numberOfSlices
+                out(i) = this.contourSlices(i).y(1); 
+            end
+        end
+        
+        function out = get.lowerX(this)
+            out = min(this.contourSlices(1).x);
+            for i = 2:this.numberOfSlices
+                 out = min([out, min(this.contourSlices(i).x)]);
+            end
+        end
+        
+        function out = get.lowerY(this)
+            out = min(this.y);
+        end
+        
+        function out = get.lowerZ(this)
+            out = min(this.contourSlices(1).z);
+            for i = 2:this.numberOfSlices
+                 out = min([out, min(this.contourSlices(i).z)]);
+            end
+        end
+        
+        function out = get.upperX(this)
+            out = max(this.contourSlices(1).x);
+            for i = 2:this.numberOfSlices
+                 out = max([out, max(this.contourSlices(i).x)]);
+            end
+        end
+        
+        function out = get.upperY(this)
+            out = max(this.y);
+        end
+        
+        function out = get.upperZ(this)
+            out = max(this.contourSlices(1).z);
+            for i = 2:this.numberOfSlices
+                 out = max([out, max(this.contourSlices(i).z)]);
             end
         end
     end

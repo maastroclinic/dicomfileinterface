@@ -3,7 +3,9 @@ classdef CtSlice < DicomObj
     
     properties
         instanceNumber;
+        x;
         y;
+        z;
         rows; %same as heigth
         columns; %same as width
         pixelSpacing;
@@ -12,7 +14,8 @@ classdef CtSlice < DicomObj
         sliceThickness;
         windowCenter;
         windowWidth;
-        imageOrientationPatient;   
+        imageOrientationPatient; 
+        imagePositionPatient;
         scaledImageData;
     end
     
@@ -30,11 +33,11 @@ classdef CtSlice < DicomObj
         end
         
         function out = get.rows(this)
-            out = this.dicomHeader.Rows;
+            out = double(this.dicomHeader.Rows);
         end
         
         function out = get.columns(this)
-            out = this.dicomHeader.Columns;
+            out = double(this.dicomHeader.Columns);
         end
         
         function out = get.pixelSpacing(this)
@@ -65,8 +68,20 @@ classdef CtSlice < DicomObj
             out = this.dicomHeader.ImageOrientationPatient; 
         end
         
+        function out = get.imagePositionPatient(this)
+            out = this.dicomHeader.ImagePositionPatient; 
+        end
+        
+        function out = get.x(this)
+            out = this.dicomHeader.ImagePositionPatient(1)/10; %convert to IEC (cm)
+        end
+        
         function out = get.y(this)
-            out = this.dicomHeader.ImagePositionPatient(3);
+            out = this.dicomHeader.ImagePositionPatient(3)/10; %convert to IEC (cm)
+        end
+        
+        function out = get.z(this)
+            out = this.dicomHeader.ImagePositionPatient(2)/10; %convert to IEC (cm)
         end
         
         function out = get.scaledImageData(this)

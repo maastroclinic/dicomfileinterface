@@ -1,7 +1,4 @@
-function image = createImageFromCt( ctScan, loadImageData)
-%CREATEIMAGEFROMCT 
-    image = Image();
-    
+function image = createImageFromCt(ctScan, loadImageData)  
     if ~ctScan.hasUniformThickness()
         throw(MException());
     end
@@ -10,7 +7,7 @@ function image = createImageFromCt( ctScan, loadImageData)
         throw(MException());
     end
     
-    imageOrientationPatient = ctScan.sortedCtSlices(1).imageOrientationPatient;
+    imageOrientationPatient = ctScan.ySortedCtSlices(1).imageOrientationPatient;
     if ~isequal(imageOrientationPatient,...
                 [1;0;0;0;1;0]);
         % Note: explicit conversion from logical to unint16 to
@@ -26,9 +23,9 @@ function image = createImageFromCt( ctScan, loadImageData)
     pixelSpacingY = double(ctScan.sliceThickness)  /10; 
     pixelSpacingZ = double(ctScan.pixelSpacing(1)) /10;
     
-    dimensionX = double(ctScan.sortedCtSlices(1).rows); 
+    dimensionX = double(ctScan.ySortedCtSlices(1).rows); 
     dimensionY = double(ctScan.numberOfSlices);
-    dimensionZ = double(ctScan.sortedCtSlices(1).columns);
+    dimensionZ = double(ctScan.ySortedCtSlices(1).columns);
 
     %TODO do not understand this voodoo yet...
     originX = (imageOrientationPatient(1)/10) - ...
@@ -45,7 +42,8 @@ function image = createImageFromCt( ctScan, loadImageData)
     realZ = (originZ:pixelSpacingZ:originZ + (dimensionZ - 1) * pixelSpacingZ)';
     
     if loadImageData
-        %TODO, add transformation;
+        ctScan = ctScan.readDicomData();
+        image = Image(pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, ctScan.pixelData);
     else
         image = Image(pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, []);
     end

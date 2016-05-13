@@ -1,6 +1,5 @@
 classdef RtStruct < DicomObj
-    %RTSTRUCT Summary of this class goes here
-    %   Detailed explanation goes here
+    %RTSTRUCT Representation of a DICOM RTSTRUCT
     
     properties
         structureSetSequence

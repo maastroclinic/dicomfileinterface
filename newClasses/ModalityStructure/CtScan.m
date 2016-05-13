@@ -1,6 +1,5 @@
 classdef CtScan < DicomObj
-    %CTSCAN Summary of this class goes here
-    %   Detailed explanation goes here
+    %CTSCAN representation of an entire DICOM CT-SCAN
     
     properties
         ctSlices = CtSlice();

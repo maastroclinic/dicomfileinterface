@@ -11,24 +11,47 @@ classdef DicomObj
         sopInstanceUid;
         frameOfReferenceUid;
         modality;
+        pixelData;
+    end
+    
+    properties (Access = private)
+        bufferPixelData; 
     end
     
     methods
-        function this = DicomObj(fileStr, useVrHeuristic) %do not know if this should be varargin
+        function this = DicomObj(fileStr, useVrHeuristic, varargin) %do not know if this should be varargin
             if nargin == 0 %preserve standard empty constructor
                 return;
             end
             
-            this = this.readDicomFile(fileStr, useVrHeuristic);
+            this = this.readDicomHeader(fileStr, useVrHeuristic);
+            
+            %optional boolean to read data when creating the object
+            if nargin > 2 && islogical(varargin{3})
+                if varargin{3} == true
+                    this = this.readDicomData();
+                end
+            end
         end
         
-        function this = readDicomFile(this, fileName, useVrHeuristic)
+        function this = readDicomHeader(this, fileName, useVrHeuristic)
             if ~exist(fileName, 'file')
                 fnErrorString = regexprep(fileName,'\','\\\');
                 throw(MException('MATLAB:dicomObj:readDicomFile', ['DICOM file ''' fnErrorString ''' not found.''']));
             end
             
             this.dicomHeader = dicominfo(fileName, 'UseVRHeuristic', useVrHeuristic);
+        end
+        
+        function this = readDicomData(this)
+            fileName = this.dicomHeader.Filename;
+
+            if ~exist(fileName, 'file')
+                fnErrorString = regexprep(fileName,'\','\\\');
+                throw(MException('MATLAB:dicomObj:readDicomFile', ['DICOM file ''' fnErrorString ''' not found.''']));
+            end
+
+            this.pixelData = dicomread(fileName);
         end
         
         function this = set.dicomHeader(this, header)
@@ -60,7 +83,7 @@ classdef DicomObj
         end
         
         function out = get.modality(this)
-            out = this.dicomHeader.Modality;
+            out = lower(this.dicomHeader.Modality);
         end
     end
     

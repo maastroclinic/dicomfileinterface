@@ -1,4 +1,8 @@
 function [ fileNames ] = scanFolder( folder, fileExtension )
+    if ~(nargin==2)
+        throw(MException('MATLAB:scanFolder', 'folder and fileExtension have to be given as input'));
+    end
+    
     if ~ischar(folder) || ~ischar(fileExtension)
         throw(MException('MATLAB:scanFolder', 'folder and fileExtension have to be strings'));
     end

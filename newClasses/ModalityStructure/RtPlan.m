@@ -13,6 +13,10 @@ classdef RtPlan < DicomObj
             
             this = constructorParser(this, 'rtplan', varargin{1}, varargin{2});
         end
+        
+        function readDicomData(~)
+            warning('this standard dicom function is overwritten because the rtstruct dicom object does not contain an image block');
+        end
     end
     
 end

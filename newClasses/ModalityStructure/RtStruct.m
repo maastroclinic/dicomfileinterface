@@ -17,6 +17,10 @@ classdef RtStruct < DicomObj
             this = constructorParser(this, 'rtstruct', varargin{1}, varargin{2});
         end
         
+        function readDicomData(~)
+            warning('this standard dicom function is overwritten because the rtstruct dicom object does not contain an image block');
+        end
+        
         function out = dicomHeaderForRoiNumber(this, number)
             out = [];
             

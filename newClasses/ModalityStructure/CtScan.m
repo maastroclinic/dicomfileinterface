@@ -205,7 +205,6 @@ classdef CtScan < DicomObj
             for i = 1:this.numberOfSlices
                 image(:,:,i) = slices(i).scaledImageData;
             end
-                        
             %convert image to IEC format (see top comment for more info)
             image(:,:,:) = image(end:-1:1,:,:);
             image = permute(image,[ 2 1 3 ]);

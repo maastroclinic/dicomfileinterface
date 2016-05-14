@@ -1,21 +1,21 @@
 classdef Image
     %IMAGE contains sampled information of a real world space. 
     
-    properties
+    properties (SetAccess = 'protected')
         pixelSpacingX %in cm
         pixelSpacingY %in cm
         pixelSpacingZ %in cm
-        
         realX %in cm
         realY %in cm
         realZ %in cm
-        
+        rows;
+        slices;
+        columns;
         imageData;
     end
     
     methods
-        function this = Image(pixelSpacingX, pixelSpacingY, pixelSpacingZ, ...
-                              realX, realY, realZ, imageData)
+        function this = Image(pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, imageData)
             if nargin == 0 %preserve standard empty constructor
                 return;
             end
@@ -73,6 +73,29 @@ classdef Image
                 throw(MException('MATLAB:Image:realZ', 'realZ has to be a numeric value'));
             end
             this.realZ = real;
-        end  
+        end
+        
+        function out = get.rows(this)
+            out = length(this.realZ);
+        end
+        
+        function out = get.columns(this)
+            out = length(this.realX);
+        end
+        
+        function out = get.slices(this)
+            out = length(this.realY);
+        end
+        
+        function this = addImageData(this, imageData)
+            if size(imageData,1) ~= this.rows || ...
+               size(imageData,2) ~= this.slices || ...
+               size(imageData,3) ~= this.columns
+                throw(MException(['MATLAB:Image:imageData', 'Dimension mismatch! The real axis properties' ...
+                                  ' do not match the dimensions of the image you are trying to store']));
+            end
+            
+            this.imageData = imageData;
+        end
     end
 end

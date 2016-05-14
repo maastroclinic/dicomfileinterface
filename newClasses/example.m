@@ -9,6 +9,6 @@ plan = RtPlan('D:\TestData\12345\RTPLAN\FO-3630512758406762316.dcm', false);
 
 %% create the objects required to calculate
 gtv1 = createContour(struct, 'GTV-1');
-gridImage = createImageFromCt(ctScan, false);
-bitmask = createBitmask(gtv1, gridImage);
+referenceImage = createImageFromCt(ctScan, false);
+bitmaskImage = createBitmask(gtv1, referenceImage);
 %% calculate some reference values

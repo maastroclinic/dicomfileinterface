@@ -5,6 +5,7 @@ classdef RtStruct < DicomObj
         structureSetSequence
         observationSequence
         contourSequence
+        contourNames
     end
     
     methods
@@ -78,6 +79,14 @@ classdef RtStruct < DicomObj
         
         function out = get.contourSequence(this)
             out = this.dicomHeader.ROIContourSequence;
+        end
+        
+        function out = get.contourNames(this)
+            items = fieldnames(this.structureSetSequence);
+            out = cell(length(items), 1);
+            for i = 1:length(items)
+                out{i} = this.structureSetSequence.(items{i}).ROIName;
+            end
         end
     end
 end

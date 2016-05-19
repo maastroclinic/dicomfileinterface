@@ -28,7 +28,12 @@ classdef Contour
             if nargin == 0 %preserve standard empty constructor
                 return;
             end
-            this.dicomHeader = dicomHeader;
+            this = this.parseDicomHeader(dicomHeader);
+        end
+        
+        function this = parseDicomHeader(this, header)
+            this.dicomHeader = header;
+            this.contourSlices = header;
         end
         
         function this = set.dicomHeader(this, header)
@@ -43,20 +48,20 @@ classdef Contour
             end
         end
         
+        function this = set.contourSlices(this, dicomHeader)
+            items = fieldnames(dicomHeader.ContourSequence);
+            this.contourSlices(1:length(items)) = ContourSlice();
+            for i = 1:length(items)
+                this.contourSlices(i) = ContourSlice(dicomHeader.ContourSequence.(items{i}));
+            end
+        end
+        
         function out = get.name(this)
             out = this.dicomHeader.ROIName;
         end
         
         function out = get.number(this)
             out = this.dicomHeader.ROINumber;
-        end
-        
-        function out = get.contourSlices(this)
-            items = fieldnames(this.dicomHeader.ContourSequence);
-            out(1:length(items)) = ContourSlice();
-            for i = 1:length(items)
-                out(i) = ContourSlice(this.dicomHeader.ContourSequence.(items{i}));
-            end
         end
         
         function out = get.referencedFrameOfReferenceUid(this)
@@ -126,7 +131,7 @@ classdef Contour
             for i = 1:this.numberOfSlices
                 out(i) = this.contourSlices(i).y(1); 
             end
-        end
+        end        
         
         function out = get.lowerX(this)
             out = min(this.contourSlices(1).x);

@@ -1,7 +1,8 @@
 function rtstruct = getRtStructForPlan(patient, planUid)
-    if ~patient.rtstructsForPlan.isKey(planUid)
+    if ~patient.planReferenceObjects.rtstructsForPlan.isKey(planUid)
         rtstruct = [];
         return;
     end
-    rtstruct = patient.getDicomModalityObject(patient.rtstructsForPlan(planUid));
+    rtstruct = patient.getDicomObject(patient.planReferenceObjects.rtstructsForPlan(planUid));
+    rtstruct = createModalityObj(rtstruct);
 end

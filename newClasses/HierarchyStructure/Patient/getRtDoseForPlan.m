@@ -1,11 +1,11 @@
 function rtdose = getRtDoseForPlan(patient, planUid)
-    if ~patient.rtdoseForPlan.isKey(planUid)
+    if ~patient.planReferenceObjects.rtdoseForPlan.isKey(planUid)
         rtdose = [];
         return;
     end
-    list = patient.rtdoseForPlan(planUid);
+    list = patient.planReferenceObjects.rtdoseForPlan(planUid);
     rtdose = RtDose();
     for i = 1:length(list)
-        rtdose(i) = patient.getDicomModalityObject(list(i).sopInstanceUid);
+        rtdose(i) = createModalityObj(patient.getDicomObject(list(i).sopInstanceUid));
     end
 end

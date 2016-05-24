@@ -1,10 +1,10 @@
-function [plan, dose, struct, ct] = createPlanPackage(this, planLabel)
-    planUid = this.getPlanUidForLabel(planLabel);
+function [plan, dose, struct, ct] = createPlanPackage(patient, planLabel)
+    planUid = patient.planReferenceObjects.getPlanUidForLabel(planLabel);
     if isempty(planUid)
         throw(MException('MATLAB:Patient:createPlanPackage', 'planLabel not found for patient'))
     end            
-    plan = RtPlan(this.getDicomObject(planUid), []);
-    dose = this.getRtDoseForPlan(planUid);
-    struct = this.getRtStructForPlan(planUid);
-    ct = this.getCtScanForPlan(planUid);
+    plan = createModalityObj(patient.getDicomObject(planUid));
+    dose = getRtDoseForPlan(patient, planUid);
+    struct = getRtStructForPlan(patient, planUid);
+    ct = getCtScanForPlan(patient, planUid);
 end

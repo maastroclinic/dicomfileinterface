@@ -37,32 +37,6 @@ classdef Series
             end
         end
         
-        function this = replaceDicomObjWithFileLocation(this, dicomObj)
-            this.images(dicomObj.sopInstanceUid) = dicomObj.dicomHeader.Filename;
-        end
-        
-        function this = parseSeriesInfo(this, dicomObj)
-            this.id = dicomObj.seriesInstanceUid;
-            this.description = dicomObj.dicomHeader.SeriesDescription;
-            this.modality = dicomObj.modality;
-            this.parsed = true;
-        end
-        
-        function dicomObj = createModalityObj(~, dicomObj)
-            switch dicomObj.modality
-                case 'ct'
-                    dicomObj = CtSlice(dicomObj, []);
-                case 'rtplan'
-                    dicomObj = RtPlan(dicomObj, []);
-                case 'rtstruct'
-                    dicomObj = RtStruct(dicomObj, []);
-                case 'rtdose'
-                    dicomObj = RtDose(dicomObj, []);
-                case 'rtimage'
-                    dicomObj = RtImage(dicomObj, []);
-            end
-        end
-        
         function out = get.nrOfImages(this)
             out = this.images.Count;
         end
@@ -81,13 +55,14 @@ classdef Series
                 out(i) = this.images(keys{i});
             end
         end
-        
-        function out = getModalityObject(this, uid)
-            out = [];
-            if this.images.isKey(uid)
-                obj = this.images(uid);
-                out = this.createModalityObj(obj);
-            end
+    end
+    
+    methods (Access = 'private')
+        function this = parseSeriesInfo(this, dicomObj)
+            this.id = dicomObj.seriesInstanceUid;
+            this.description = dicomObj.dicomHeader.SeriesDescription;
+            this.modality = dicomObj.modality;
+            this.parsed = true;
         end
     end
 end

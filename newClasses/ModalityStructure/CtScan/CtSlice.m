@@ -2,7 +2,6 @@ classdef CtSlice < DicomObj
     %CTSLICE 
     
     properties
-        instanceNumber
         rescaleSlope
         rescaleIntercept
         sliceThickness
@@ -18,10 +17,6 @@ classdef CtSlice < DicomObj
             end
             
             this = constructorParser(this, 'ct', varargin{1}, varargin{2});
-        end
-        
-        function out = get.instanceNumber(this)
-            out = this.dicomHeader.InstanceNumber;
         end
         
         function out = get.rescaleSlope(this)

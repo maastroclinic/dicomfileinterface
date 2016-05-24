@@ -1,6 +1,5 @@
 function data = createListDicomObjectsForPlan(patientObj, planLabel)
     
-
     data = createHeader();
     
     patientId = patientObj.id;
@@ -28,6 +27,7 @@ function data = createListDicomObjectsForPlan(patientObj, planLabel)
                     struct.seriesInstanceUid, ...
                     struct.sopInstanceUid, ...
                     struct.dicomHeader.Filename);
+                
     for i = 1:ct.numberOfSlices       
         data = addEntry(data, patientId, planLabel,...
                     'CT', ...

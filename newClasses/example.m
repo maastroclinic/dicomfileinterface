@@ -4,13 +4,10 @@
 %% load the files we need
 tic
 disp('Loading CT, RTSTRUCT, DOSE and PLAN')
+patientId = '12345';
+planId = '1p1b1d1a';
 myDicomFiles = DicomDatabase('D:\TestData\12345_java');
-
-
-struct = RtStruct('D:\TestData\12345\RTSTRUCT\FO-4073997332899944647.dcm', true);
-dose = RtDose('D:\TestData\12345\RTDOSE\FO-3153671375338877408_v2.dcm', false);
-ctScan = CtScan('D:\TestData\12345\CT', false, '*.dcm');
-plan = RtPlan('D:\TestData\12345\RTPLAN\FO-3630512758406762316.dcm', false);
+[plan, dose, struct, ctScan] = createPlanPackage(myDicomFiles.getPatientObject(patientId), planId);
 referenceImage = createImageFromCt(ctScan, false);
 % doseImage = createDoseImage(dose, referenceImage);
 toc

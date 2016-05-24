@@ -12,7 +12,7 @@ classdef DicomObj
         frameOfReferenceUid
         modality
         pixelData
-        
+        filename
         x %in cm
         y %in cm
         z %in cm
@@ -93,7 +93,16 @@ classdef DicomObj
         end
         
         function out = get.frameOfReferenceUid(this)
-            out = this.dicomHeader.FrameOfReferenceUID;
+            out = [];
+            if isfield(this.dicomHeader, 'FrameOfReferenceUID')
+                out = this.dicomHeader.FrameOfReferenceUID;
+            elseif isfield(this.dicomHeader, 'ReferencedFrameOfReferenceSequence')
+                out = this.dicomHeader.ReferencedFrameOfReferenceSequence.Item_1.FrameOfReferenceUID;
+            end
+        end
+        
+        function out = get.filename(this)
+            out = this.dicomHeader.Filename;
         end
         
         function out = get.modality(this)

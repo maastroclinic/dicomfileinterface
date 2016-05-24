@@ -34,6 +34,7 @@ classdef CtScan
         realX
         realY
         realZ
+        pixelData
     end
     
     methods
@@ -61,7 +62,6 @@ classdef CtScan
         end
         
         function this = addListOfObjects(this, dicomObj)
-%             this = constructorParser(this, 'ct', dicomObj);
             for i = 1:length(dicomObj)
                 if ~isa(dicomObj(i), 'CtSlice')
                     ctSlice = CtSlice(dicomObj(i), []);
@@ -74,7 +74,6 @@ classdef CtScan
         end
         
         function this = addListOfFiles(this, files, UseVrHeuristic)
-%             this = constructorParser(this, 'ct', files{1}, UseVrHeuristic);
             for i = 1:length(files)
                 ctSlice = CtSlice(files{i}, UseVrHeuristic);
                 this = this.addCtSlices(ctSlice); 

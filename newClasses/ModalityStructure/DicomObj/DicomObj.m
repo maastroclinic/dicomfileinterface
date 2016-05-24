@@ -22,11 +22,15 @@ classdef DicomObj
         pixelSpacing
         imageOrientationPatient
         imagePositionPatient
+        instanceNumber
         
         firstname
         lastname
         gender
         dateOfBirth
+        
+        manufacturer
+        manufacturerModelName
     end
     
     properties (Access = private)
@@ -123,7 +127,11 @@ classdef DicomObj
         end
         
         function out = get.rows(this)
-            out = double(this.dicomHeader.Rows);
+            if isfield(this.dicomHeader, 'Rows')
+            	out = double(this.dicomHeader.Rows);
+            else
+                out = [];
+            end
         end
         
         function out = get.columns(this)
@@ -182,27 +190,52 @@ classdef DicomObj
             end
         end
         
-        function this = get.lastname(this)
+        function out = get.lastname(this)
+            out = [];
             if isfield(this.dicomHeader, 'PatientName') && isfield(this.dicomHeader.PatientName, 'FamilyName')
-                this.lastname = this.dicomHeader.PatientName.FamilyName;
+                out = this.dicomHeader.PatientName.FamilyName;
             end
         end
         
-        function this = get.firstname(this)
+        function out = get.firstname(this)
+            out = [];
             if isfield(this.dicomHeader, 'PatientName') && isfield(this.dicomHeader.PatientName, 'FirstName')
-                this.firstname = this.dicomHeader.PatientName.FirstName;
+                out = this.dicomHeader.PatientName.FirstName;
             end
         end
         
-        function this = get.gender(this)
+        function out = get.gender(this)
+            out = [];
             if isfield(this.dicomHeader, 'PatientSex')
-                this.gender = this.dicomHeader.PatientSex;
+                out = this.dicomHeader.PatientSex;
             end
         end
         
-        function this = get.dateOfBirth(this)
+        function out = get.dateOfBirth(this)
+            out = [];
             if isfield(this.dicomHeader, 'PatientBirthDate')
-                this.dateOfBirth = this.dicomHeader.PatientBirthDate;
+                out = this.dicomHeader.PatientBirthDate;
+            end
+        end
+        
+        function out = get.instanceNumber(this)
+            out = [];
+            if isfield(this.dicomHeader, 'InstanceNumber')
+                out = this.dicomHeader.InstanceNumber;
+            end
+        end
+        
+        function out = get.manufacturer(this)
+            out = [];
+            if isfield(this.dicomHeader, 'Manufacturer')
+                out = lower(this.dicomHeader.Manufacturer);
+            end
+        end
+        
+        function out = get.manufacturerModelName(this)
+            out = [];
+            if isfield(this.dicomHeader, 'ManufacturerModelName')
+                out = lower(this.dicomHeader.ManufacturerModelName);
             end
         end
     end

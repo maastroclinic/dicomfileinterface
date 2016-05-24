@@ -6,7 +6,6 @@ function dicomDb = addNewFolderToDatabase(dicomDb, folder)
     files = filesUnderFolders(folder, 'detail');
     nrOfFiles = length(files);
     for i = 1:nrOfFiles
-        disp([num2str(i) '/' num2str(nrOfFiles)]);
         if isdicom(files{i})
             try
                 dicomObj = DicomObj(files{i}, false);

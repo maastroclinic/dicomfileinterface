@@ -60,7 +60,7 @@ classdef Series
     methods (Access = 'private')
         function this = parseSeriesInfo(this, dicomObj)
             this.id = dicomObj.seriesInstanceUid;
-            this.description = dicomObj.dicomHeader.SeriesDescription;
+            this.description = dicomObj.seriesDescription;
             this.modality = dicomObj.modality;
             this.parsed = true;
         end

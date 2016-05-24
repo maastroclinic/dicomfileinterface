@@ -8,6 +8,7 @@ classdef DicomObj
         patientId
         studyInstanceUid
         seriesInstanceUid
+        seriesDescription
         sopInstanceUid
         frameOfReferenceUid
         modality
@@ -21,6 +22,11 @@ classdef DicomObj
         pixelSpacing
         imageOrientationPatient
         imagePositionPatient
+        
+        firstname
+        lastname
+        gender
+        dateOfBirth
     end
     
     properties (Access = private)
@@ -86,6 +92,13 @@ classdef DicomObj
         
         function out = get.seriesInstanceUid(this)
             out = this.dicomHeader.SeriesInstanceUID;
+        end
+        
+        function out = get.seriesDescription(this)
+            out = [];
+            if isfield(this.dicomHeader, 'SeriesDescription')
+                out = this.dicomHeader.SeriesDescription;
+            end
         end
         
         function out = get.sopInstanceUid(this)
@@ -166,6 +179,30 @@ classdef DicomObj
                 out = this.dicomHeader.ImagePositionPatient(2)/10; %convert to IEC (cm)
             else
                 out = [];
+            end
+        end
+        
+        function this = get.lastname(this)
+            if isfield(this.dicomHeader, 'PatientName') && isfield(this.dicomHeader.PatientName, 'FamilyName')
+                this.lastname = this.dicomHeader.PatientName.FamilyName;
+            end
+        end
+        
+        function this = get.firstname(this)
+            if isfield(this.dicomHeader, 'PatientName') && isfield(this.dicomHeader.PatientName, 'FirstName')
+                this.firstname = this.dicomHeader.PatientName.FirstName;
+            end
+        end
+        
+        function this = get.gender(this)
+            if isfield(this.dicomHeader, 'PatientSex')
+                this.gender = this.dicomHeader.PatientSex;
+            end
+        end
+        
+        function this = get.dateOfBirth(this)
+            if isfield(this.dicomHeader, 'PatientBirthDate')
+                this.dateOfBirth = this.dicomHeader.PatientBirthDate;
             end
         end
     end

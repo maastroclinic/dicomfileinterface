@@ -47,36 +47,6 @@ classdef Patient
             end
         end
         
-        function this = set.id(this, dicomHeader)
-            if isfield(dicomHeader, 'PatientID')
-                this.id = dicomHeader.PatientID;
-            end
-        end
-        
-        function this = set.lastname(this, dicomHeader)
-            if isfield(dicomHeader, 'PatientName') && isfield(dicomHeader.PatientName, 'FamilyName')
-                this.lastname = dicomHeader.PatientName.FamilyName;
-            end
-        end
-        
-        function this = set.firstname(this, dicomHeader)
-            if isfield(dicomHeader, 'PatientName') && isfield(dicomHeader.PatientName, 'FirstName')
-                this.firstname = dicomHeader.PatientName.FirstName;
-            end
-        end
-        
-        function this = set.gender(this, dicomHeader)
-            if isfield(dicomHeader, 'PatientSex')
-                this.gender = dicomHeader.PatientSex;
-            end
-        end
-        
-        function this = set.dateOfBirth(this, dicomHeader)
-            if isfield(dicomHeader, 'PatientBirthDate')
-                this.dateOfBirth = dicomHeader.PatientBirthDate;
-            end
-        end
-        
         function out = get.nrOfStudies(this)
             out = this.studies.Count;
         end
@@ -117,11 +87,11 @@ classdef Patient
         end
         
         function this = parsePatientInfo(this, dicomObj)
-            this.id = dicomObj.dicomHeader;
-            this.lastname = dicomObj.dicomHeader;
-            this.firstname = dicomObj.dicomHeader;
-            this.gender = dicomObj.dicomHeader;
-            this.dateOfBirth = dicomObj.dicomHeader;
+            this.id = dicomObj.patientId;
+            this.lastname = dicomObj.lastname;
+            this.firstname = dicomObj.firstname;
+            this.gender = dicomObj.gender;
+            this.dateOfBirth = dicomObj.dateOfBirth;
             this.parsed = true;
         end
 

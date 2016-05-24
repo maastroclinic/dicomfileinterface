@@ -1,17 +1,18 @@
-classdef RtDose < DicomObj
-    %RTDOSE 
+classdef RtImage < DicomObj
+    %RTIMAGE Summary of this class goes here
+    %   Detailed explanation goes here
     
     properties
         referencedRtPlanUid
     end
     
     methods
-        function this = RtDose(varargin)
+        function this = RtImage(varargin)
             if nargin == 0 %preserve standard empty constructor
                 return;
             end
             
-            this = constructorParser(this, 'rtdose', varargin{1}, varargin{2});
+            this = constructorParser(this, 'rtimage', varargin{1}, varargin{2});
         end
         
         function out = get.referencedRtPlanUid(this)
@@ -20,8 +21,6 @@ classdef RtDose < DicomObj
                 out = this.dicomHeader.ReferencedRTPlanSequence.Item_1.ReferencedSOPInstanceUID;
             end            
         end
-        
     end
-    
 end
 

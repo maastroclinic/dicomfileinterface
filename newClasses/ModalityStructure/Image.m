@@ -8,10 +8,10 @@ classdef Image
         realX %in cm
         realY %in cm
         realZ %in cm
-        rows;
-        slices;
-        columns;
-        imageData;
+        rows
+        slices
+        columns
+        imageData
     end
     
     methods

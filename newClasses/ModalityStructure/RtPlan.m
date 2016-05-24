@@ -1,8 +1,9 @@
 classdef RtPlan < DicomObj
-    %RTPLAN Summary of this class goes here
-    %   Detailed explanation goes here
+    %RTPLAN
     
     properties
+        planLabel
+        rtStructReferenceUid
     end
     
     methods
@@ -16,6 +17,17 @@ classdef RtPlan < DicomObj
         
         function readDicomData(~)
             warning('this standard dicom function is overwritten because the rtstruct dicom object does not contain an image block');
+        end
+        
+        function out = get.planLabel(this)
+            out = this.dicomHeader.RTPlanLabel; 
+        end
+        
+        function out = get.rtStructReferenceUid(this)
+            out = [];
+            if isfield(this.dicomHeader, 'ReferencedStructureSetSequence')
+                out = this.dicomHeader.ReferencedStructureSetSequence.Item_1.ReferencedSOPInstanceUID;
+            end
         end
     end
     

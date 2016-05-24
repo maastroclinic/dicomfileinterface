@@ -3,15 +3,24 @@ classdef DicomObj
     
     properties
         %store the unprocessed DICOM header in here.
-        dicomHeader;
+        dicomHeader
        
-        patientId;
-        studyInstanceUid;
-        seriesInstanceUid;
-        sopInstanceUid;
-        frameOfReferenceUid;
-        modality;
-        pixelData;
+        patientId
+        studyInstanceUid
+        seriesInstanceUid
+        sopInstanceUid
+        frameOfReferenceUid
+        modality
+        pixelData
+        
+        x %in cm
+        y %in cm
+        z %in cm
+        rows %same as heigth
+        columns %same as width
+        pixelSpacing
+        imageOrientationPatient
+        imagePositionPatient
     end
     
     properties (Access = private)
@@ -19,7 +28,7 @@ classdef DicomObj
     end
     
     methods
-        function this = DicomObj(fileStr, useVrHeuristic, varargin) %do not know if this should be varargin
+        function this = DicomObj(fileStr, useVrHeuristic, varargin) %do not know if this should be varargin            
             if nargin == 0 %preserve standard empty constructor
                 return;
             end
@@ -38,6 +47,11 @@ classdef DicomObj
             if ~exist(fileName, 'file')
                 fnErrorString = regexprep(fileName,'\','\\\');
                 throw(MException('MATLAB:dicomObj:readDicomFile', ['DICOM file ''' fnErrorString ''' not found.''']));
+            else
+                if ~isdicom(fileName)
+                    fnErrorString = regexprep(fileName,'\','\\\');
+                    throw(MException('MATLAB:dicomObj:readDicomFile', ['File ''' fnErrorString ''' is not a valid dicom file''']));
+                end
             end
             
             this.dicomHeader = dicominfo(fileName, 'UseVRHeuristic', useVrHeuristic);
@@ -85,7 +99,65 @@ classdef DicomObj
         function out = get.modality(this)
             out = lower(this.dicomHeader.Modality);
         end
+        
+        function out = get.rows(this)
+            out = double(this.dicomHeader.Rows);
+        end
+        
+        function out = get.columns(this)
+            if isfield(this.dicomHeader, 'Columns')
+                out = double(this.dicomHeader.Columns);
+            else
+                out = [];
+            end
+        end
+        
+        function out = get.pixelSpacing(this)
+            if isfield(this.dicomHeader, 'PixelSpacing')
+                out = this.dicomHeader.PixelSpacing/10; %convert to IEC (cm)
+            else
+                out = [];
+            end
+        end
+        
+        function out = get.imageOrientationPatient(this)
+            if isfield(this.dicomHeader, 'ImageOrientationPatient')
+                out = this.dicomHeader.ImageOrientationPatient;
+            else
+                out = [];
+            end
+        end
+        
+        function out = get.imagePositionPatient(this)
+            if isfield(this.dicomHeader, 'ImagePositionPatient')
+                out = this.dicomHeader.ImagePositionPatient;
+            else
+                out = [];
+            end
+        end
+        
+        function out = get.x(this)
+            if isfield(this.dicomHeader, 'ImagePositionPatient')
+                out = this.dicomHeader.ImagePositionPatient(1)/10; %convert to IEC (cm)
+            else
+                out = [];
+            end
+        end
+        
+        function out = get.y(this)
+            if isfield(this.dicomHeader, 'ImagePositionPatient')
+                out = this.dicomHeader.ImagePositionPatient(3)/10; %convert to IEC (cm)
+            else
+                out = [];
+            end
+        end
+        
+        function out = get.z(this)
+            if isfield(this.dicomHeader, 'ImagePositionPatient')
+                out = this.dicomHeader.ImagePositionPatient(2)/10; %convert to IEC (cm)
+            else
+                out = [];
+            end
+        end
     end
-    
 end
-

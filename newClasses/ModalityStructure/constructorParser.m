@@ -9,8 +9,7 @@ function [ dicomObj ] = constructorParser( dicomObj, modality, varargin )
     end
 
     if ~strcmpi(dicomObj.modality, modality)
-        throw(MException('MATLAB:constructorParser', ['Cannot creat RtStruct for modality '  dicomObj.modality]));
+        throw(MException('MATLAB:constructorParser', ['Cannot create ' modality ' for modality '  dicomObj.modality]));
     end
-
 end
 

@@ -2,13 +2,13 @@ classdef VolumeOfInterest < Image
     %VOLUMEOFINTEREST
     
     properties
-        xCompressed = [];
-        yCompressed = [];
-        zCompressed = [];
+        xCompressed = []
+        yCompressed = []
+        zCompressed = []
         
-        uncompressedImageData;
+        uncompressedImageData
         
-        EDGE_BUFFER = 5;
+        EDGE_BUFFER = 5
     end
     
     methods

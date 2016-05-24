@@ -6,6 +6,8 @@ classdef RtStruct < DicomObj
         observationSequence
         contourSequence
         contourNames
+        referencedImageSeriesUid
+%         referencedFirstImageUid
     end
     
     methods
@@ -88,5 +90,40 @@ classdef RtStruct < DicomObj
                 out{i} = this.structureSetSequence.(items{i}).ROIName;
             end
         end
+        
+        function out = get.referencedImageSeriesUid(this)
+            out = [];
+            if isfield(this.dicomHeader, 'ReferencedFrameOfReferenceSequence')
+                referencedFrameOfReferenceSequence = this.dicomHeader.ReferencedFrameOfReferenceSequence.Item_1;
+                if isfield(referencedFrameOfReferenceSequence, 'RTReferencedStudySequence')
+                    studySequence = referencedFrameOfReferenceSequence.RTReferencedStudySequence.Item_1;
+                    if isfield(studySequence, 'RTReferencedSeriesSequence')
+                        rtReferenceSeriesSequence = studySequence.RTReferencedSeriesSequence.Item_1;
+                        if isfield(rtReferenceSeriesSequence, 'SeriesInstanceUID')
+                            out = rtReferenceSeriesSequence.SeriesInstanceUID;
+                        end
+                    end
+                end
+            end
+        end
+        
+%         function out = get.referencedFirstImageUid(this)
+%             out = [];
+%             if isfield(this.dicomHeader, 'ReferencedFrameOfReferenceSequence')
+%                 referencedFrameOfReferenceSequence = this.dicomHeader.ReferencedFrameOfReferenceSequence.Item_1;
+%                 if isfield(referencedFrameOfReferenceSequence, 'RTReferencedStudySequence')
+%                     studySequence = referencedFrameOfReferenceSequence.RTReferencedStudySequence.Item_1;
+%                     if isfield(studySequence, 'RTReferencedSeriesSequence')
+%                         rtReferenceSeriesSequence = studySequence.RTReferencedSeriesSequence.Item_1;
+%                         if isfield(rtReferenceSeriesSequence, 'SeriesInstanceUID')
+%                             imageSequance = rtReferenceSeriesSequence.ContourImageSequence;
+%                             if isfield(imageSequance, 'ReferencedSOPInstanceUID')
+%                                 out = imageSequance.Item_1.ReferencedSOPInstanceUID;
+%                             end
+%                         end
+%                     end
+%                 end
+%             end
+%         end
     end
 end

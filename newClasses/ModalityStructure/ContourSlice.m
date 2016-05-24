@@ -5,10 +5,10 @@ classdef ContourSlice
         y %in cm
         z %in cm
         
-        referencedSopInstanceUid;
-        referencedSopClassUid;
+        referencedSopInstanceUid
+        referencedSopClassUid
         
-        closedPlanar = true;
+        closedPlanar = true
     end
     
     methods

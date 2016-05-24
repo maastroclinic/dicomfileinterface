@@ -1,4 +1,4 @@
-classdef CtScan < DicomObj
+classdef CtScan
     %CTSCAN representation of an entire DICOM CT-SCAN
     
     % This CT is given in the image coordinate system
@@ -19,21 +19,21 @@ classdef CtScan < DicomObj
     % be addressed in the following way pixelData(1:columns,1:numberOfSlices,1:rows)
     
     properties
-        ctSlices = CtSlice();
-        instanceSortedCtSlices;
-        ySortedCtSlices;
-        numberOfSlices;
-        sliceThickness;
-        hasUniformThickness;
-        pixelSpacingX;
-        pixelSpacingY;
-        pixelSpacingZ;
-        originX;
-        originY;
-        originZ;
-        realX;
-        realY;
-        realZ;
+        ctSlices = CtSlice()
+        instanceSortedCtSlices
+        ySortedCtSlices
+        numberOfSlices
+        sliceThickness
+        hasUniformThickness
+        pixelSpacingX
+        pixelSpacingY
+        pixelSpacingZ
+        originX
+        originY
+        originZ
+        realX
+        realY
+        realZ
     end
     
     methods
@@ -61,14 +61,20 @@ classdef CtScan < DicomObj
         end
         
         function this = addListOfObjects(this, dicomObj)
-            this = constructorParser(this, 'ct', dicomObj);
+%             this = constructorParser(this, 'ct', dicomObj);
             for i = 1:length(dicomObj)
-                this.ctSlices(dicomObj(i)); 
+                if ~isa(dicomObj(i), 'CtSlice')
+                    ctSlice = CtSlice(dicomObj(i), []);
+                else
+                    ctSlice = dicomObj(i);
+                end
+                
+                this = this.addCtSlices(ctSlice); 
             end
         end
         
         function this = addListOfFiles(this, files, UseVrHeuristic)
-            this = constructorParser(this, 'ct', files{1}, UseVrHeuristic);
+%             this = constructorParser(this, 'ct', files{1}, UseVrHeuristic);
             for i = 1:length(files)
                 ctSlice = CtSlice(files{i}, UseVrHeuristic);
                 this = this.addCtSlices(ctSlice); 
@@ -121,7 +127,7 @@ classdef CtScan < DicomObj
         end
         
         function out = get.pixelSpacingY(this)
-            out = this.sliceThickness/10; %convert to IEC (cm)
+            out = this.sliceThickness;
         end
         
         function out = get.pixelSpacingX(this)
@@ -130,7 +136,7 @@ classdef CtScan < DicomObj
             for i = 1:this.numberOfSlices
                 out(i) = slices(i).pixelSpacing(1);
             end
-            out = unique(out)/10; %convert to IEC (cm)
+            out = unique(out);
         end
         
         function out = get.pixelSpacingZ(this)
@@ -139,7 +145,7 @@ classdef CtScan < DicomObj
             for i = 1:this.numberOfSlices
                 out(i) = slices(i).pixelSpacing(2);
             end
-            out = unique(out)/10; %convert to IEC (cm)
+            out = unique(out);
         end
         
         function out = get.originX(this)

@@ -2,17 +2,16 @@ function out = createBitmask(contourObj, image)
 %CREATEBITMASK for a contour object on a referenced image grid
     
     columns = round((contourObj.upperX - contourObj.lowerX)/image.pixelSpacingX) + 1;
-    slices = round((contourObj.upperY - contourObj.lowerY)/image.pixelSpacingY) + 1;
+    slices = contourObj.numberOfCtSlices;
     rows = round((contourObj.upperZ - contourObj.lowerZ)/image.pixelSpacingZ) + 1;
     
-%   TODO Left this here because DGRT does this, this might be the reason why the code fails when having
-%   multiple stand alone delineations in one contour, use Erik's test case to verify this later.
-%     [Y,~,J] = unique(YPos); 
+
+    iY = contourObj.indexUniqueY;
     unscaledBitmask = zeros(columns,rows,slices);
-    for n = 1 : slices,
-        unscaledBitmask(:,:,n) = unscaledBitmask(:,:,n) + poly2mask( ...
-            (contourObj.contourSlices(n).z - contourObj.lowerZ) / image.pixelSpacingZ + 0.5 , ...
-            (contourObj.contourSlices(n).x - contourObj.lowerX) / image.pixelSpacingX + 0.5, ...
+    for i = 1 : contourObj.numberOfContourSlices
+        unscaledBitmask(:,:,iY(i)) = unscaledBitmask(:,:,iY(i)) + poly2mask( ...
+            (contourObj.contourSlices(i).z - contourObj.lowerZ) / image.pixelSpacingZ + 0.5 , ...
+            (contourObj.contourSlices(i).x - contourObj.lowerX) / image.pixelSpacingX + 0.5, ...
             columns,rows);
     end
     unscaledBitmask(unscaledBitmask > 1) = 1;
@@ -20,7 +19,7 @@ function out = createBitmask(contourObj, image)
 
     % define X/Y/Z vectors of original and new 3D grid
     contourRealX = (contourObj.lowerX+0.5*image.pixelSpacingX:image.pixelSpacingX:contourObj.lowerX+0.5*image.pixelSpacingX+(columns-1)*image.pixelSpacingX)';
-    contourRealY = contourObj.y';
+    contourRealY = contourObj.uniqueY';
     contourRealZ = (contourObj.lowerZ+0.5*image.pixelSpacingZ:image.pixelSpacingZ:contourObj.lowerZ+0.5*image.pixelSpacingZ+(rows-1)*image.pixelSpacingZ)';
 
     if length(contourRealX) > 1 && length(contourRealY) > 1 && length(contourRealZ) > 1

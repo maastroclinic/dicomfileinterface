@@ -3,7 +3,7 @@ function data = createListDicomObjectsForPlan(patientObj, planLabel)
     data = createHeader();
     
     patientId = patientObj.id;
-    [plan, dose, struct, ct] = patientObj.createPlanPackage(planLabel);
+    [plan, dose, struct, ct] = createPlanPackage(patientObj, planLabel);
     
     data = addEntry(data, patientId, planLabel,...
                     'RTPLAN', ...

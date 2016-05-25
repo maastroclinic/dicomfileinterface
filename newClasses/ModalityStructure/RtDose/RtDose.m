@@ -1,8 +1,7 @@
 classdef RtDose < DicomObj
     %RTDOSE 
     
-    properties
-              
+    properties      
         is3dDose
         is2dDose
         isDvh
@@ -13,11 +12,15 @@ classdef RtDose < DicomObj
         doseType
         doseSummationType
         planId
-        numerOfFrames
-        
+        numberOfFrames
+        originX
+        originY
+        originZ
+        gridFrameOffsetVector
         referencedRtPlanUid
         beam
         fraction
+        scaledImageData
     end
     
     methods
@@ -27,6 +30,14 @@ classdef RtDose < DicomObj
             end
             
             this = constructorParser(this, 'rtdose', varargin{1}, varargin{2});
+        end
+        
+        %overwrite function to add image permutation.
+        function this = readDicomData(this)
+            this = readDicomData@DicomObj(this);
+            this.pixelData(:,:,:,:) = this.pixelData(end:-1:1,:,:,:);
+            this.pixelData = permute(this.pixelData,[2 4 3 1]);
+            this.scaledImageData = this.pixelData .* this.doseGridScaling;
         end
         
         function out = get.referencedRtPlanUid(this)
@@ -58,8 +69,10 @@ classdef RtDose < DicomObj
             end
         end
         
-        function out = get.coordinateSystem(this)
-            out = [];
+        %because we do not support 2D images, the system is always i
+        %should be implemented when added 2D (multiframe) support
+        function out = get.coordinateSystem(~)
+            out = 'i';
         end
         
         function out = get.doseGridScaling(this)
@@ -123,5 +136,37 @@ classdef RtDose < DicomObj
                 out = lower(this.dicomHeader.SeriesNumber);
             end
         end
+        
+        function out = get.originX(this)
+            if this.imageOrientationPatient(1) == 1
+                out = this.x;
+            elseif this.imageOrientationPatient(1) == -1
+                out = this.x - ...
+                        (this.pixelSpacing(1) * this.columns);
+            else
+                out = [];
+                warning('unsupported ImageOrientationPatient detected, cannot provide origin');
+            end
+        end
+        
+        function out = get.originY(this)
+            out = this.y;
+        end
+        
+        function out = get.originZ(this)
+            if this.imageOrientationPatient(5) == -1
+                out = -this.z;
+            elseif this.imageOrientationPatient(5) == 1
+                out = -this.z - ...
+                        (this.pixelSpacing(2) * (this.rows - 1));
+            else
+                out = [];
+                warning('unsupported ImageOrientationPatient detected, cannot provide origin');
+            end 
+        end
+        
+        function out = get.gridFrameOffsetVector(this)
+            out = this.dicomHeader.GridFrameOffsetVector'/10;
+        end        
     end
 end

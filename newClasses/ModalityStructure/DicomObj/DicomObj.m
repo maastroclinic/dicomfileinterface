@@ -17,8 +17,8 @@ classdef DicomObj
         x %in cm
         y %in cm
         z %in cm
-        rows %same as heigth
-        columns %same as width
+        rows %same as heigth, Z
+        columns %same as width, X
         pixelSpacing
         imageOrientationPatient
         imagePositionPatient
@@ -68,14 +68,12 @@ classdef DicomObj
         end
         
         function this = readDicomData(this)
-            fileName = this.dicomHeader.Filename;
-
-            if ~exist(fileName, 'file')
-                fnErrorString = regexprep(fileName,'\','\\\');
+            if ~exist(this.filename, 'file')
+                fnErrorString = regexprep(this.filename,'\','\\\');
                 throw(MException('MATLAB:dicomObj:readDicomFile', ['DICOM file ''' fnErrorString ''' not found.''']));
             end
 
-            this.pixelData = dicomread(fileName);
+            this.pixelData = dicomread(this.filename);
         end
         
         function this = set.dicomHeader(this, header)

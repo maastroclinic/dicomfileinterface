@@ -27,9 +27,7 @@ classdef VolumeOfInterest < Image
             out = zeros(this.columns, this.slices, this.rows);
             out(this.xCompressed, this.yCompressed, this.zCompressed) = this.pixelData;
         end
-    end
-    
-    methods (Access = protected)
+        
         function this = compressBitmask(this)
             [x,y,z] = findVolumeEdges(this);
             this.xCompressed = x;
@@ -37,7 +35,9 @@ classdef VolumeOfInterest < Image
             this.zCompressed = z;
             this.pixelData = this.pixelData(x,y,z);
         end
-        
+    end
+    
+    methods (Access = protected)
         function [x,y,z] = findVolumeEdges(this)
             [x,y,z]=ind2sub(size(this.pixelData),find(this.pixelData));
             x = sort(unique(x));

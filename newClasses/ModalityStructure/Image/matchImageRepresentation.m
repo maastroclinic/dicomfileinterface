@@ -18,9 +18,17 @@ function image = matchImageRepresentation( image, refImage, defaultValue, method
         ... %do not know why this Z should be rotated but the calculation won't work otherwise
         method,defaultValue);
     
+    image.realX = refImage.realX;
+    image.realY = refImage.realY;
+    image.realZ = refImage.realZ;
+    image.pixelSpacingX = refImage.pixelSpacingX;
+    image.pixelSpacingY = refImage.pixelSpacingY;
+    image.pixelSpacingZ = refImage.pixelSpacingZ;
+    
     if isa(image,'VolumeOfInterest')
        image.pixelData (image.pixelData >= 0.5) = 1;
        image.pixelData (image.pixelData < 0.5) = 0; 
+       image = image.compressBitmask();
     end    
 end
 

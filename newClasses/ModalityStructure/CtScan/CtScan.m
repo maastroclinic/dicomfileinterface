@@ -152,7 +152,7 @@ classdef CtScan
                 out = this.ctSlices(1).x;
             elseif this.ySortedCtSlices(1).imageOrientationPatient(1) == -1
                 out = this.ctSlices(1).x - ...
-                        (this.pixelSpacingX * this.ctSlices(1).rows);
+                        (this.pixelSpacingX * this.ctSlices(1).columns);
             else
                 out = [];
                 warning('unsupported ImageOrientationPatient detected, cannot provide origin');
@@ -168,7 +168,7 @@ classdef CtScan
                 out = -this.ctSlices(1).z;
             elseif this.ctSlices(1).imageOrientationPatient(5) == 1
                 out = -this.ctSlices(1).z - ...
-                        (this.pixelSpacingZ * (this.ySortedCtSlices(1).columns - 1));
+                        (this.pixelSpacingZ * (this.ySortedCtSlices(1).rows - 1));
             else
                 out = [];
                 warning('unsupported ImageOrientationPatient detected, cannot provide origin');
@@ -176,7 +176,7 @@ classdef CtScan
         end
         
         function out = get.realX(this)
-            out = (this.originX : this.pixelSpacingX : (this.originX + (this.ctSlices(1).rows - 1) * this.pixelSpacingX))';
+            out = (this.originX : this.pixelSpacingX : (this.originX + (this.ctSlices(1).columns - 1) * this.pixelSpacingX))';
         end
         
         function out = get.realY(this)
@@ -184,10 +184,9 @@ classdef CtScan
         end
         
         function out = get.realZ(this)
-            out = (this.originZ : this.pixelSpacingZ : (this.originZ + (this.ctSlices(1).columns - 1) * this.pixelSpacingZ))';
+            out = (this.originZ : this.pixelSpacingZ : (this.originZ + (this.ctSlices(1).rows - 1) * this.pixelSpacingZ))';
         end
         
-        %OVERWRITE read function to read the entire scan
         function this = readDicomData(this)
             if ~isempty(this.pixelData)
                 warning('pixel data already loaded, skipping ctScan.readDicomData');
@@ -199,13 +198,12 @@ classdef CtScan
             end
             this.pixelData = this.createIecImage();
         end
-        
     end
     
     methods (Access = 'private')
         function image = createIecImage(this)
             slices = this.ySortedCtSlices;
-            image = zeros(slices(1).rows, slices(1).columns, this.numberOfSlices);
+            image = zeros(slices(1).columns, slices(1).rows, this.numberOfSlices);
             %ASSUMPTION MADE -> rows and colums do not change within one scan
             for i = 1:this.numberOfSlices
                 image(:,:,i) = slices(i).scaledImageData;

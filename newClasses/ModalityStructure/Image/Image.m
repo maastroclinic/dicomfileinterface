@@ -30,7 +30,7 @@ classdef Image
             this.realZ = realZ;
             
             if ~isempty(pixelData)
-                this.pixelData = pixelData;
+                this = this.addpixelData(pixelData);
             end
         end
         

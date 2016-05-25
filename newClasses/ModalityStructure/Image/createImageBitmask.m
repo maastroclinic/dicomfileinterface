@@ -1,4 +1,4 @@
-function out = createBitmask(contourObj, image)
+function out = createImageBitmask(contourObj, image)
 %CREATEBITMASK for a contour object on a referenced image grid
     
     columns = round((contourObj.upperX - contourObj.lowerX)/image.pixelSpacingX) + 1;

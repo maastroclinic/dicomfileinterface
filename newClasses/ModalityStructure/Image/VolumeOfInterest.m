@@ -6,26 +6,26 @@ classdef VolumeOfInterest < Image
         yCompressed = []
         zCompressed = []
         
-        uncompressedImageData
+        uncompressedpixelData
         
         EDGE_BUFFER = 5
     end
     
     methods
         function this = VolumeOfInterest(varargin)
-            [pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, imageData] = VolumeOfInterest.parseConstructorInput(varargin);
-            this = this@Image(pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, imageData);
+            [pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, pixelData] = VolumeOfInterest.parseConstructorInput(varargin);
+            this = this@Image(pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, pixelData);
             this = this.compressBitmask();
         end
        
-        function this = addImageData(this, imageData)
-            this = this.addImageData@Image(imageData);
+        function this = addpixelData(this, pixelData)
+            this = this.addpixelData@Image(pixelData);
             this = this.compressBitmask();
         end
         
-        function out = get.uncompressedImageData(this)
+        function out = get.uncompressedpixelData(this)
             out = zeros(this.columns, this.slices, this.rows);
-            out(this.xCompressed, this.yCompressed, this.zCompressed) = this.imageData;
+            out(this.xCompressed, this.yCompressed, this.zCompressed) = this.pixelData;
         end
     end
     
@@ -35,11 +35,11 @@ classdef VolumeOfInterest < Image
             this.xCompressed = x;
             this.yCompressed = y;
             this.zCompressed = z;
-            this.imageData = this.imageData(x,y,z);
+            this.pixelData = this.pixelData(x,y,z);
         end
         
         function [x,y,z] = findVolumeEdges(this)
-            [x,y,z]=ind2sub(size(this.imageData),find(this.imageData));
+            [x,y,z]=ind2sub(size(this.pixelData),find(this.pixelData));
             x = sort(unique(x));
             y = sort(unique(y));
             z = sort(unique(z));
@@ -68,7 +68,7 @@ classdef VolumeOfInterest < Image
     end
     
     methods (Static)
-        function [pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, imageData] = parseConstructorInput(input)
+        function [pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, pixelData] = parseConstructorInput(input)
             if isempty(input) %preserve standard empty constructor
                 pixelSpacingX = double([]);
                 pixelSpacingY = double([]);
@@ -76,7 +76,7 @@ classdef VolumeOfInterest < Image
                 realX = double([]);
                 realY = double([]);
                 realZ = double([]);
-                imageData = [];
+                pixelData = [];
             elseif length(input) == 1 && isa(input{1}, 'Image')
                 pixelSpacingX = input{1}.pixelSpacingX;
                 pixelSpacingY = input{1}.pixelSpacingY;
@@ -84,7 +84,7 @@ classdef VolumeOfInterest < Image
                 realX = input{1}.realX;
                 realY = input{1}.realY;
                 realZ = input{1}.realZ;
-                imageData = input{1}.imageData;
+                pixelData = input{1}.pixelData;
             elseif length(input) == 7
                 pixelSpacingX = input{1};
                 pixelSpacingY = input{2};
@@ -92,7 +92,7 @@ classdef VolumeOfInterest < Image
                 realX = input{4};
                 realY = input{5};
                 realZ = input{6};
-                imageData = input{7};
+                pixelData = input{7};
             else
                 throw(MException('MATLAB:VolumeOfInterest:parseConstructorInput', ['Invalid constructor, empty, Image ' ...
                                  'based or the standard Image constructor are supported']))

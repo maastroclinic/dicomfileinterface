@@ -1,7 +1,26 @@
-function image = matchImageRepresentation( image, refImage )
+function image = matchImageRepresentation( image, refImage, defaultValue, method)
+    if nargin < 3
+        defaultValue = double(0);
+    end
     
+    if nargin < 4
+        method = 'linear';
+    end
 
+    image.pixelData = interp3(...
+        double(image.realY),...
+        double(image.realX),...
+        double(image.realZ),...
+        double(image.pixelData),...
+        double(refImage.realY),...
+        double(refImage.realX),...
+        double(refImage.realZ)',... 
+        ... %do not know why this Z should be rotated but the calculation won't work otherwise
+        method,defaultValue);
     
-    
+    if isa(image,'VolumeOfInterest')
+       image.pixelData (image.pixelData >= 0.5) = 1;
+       image.pixelData (image.pixelData < 0.5) = 0; 
+    end    
 end
 

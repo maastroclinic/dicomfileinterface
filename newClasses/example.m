@@ -1,5 +1,7 @@
 %% Example script to show how awesome this codebase is.
-
+% addpath('..\..\DicomUtilitiesMatlab');
+addpath(genpath('.\HierarchyStructure'));
+addpath(genpath('.\ModalityStructure'));
 
 %% load the files we need
 tic
@@ -16,7 +18,7 @@ toc
 tic
 disp('Creating GTV1 bitmask')
 gtv1 = createContour(struct, 'GTV-1');
-gtv1Voi = createBitmask(gtv1, referenceImage);
+gtv1Voi = createImageBitmask(gtv1, referenceImage);
 toc
 % tic
 % disp('Applying dose to bitmask')
@@ -26,7 +28,7 @@ toc
 tic
 disp('Creating Body bitmask')
 body = createContour(struct, 'Body');
-bodyVoi = createBitmask(body, referenceImage);
+bodyVoi = createImageBitmask(body, referenceImage);
 toc
 % tic
 % disp('Applying dose to bitmask')

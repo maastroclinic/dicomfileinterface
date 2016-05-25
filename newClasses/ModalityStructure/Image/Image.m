@@ -1,7 +1,7 @@
 classdef Image
     %IMAGE contains sampled information of a real world space. 
     
-    properties (SetAccess = 'protected')
+    properties
         pixelSpacingX %in cm
         pixelSpacingY %in cm
         pixelSpacingZ %in cm
@@ -11,11 +11,12 @@ classdef Image
         rows
         slices
         columns
-        imageData
+        pixelData
+        is3d
     end
     
     methods
-        function this = Image(pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, imageData)
+        function this = Image(pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, pixelData)
             if nargin == 0 %preserve standard empty constructor
                 return;
             end
@@ -28,8 +29,8 @@ classdef Image
             this.realY = realY;
             this.realZ = realZ;
             
-            if ~isempty(imageData)
-                this.imageData = imageData;
+            if ~isempty(pixelData)
+                this.pixelData = pixelData;
             end
         end
         
@@ -87,15 +88,22 @@ classdef Image
             out = length(this.realY);
         end
         
-        function this = addImageData(this, imageData)
-            if size(imageData,1) ~= this.rows || ...
-               size(imageData,2) ~= this.slices || ...
-               size(imageData,3) ~= this.columns
-                throw(MException(['MATLAB:Image:imageData', 'Dimension mismatch! The real axis properties' ...
+        function out = get.is3d(this)
+            out = false; 
+            if this.rows > 1 && this.columns > 1 && this.slices > 1
+                out = true;
+            end
+        end
+        
+        function this = addpixelData(this, pixelData)
+            if size(pixelData,1) ~= this.rows || ...
+               size(pixelData,2) ~= this.slices || ...
+               size(pixelData,3) ~= this.columns
+                throw(MException(['MATLAB:Image:pixelData', 'Dimension mismatch! The real axis properties' ...
                                   ' do not match the dimensions of the image you are trying to store']));
             end
             
-            this.imageData = imageData;
+            this.pixelData = pixelData;
         end
     end
 end

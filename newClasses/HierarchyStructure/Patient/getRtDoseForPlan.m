@@ -5,7 +5,12 @@ function rtdose = getRtDoseForPlan(patient, planUid)
     end
     list = patient.planReferenceObjects.rtdoseForPlan(planUid);
     rtdose = RtDose();
+    j = 1;
     for i = 1:length(list)
-        rtdose(i) = createModalityObj(patient.getDicomObject(list(i).sopInstanceUid));
+        tmpDose = createModalityObj(patient.getDicomObject(list(i).sopInstanceUid));
+        if strcmp('plan',tmpDose.doseSummationType)
+            rtdose(j) = tmpDose;
+            j = j + 1;
+        end
     end
 end

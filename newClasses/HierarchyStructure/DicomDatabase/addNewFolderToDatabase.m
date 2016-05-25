@@ -7,6 +7,10 @@ function dicomDb = addNewFolderToDatabase(dicomDb, folder)
     nrOfFiles = length(files);
     for i = 1:nrOfFiles
         if isdicom(files{i})
+            if dicomDb.fileAvailableInDb(files{i})
+                continue; %skip if file is already in db
+            end
+            
             try
                 dicomObj = DicomObj(files{i}, false);
             catch EM

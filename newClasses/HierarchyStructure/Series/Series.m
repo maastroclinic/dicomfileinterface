@@ -30,6 +30,10 @@ classdef Series
         end
         
         function this = parseDicomObj(this, dicomObj)
+            if this.images.isKey(dicomObj.sopInstanceUid)
+                return; 
+            end %return, file already parsed
+            
             this.images(dicomObj.sopInstanceUid) = dicomObj;
 
             if this.images.Count == 1 %only parse info for first object

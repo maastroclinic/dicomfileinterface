@@ -4,6 +4,7 @@ classdef DicomDatabase
     properties
         patientIds
         nrOfPatients
+        filesInDb
     end
     
     properties (Access = 'private')
@@ -13,6 +14,7 @@ classdef DicomDatabase
     methods
         function this = DicomDatabase(folder)
             this.patients = containers.Map;
+            this.filesInDb = containers.Map;
             if nargin == 0 %preserve standard empty constructor
                 return;
             end
@@ -26,6 +28,7 @@ classdef DicomDatabase
             else
                 this.patients(id) = this.patients(id).parseDicomObj(dicomObj);
             end
+            this.filesInDb(dicomObj.filename) = true;
         end
    
         function out = get.nrOfPatients(this)
@@ -41,6 +44,13 @@ classdef DicomDatabase
             if this.patients.isKey(patientId)
                 out = this.patients(patientId);
             end
-        end      
+        end  
+        
+        function out = fileAvailableInDb(this, fileStr)
+            out = false;
+            if this.filesInDb.isKey(fileStr)
+                out = true;
+            end
+        end
     end
 end

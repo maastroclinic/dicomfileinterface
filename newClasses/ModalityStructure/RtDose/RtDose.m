@@ -86,7 +86,7 @@ classdef RtDose < DicomObj
         function out = get.doseSummationType(this)
             out = [];
             if isfield(this.dicomHeader, 'DoseSummationType')
-                out = lower(this.dicomHeader.DoseTDoseSummationTypeype);
+                out = lower(this.dicomHeader.DoseSummationType);
             end
         end
         
@@ -97,7 +97,7 @@ classdef RtDose < DicomObj
             end
         end
         
-        function out = get.numerOfFrames(this)
+        function out = get.numberOfFrames(this)
             out = [];
             if isfield(this.dicomHeader, 'NumberOfFrames')
                 out = lower(this.dicomHeader.NumberOfFrames);

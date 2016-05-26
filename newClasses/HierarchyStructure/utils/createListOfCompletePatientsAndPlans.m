@@ -19,7 +19,7 @@ for i = 1:dicomDb.nrOfPatients
                 data = [data; tmpData(2:end, :)]; %#ok<AGROW>
             end
         catch 
-            disp([patientIds{j} ', ' plans{j} ' does not have a complete dicom set'])
+            disp([patientIds{i} ', ' plans{j} ' does not have a complete dicom set'])
         end
     end
 end

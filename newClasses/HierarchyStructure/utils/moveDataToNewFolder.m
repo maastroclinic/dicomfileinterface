@@ -3,6 +3,10 @@ function [ status ] = moveDataToNewFolder(data, targetLocation )
         throw(MException('MATLAB:moveDataToNewFolder', 'folder does not exist'));
     end
     
+    if isempty(data)
+        return;
+    end
+    
     for i = 2:size(data,1)
         patientId = data{i,1};
         planId = data{i,2};

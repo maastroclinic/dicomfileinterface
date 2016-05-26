@@ -7,7 +7,6 @@ classdef VolumeOfInterest < Image
         zCompressed = []
         
         uncompressedpixelData
-        DEFAULT_VALUE = 0;
         EDGE_BUFFER = 5
     end
     
@@ -15,7 +14,6 @@ classdef VolumeOfInterest < Image
         function this = VolumeOfInterest(varargin)
             [pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, pixelData] = VolumeOfInterest.parseConstructorInput(varargin);
             this = this@Image(pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, pixelData);
-            this = this.compressBitmask();
         end
        
         function this = addpixelData(this, pixelData)
@@ -24,44 +22,48 @@ classdef VolumeOfInterest < Image
         end
         
         function out = get.uncompressedpixelData(this)
-            out = zeros(this.columns, this.slices, this.rows);
-            out(:) = this.DEFAULT_VALUE;
+            out = false(this.columns, this.slices, this.rows);
             out(this.xCompressed, this.yCompressed, this.zCompressed) = this.pixelData;
         end
         
-        function this = compressBitmask(this)
+        function this = compress(this)
             [x,y,z] = findVolumeEdges(this);
-            this.xCompressed = x;
-            this.yCompressed = y;
-            this.zCompressed = z;
-            this.pixelData = this.pixelData(x,y,z);
+            if ~isempty(x)
+                this.xCompressed = x;
+                this.yCompressed = y;
+                this.zCompressed = z;
+                this.pixelData = this.pixelData(x,y,z);
+            else
+                this.xCompressed = 1:this.columns;
+                this.yCompressed = 1:this.slices;
+                this.zCompressed = 1:this.rows;
+            end
         end
         
         function this = addPixelData(this, pixelData)            
-            if size(pixelData,1) ~= length(this.xCompressed) || ...
-               size(pixelData,2) ~= length(this.yCompressed) || ...
-               size(pixelData,3) ~= length(this.zCompressed)
+            if size(pixelData,1) ~= this.columns || ...
+               size(pixelData,2) ~= this.slices || ...
+               size(pixelData,3) ~= this.rows
                 throw(MException('MATLAB:VolumeOfInterest:addPixelData', ['Dimension mismatch! The real axis properties' ...
                                   ' do not match the dimensions of the image you are trying to store']));
             end
             
-            if ~isnumeric(pixelData)
-                throw(MException('MATLAB:VolumeOfInterest:addPixelData', 'pixelData has to be numeric or logical'));
+            try
+                this.pixelData = logical(pixelData);
+                this = this.compress();
+            catch
+                this.pixelData = [];
+                warning('could not convert pixel data to logical');
             end
             
-            this.pixelData = pixelData;
         end
         
-        function out = plus(a,b)
-            if isequal(a.realX, b.realX) && ...
-                    isequal(a.realY, b.realY) && ...
-                    isequal(a.realZ, b.realZ)
-                
-                
-                out = VolumeOfInterest();
-            else
-                throw(MException('MATLAB:VolumeOfInterest:plus', 'dimensions do not agree'));
-            end
+        function out = plus(first, second)
+            out = combine(first, second, '+');
+        end
+
+        function out = minus(first, second)
+            out = combine(first, second, '-');
         end
     end
     
@@ -96,6 +98,24 @@ classdef VolumeOfInterest < Image
         %overwrite function of superclass to ensure the volume is correct
         function out = calculateVolume(this)
             out = sum(this.pixelData(:) .* (this.pixelSpacingX*this.pixelSpacingY*this.pixelSpacingZ));
+        end
+        
+        function out = combine(first, second, operation)
+            if isequal(first.realX, second.realX) && ...
+                    isequal(first.realY, second.realY) && ...
+                    isequal(first.realZ, second.realZ)
+                
+                if strcmp('+', operation)
+                    new = first.uncompressedpixelData | second.uncompressedpixelData;
+                else
+                    new = first.uncompressedpixelData &~ second.uncompressedpixelData;
+                end
+
+                out = first;
+                out = out.addPixelData(new);
+            else
+                throw(MException('MATLAB:VolumeOfInterest:combine', 'dimensions do not agree'));
+            end
         end
     end
     

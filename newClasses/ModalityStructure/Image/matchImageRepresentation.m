@@ -7,7 +7,7 @@ function image = matchImageRepresentation( image, refImage, defaultValue, method
         method = 'linear';
     end
 
-    image.pixelData = interp3(...
+    newImage = interp3(...
         double(image.realY),...
         double(image.realX),...
         double(image.realZ),...
@@ -24,11 +24,13 @@ function image = matchImageRepresentation( image, refImage, defaultValue, method
     image.pixelSpacingX = refImage.pixelSpacingX;
     image.pixelSpacingY = refImage.pixelSpacingY;
     image.pixelSpacingZ = refImage.pixelSpacingZ;
-    
+
     if isa(image,'VolumeOfInterest')
-       image.pixelData (image.pixelData >= 0.5) = 1;
-       image.pixelData (image.pixelData < 0.5) = 0; 
-       image = image.compressBitmask();
-    end    
+        newImage(newImage >= 0.5) = 1;
+        newImage(newImage < 0.5) = 0;
+        image = image.addPixelData(newImage);
+    else
+        image = image.addPixelData(newImage);
+    end
 end
 

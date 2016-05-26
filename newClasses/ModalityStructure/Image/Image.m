@@ -1,13 +1,16 @@
 classdef Image
     %IMAGE contains sampled information of a real world space. 
     
-    properties
+    properties 
         pixelSpacingX %in cm
         pixelSpacingY %in cm
         pixelSpacingZ %in cm
         realX %in cm
         realY %in cm
         realZ %in cm
+    end
+    
+    properties (SetAccess = 'protected')
         rows
         slices
         columns

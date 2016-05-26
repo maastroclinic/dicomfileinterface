@@ -22,19 +22,24 @@ doseImage = createImageFromRtDose(dose);
 refDose = matchImageRepresentation(doseImage, refImage);
 
 %% create the objects required to calculate
-disp('Creating GTV1 bitmask')
+% lungL = createContour(struct, 'Lung_L'); 
+% lungR = createContour(struct, 'Lung_R');
+% 
+% voiLung = createVolumeOfInterest(lungR, refImage) + createVolumeOfInterest(lungL, refImage);
+
+% disp('Creating GTV1 bitmask')
 gtv1 = createContour(struct, 'GTV-1');
-gtv1Voi = createImageBitmask(gtv1, refImage);
+gtv1Voi = createVolumeOfInterest(gtv1, refImage);
 gtv1Dose = createImageDataForVoi(gtv1Voi, refDose);
-
-disp('Creating GTV1 bitmask on dose grid')
-gtv1VoiOnDoseGrid = createImageBitmask(gtv1, doseImage);
-gtv1DoseOnDoseGrid = createImageDataForVoi(gtv1VoiOnDoseGrid, doseImage);
-
-disp('Creating Body bitmask')
-body = createContour(struct, 'Body');
-bodyVoi = createImageBitmask(body, refImage);
-bodyDose = createImageDataForVoi(bodyVoi, refDose);
+% 
+% disp('Creating GTV1 bitmask on dose grid')
+% gtv1VoiOnDoseGrid = createVolumeOfInterest(gtv1, doseImage);
+% gtv1DoseOnDoseGrid = createImageDataForVoi(gtv1VoiOnDoseGrid, doseImage);
+% 
+% disp('Creating Body bitmask')
+% body = createContour(struct, 'Body');
+% bodyVoi = createVolumeOfInterest(body, refImage);
+% bodyDose = createImageDataForVoi(bodyVoi, refDose);
 
 
 %% calculate some reference values

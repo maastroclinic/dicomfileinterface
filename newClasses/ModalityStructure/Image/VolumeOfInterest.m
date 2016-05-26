@@ -7,7 +7,7 @@ classdef VolumeOfInterest < Image
         zCompressed = []
         
         uncompressedpixelData
-        
+        DEFAULT_VALUE = 0;
         EDGE_BUFFER = 5
     end
     
@@ -25,6 +25,7 @@ classdef VolumeOfInterest < Image
         
         function out = get.uncompressedpixelData(this)
             out = zeros(this.columns, this.slices, this.rows);
+            out(:) = this.DEFAULT_VALUE;
             out(this.xCompressed, this.yCompressed, this.zCompressed) = this.pixelData;
         end
         
@@ -34,6 +35,33 @@ classdef VolumeOfInterest < Image
             this.yCompressed = y;
             this.zCompressed = z;
             this.pixelData = this.pixelData(x,y,z);
+        end
+        
+        function this = addPixelData(this, pixelData)            
+            if size(pixelData,1) ~= length(this.xCompressed) || ...
+               size(pixelData,2) ~= length(this.yCompressed) || ...
+               size(pixelData,3) ~= length(this.zCompressed)
+                throw(MException('MATLAB:VolumeOfInterest:addPixelData', ['Dimension mismatch! The real axis properties' ...
+                                  ' do not match the dimensions of the image you are trying to store']));
+            end
+            
+            if ~isnumeric(pixelData)
+                throw(MException('MATLAB:VolumeOfInterest:addPixelData', 'pixelData has to be numeric or logical'));
+            end
+            
+            this.pixelData = pixelData;
+        end
+        
+        function out = plus(a,b)
+            if isequal(a.realX, b.realX) && ...
+                    isequal(a.realY, b.realY) && ...
+                    isequal(a.realZ, b.realZ)
+                
+                
+                out = VolumeOfInterest();
+            else
+                throw(MException('MATLAB:VolumeOfInterest:plus', 'dimensions do not agree'));
+            end
         end
     end
     
@@ -65,6 +93,10 @@ classdef VolumeOfInterest < Image
             x = first:last;
         end
         
+        %overwrite function of superclass to ensure the volume is correct
+        function out = calculateVolume(this)
+            out = sum(this.pixelData(:) .* (this.pixelSpacingX*this.pixelSpacingY*this.pixelSpacingZ));
+        end
     end
     
     methods (Static)
@@ -99,6 +131,5 @@ classdef VolumeOfInterest < Image
             end
         end
     end
-    
 end
 

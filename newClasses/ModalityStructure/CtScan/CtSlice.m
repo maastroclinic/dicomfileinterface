@@ -28,7 +28,7 @@ classdef CtSlice < DicomObj
         end
         
         function out = get.sliceThickness(this)
-            out = this.dicomHeader.SliceThickness;
+            out = this.dicomHeader.SliceThickness/10; %convert to IEC
         end
         
         function out = get.windowCenter(this)

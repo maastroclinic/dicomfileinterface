@@ -15,7 +15,7 @@ function image = createImageBitmask(contour, refImage)
             image.columns,image.rows);
     end
     image.pixelData(image.pixelData > 1) = 1;
-    image.pixelData = permute(image.pixelData,[1 3 2]);
+    image.pixelData = logical(permute(image.pixelData,[1 3 2]));
 
     if image.is3d
         image = matchImageRepresentation(image, refImage);

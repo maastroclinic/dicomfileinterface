@@ -13,6 +13,7 @@ classdef Image
         columns
         pixelData
         is3d
+        volume
     end
     
     methods
@@ -30,7 +31,7 @@ classdef Image
             this.realZ = realZ;
             
             if ~isempty(pixelData)
-                this = this.addpixelData(pixelData);
+                this = this.addPixelData(pixelData);
             end
         end
         
@@ -95,15 +96,25 @@ classdef Image
             end
         end
         
-        function this = addpixelData(this, pixelData)
-            if size(pixelData,1) ~= this.rows || ...
+        function this = addPixelData(this, pixelData)
+            if size(pixelData,1) ~= this.columns || ...
                size(pixelData,2) ~= this.slices || ...
-               size(pixelData,3) ~= this.columns
-                throw(MException(['MATLAB:Image:pixelData', 'Dimension mismatch! The real axis properties' ...
+               size(pixelData,3) ~= this.rows
+                throw(MException('MATLAB:Image:pixelData', ['Dimension mismatch! The real axis properties' ...
                                   ' do not match the dimensions of the image you are trying to store']));
             end
             
             this.pixelData = pixelData;
+        end
+        
+        function out = get.volume(this)
+            out = this.calculateVolume();
+        end
+    end
+    
+    methods (Access = 'protected')
+        function out = calculateVolume(this)
+            out = sum(~isnan(this.pixelData(:)) .* (this.pixelSpacingX*this.pixelSpacingY*this.pixelSpacingZ));
         end
     end
 end

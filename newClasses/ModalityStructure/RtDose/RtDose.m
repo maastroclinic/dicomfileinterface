@@ -37,7 +37,7 @@ classdef RtDose < DicomObj
             this = readDicomData@DicomObj(this);
             this.pixelData(:,:,:,:) = this.pixelData(end:-1:1,:,:,:);
             this.pixelData = permute(this.pixelData,[2 4 3 1]);
-            this.scaledImageData = this.pixelData .* this.doseGridScaling;
+            this.scaledImageData = double(this.pixelData) .* this.doseGridScaling;
         end
         
         function out = get.referencedRtPlanUid(this)

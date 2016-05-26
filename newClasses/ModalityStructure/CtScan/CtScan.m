@@ -45,7 +45,7 @@ classdef CtScan
             
             %if the input is a folder, create file list array
             if ischar(varargin{1})
-                fileNames = scanFolder(varargin{1}, varargin{3});
+                fileNames = filesUnderFolders(varargin{1}, 'detail');
                 this = this.addListOfFiles(fileNames, varargin{2});
             elseif isa(varargin{1}, 'DicomObj')
                 this = this.addListOfObjects(varargin{1});

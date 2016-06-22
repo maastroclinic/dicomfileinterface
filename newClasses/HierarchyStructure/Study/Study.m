@@ -5,6 +5,7 @@ classdef Study
         id
         description
         nrOfSeries
+        seriesUids
     end
     
     properties (Access = 'private')
@@ -46,6 +47,10 @@ classdef Study
 
         function out = get.nrOfSeries(this)
             out = this.series.Count;
+        end
+        
+        function out = get.seriesUids(this)
+             out = this.series.keys;
         end
         
         function out = getSeriesObject(this, uid)

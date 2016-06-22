@@ -16,4 +16,3 @@ function [ fileNames ] = scanFolder( folder, fileExtension )
         throw(MException('MATLAB:scanFolder', 'invalid folder input'));
     end
 end
-

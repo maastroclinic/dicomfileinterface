@@ -6,6 +6,7 @@ classdef Series
         description
         modality
         filename
+        imageUids
         nrOfImages
     end
     
@@ -50,6 +51,10 @@ classdef Series
             if this.images.isKey(uid)
                 out = this.images(uid);
             end
+        end
+        
+        function out = get.imageUids(this)
+             out = this.images.keys;
         end
         
         function out = getDicomObjectArray(this)

@@ -6,7 +6,7 @@ classdef VolumeOfInterest < Image
         yCompressed = []
         zCompressed = []
         
-        uncompressedpixelData
+        uncompressedPixelData
         EDGE_BUFFER = 5
     end
     
@@ -21,7 +21,7 @@ classdef VolumeOfInterest < Image
             this = this.compressBitmask();
         end
         
-        function out = get.uncompressedpixelData(this)
+        function out = get.uncompressedPixelData(this)
             out = false(this.columns, this.slices, this.rows);
             out(this.xCompressed, this.yCompressed, this.zCompressed) = this.pixelData;
         end

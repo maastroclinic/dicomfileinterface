@@ -46,7 +46,7 @@ classdef Contour
                 
                 this.dicomHeader = header;
             else
-                thrown(MException('MATLAB:Contour', 'invalid partial dicom header input'));
+                throw(MException('MATLAB:Contour', 'invalid partial dicom header input'));
             end
         end
         

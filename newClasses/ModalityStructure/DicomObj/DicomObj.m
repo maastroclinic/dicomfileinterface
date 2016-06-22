@@ -34,7 +34,8 @@ classdef DicomObj
     end
     
     properties (Access = private)
-        bufferPixelData; 
+        bufferPixelData;
+        IEC_MM_TO_CM = 10;
     end
     
     methods
@@ -142,7 +143,7 @@ classdef DicomObj
         
         function out = get.pixelSpacing(this)
             if isfield(this.dicomHeader, 'PixelSpacing')
-                out = this.dicomHeader.PixelSpacing/10; %convert to IEC (cm)
+                out = this.dicomHeader.PixelSpacing/this.IEC_MM_TO_CM;
             else
                 out = [];
             end
@@ -166,7 +167,7 @@ classdef DicomObj
         
         function out = get.x(this)
             if isfield(this.dicomHeader, 'ImagePositionPatient')
-                out = this.dicomHeader.ImagePositionPatient(1)/10; %convert to IEC (cm)
+                out = this.dicomHeader.ImagePositionPatient(1)/this.IEC_MM_TO_CM; 
             else
                 out = [];
             end
@@ -174,7 +175,7 @@ classdef DicomObj
         
         function out = get.y(this)
             if isfield(this.dicomHeader, 'ImagePositionPatient')
-                out = this.dicomHeader.ImagePositionPatient(3)/10; %convert to IEC (cm)
+                out = this.dicomHeader.ImagePositionPatient(3)/this.IEC_MM_TO_CM; 
             else
                 out = [];
             end
@@ -182,7 +183,7 @@ classdef DicomObj
         
         function out = get.z(this)
             if isfield(this.dicomHeader, 'ImagePositionPatient')
-                out = this.dicomHeader.ImagePositionPatient(2)/10; %convert to IEC (cm)
+                out = this.dicomHeader.ImagePositionPatient(2)/this.IEC_MM_TO_CM;
             else
                 out = [];
             end

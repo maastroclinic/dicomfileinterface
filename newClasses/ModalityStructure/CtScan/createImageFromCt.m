@@ -15,4 +15,3 @@ function image = createImageFromCt(ctScan, loadImageData)
         image = Image(ctScan.pixelSpacingX, ctScan.pixelSpacingY, ctScan.pixelSpacingZ, ctScan.realX, ctScan.realY, ctScan.realZ, []);
     end
 end
-

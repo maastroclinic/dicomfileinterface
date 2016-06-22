@@ -7,7 +7,6 @@ classdef RtStruct < DicomObj
         contourSequence
         contourNames
         referencedImageSeriesUid
-%         referencedFirstImageUid
     end
     
     methods
@@ -35,7 +34,9 @@ classdef RtStruct < DicomObj
             item = this.itemForRoiNumber(this.contourSequence, number, 'ReferencedROINumber');
             out = this.addFieldsToOutput(out, this.contourSequence, item);
             
-            out = rmfield(out, 'ReferencedROINumber');
+            if ~isempty(out)
+                out = rmfield(out, 'ReferencedROINumber');
+            end
         end
         
         function out = dicomHeaderForRoiName(this, name)    
@@ -65,6 +66,11 @@ classdef RtStruct < DicomObj
         end
         
         function out = addFieldsToOutput(~, out, structArray, item)
+            if isempty(item)
+                out =[];
+                return;
+            end
+            
             fields = fieldnames(structArray.(item));
             for i = 1:length(fields)
                 out.(fields{i}) = structArray.(item).(fields{i});
@@ -106,24 +112,5 @@ classdef RtStruct < DicomObj
                 end
             end
         end
-        
-%         function out = get.referencedFirstImageUid(this)
-%             out = [];
-%             if isfield(this.dicomHeader, 'ReferencedFrameOfReferenceSequence')
-%                 referencedFrameOfReferenceSequence = this.dicomHeader.ReferencedFrameOfReferenceSequence.Item_1;
-%                 if isfield(referencedFrameOfReferenceSequence, 'RTReferencedStudySequence')
-%                     studySequence = referencedFrameOfReferenceSequence.RTReferencedStudySequence.Item_1;
-%                     if isfield(studySequence, 'RTReferencedSeriesSequence')
-%                         rtReferenceSeriesSequence = studySequence.RTReferencedSeriesSequence.Item_1;
-%                         if isfield(rtReferenceSeriesSequence, 'SeriesInstanceUID')
-%                             imageSequance = rtReferenceSeriesSequence.ContourImageSequence;
-%                             if isfield(imageSequance, 'ReferencedSOPInstanceUID')
-%                                 out = imageSequance.Item_1.ReferencedSOPInstanceUID;
-%                             end
-%                         end
-%                     end
-%                 end
-%             end
-%         end
     end
 end

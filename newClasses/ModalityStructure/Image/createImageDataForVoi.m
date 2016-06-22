@@ -27,6 +27,4 @@ function [ doseVoi ] = createImageDataForVoi( voi, refDose, forceFullGrid )
                         voi.realZ, ...
                         doseImage);
     end
-
 end
-

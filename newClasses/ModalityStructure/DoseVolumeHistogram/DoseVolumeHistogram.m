@@ -8,6 +8,10 @@ classdef DoseVolumeHistogram
         doseSamples
         vVolumeRelative
         vDoseRelative
+        
+        minDose
+        meanDose
+        maxDose
     end
     
     methods
@@ -18,6 +22,9 @@ classdef DoseVolumeHistogram
             
             this = this.parseImage(image, binsize);
             this.binsize = binsize;
+            this.minDose = nanmin(image.pixelData(:));
+            this.meanDose = nanmean(image.pixelData(:));
+            this.maxDose = nanmax(image.pixelData(:));
             this.volume = image.volume;
         end
         
@@ -36,15 +43,10 @@ classdef DoseVolumeHistogram
             
             this.vDose   = (0:binsize:(sortedDose(end)+binsize));
             this.vVolume = zeros(length(this.vDose),1);
-            
-            voxelCount = 0;
-            for i = this.doseSamples:-1:1
-                newVoxelList = find(sortedDose >= this.vDose(i));
-                voxelCount = voxelCount + (length(newVoxelList));
-                this.vVolume(i) = voxelCount;
-                sortedDose(newVoxelList) = [];
-            end
-            this.vVolume = this.vVolume .* (image.pixelSpacingX*image.pixelSpacingY*image.pixelSpacingZ);
+
+            vHistogram = histcounts (dose, this.vDose,'Normalization', 'cumcount'); 
+            this.vVolume = abs(vHistogram - max(vHistogram)); % Inverse
+            this.vVolume = this.vVolume.*(image.pixelSpacingX*image.pixelSpacingY*image.pixelSpacingZ);
         end
         
         function out = get.doseSamples(this)

@@ -5,7 +5,6 @@ classdef Series
         id
         description
         modality
-        filename
         imageUids
         nrOfImages
     end

@@ -40,15 +40,10 @@ classdef validateDoseCalculations < matlab.unittest.TestCase
         relativeError = 0.0050;
 
         % Required for setup
-        oldPath;
         rtStruct;
-        mismatchRtStruct;
-        calcGrid;
-        mismatchCalcGrid;
         rtDose;
-        mismatchRtDose;
-        gtv1; gtv2; 
-        mismatchGtv1;
+        gtv1; 
+        gtv2; 
         
         BINSIZE = 0.001;
     end

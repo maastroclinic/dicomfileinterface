@@ -106,9 +106,9 @@ classdef VolumeOfInterest < Image
                     isequal(first.realZ, second.realZ)
                 
                 if strcmp('+', operation)
-                    new = first.uncompressedpixelData | second.uncompressedpixelData;
+                    new = first.uncompressedPixelData | second.uncompressedPixelData;
                 else
-                    new = first.uncompressedpixelData &~ second.uncompressedpixelData;
+                    new = first.uncompressedPixelData &~ second.uncompressedPixelData;
                 end
 
                 out = first;

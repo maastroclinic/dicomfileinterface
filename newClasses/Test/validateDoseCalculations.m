@@ -63,28 +63,15 @@ classdef validateDoseCalculations < matlab.unittest.TestCase
             refImage = createImageFromCt(ctScan, false);
             doseImage = createImageFromRtDose(dose);
             refDose = matchImageRepresentation(doseImage, refImage);
-            gtv1 = createContour(struct, 'GTV-1');
-            gtv1Voi = createVolumeOfInterest(gtv1, refImage);
+            gtv1Contour = createContour(struct, 'GTV-1');
+            gtv1Voi = createVolumeOfInterest(gtv1Contour, refImage);
             
-            gtv2 = createContour(struct, 'GTV-2');
-            gtv2Voi = createVolumeOfInterest(gtv2, refImage);
+            gtv2Contour = createContour(struct, 'GTV-2');
+            gtv2Voi = createVolumeOfInterest(gtv2Contour, refImage);
             
             this.rtDose = refDose;
             this.gtv1 = gtv1Voi;
             this.gtv2 = gtv2Voi;
-            
-%             ct = Ct(fullfile(this.BasePath, 'CT'), 'folder', false);
-%             this.calcGrid = CalculationGrid(ct, 'ct');               
-%             this.rtDose   = RtDose(fullfile(this.BasePath, 'RTDOSE' , this.RTDoseFile), this.calcGrid.PixelSpacing, this.calcGrid.Origin, this.calcGrid.Axis, this.calcGrid.Dimensions);
-%             this.rtStruct = RtStruct(fullfile(this.BasePath, 'RTSTRUCT' , this.RTStructFile), this.calcGrid.PixelSpacing, this.calcGrid.Origin, this.calcGrid.Axis, this.calcGrid.Dimensions);
-%             this.Gtv1 = Image('GTV-1', this.rtStruct.getRoiMask('GTV-1'), this.rtDose.fittedDoseCube, this.calcGrid.PixelSpacing, this.calcGrid.Origin, this.calcGrid.Axis, this.calcGrid.Dimensions);
-%             this.Gtv2 = Image('GTV-2', this.rtStruct.getRoiMask('GTV-2'), this.rtDose.fittedDoseCube, this.calcGrid.PixelSpacing, this.calcGrid.Origin, this.calcGrid.Axis, this.calcGrid.Dimensions);
-            
-%             ct = Ct(fullfile(me.BasePath, 'CT_DIMTEST'), 'folder', false);
-%             me.mismatchCalcGrid = CalculationGrid(ct, 'ct'); 
-%             me.mismatchRtStruct = RtStruct(fullfile(me.BasePath, 'RTSTRUCT' , me.RTStructFile), me.mismatchCalcGrid);
-%             me.mismatchRtDose   = RtDose(fullfile(me.BasePath, 'RTDOSE' , me.RTDoseFile), me.mismatchCalcGrid);
-%             me.mismatchGtv1 = RtVolume('GTV-1', me.mismatchCalcGrid, me.mismatchRtStruct, me.mismatchRtDose);
         end
     end    
  
@@ -152,49 +139,17 @@ classdef validateDoseCalculations < matlab.unittest.TestCase
             difference = sum - this.gtv1;
             verifyEqual(this, difference.volume, this.volumeDifference, 'RelTol', this.relativeError);           
             
-%             doseMax = difference.dose('max');
-%             verifyEqual(me, doseMax, me.doseMaxDifference, 'RelTol', me.relativeError); 
-%             verifyEqual(me, me.volume48GyDifference, difference.volumePercentageWithDoseOf(48), 'RelTol', me.relativeError);             
-%             verifyEqual(me, me.dose2PercentDifference, difference.doseToCertainVolumePercentage(2), 'RelTol', me.relativeError);
+            diffDose = createImageDataForVoi(difference, this.rtDose);
+            doseMax = calculateImageStatistics(diffDose, 'max');
+            verifyEqual(this, doseMax, this.doseMaxDifference, 'RelTol', this.relativeError);
+            
+            diffDvh = DoseVolumeHistogram(diffDose, this.BINSIZE);
+            
+            v48 = calculateDvhV(diffDvh, 48, true);
+            verifyEqual(this, v48, this.volume48GyDifference, 'RelTol', this.relativeError);            
+            
+            d2 = calculateDvhD(diffDvh, 2, true, false);
+            verifyEqual(this, d2, this.dose2PercentDifference, 'RelTol', this.relativeError);  
         end
-        
-%         function testCompressionCloseToCtBoundries(this)
-%             body = Image('Body', this.rtStruct.getRoiMask('Body'), this.rtDose.fittedDoseCube, this.calcGrid.PixelSpacing, this.calcGrid.Origin, this.calcGrid.Axis, this.calcGrid.Dimensions);
-%             verifyEqual(this, body.volume, this.bodyVolume, 'RelTol', this.relativeError);
-%         end
-        
-%         function testDoseOverwrite(me)
-%             try
-%                 me.Gtv1.addRtDose(me.rtDose);
-%             catch EM
-%                 verifyEqual(me, 'RtVolume:rtDoseOverwrite', EM.identifier);
-%             end
-%             
-%         end
-%         
-%         function testDoseMismatch(me)
-%             try
-%                 Gtv = RoiDose('GTV-1', me.calcGrid, me.rtStruct);
-%                 Gtv.addRtDose(me.mismatchRtDose);
-%             catch EM
-%                 verifyEqual(me, 'RtVolume:DimensionMismatch', EM.identifier);
-%             end
-%         end
-%         
-%         function testPlusMismatch(me)
-%             try
-%                 sum = me.Gtv1 + me.mismatchGtv1; %#ok<NASGU>
-%             catch EM
-%                 verifyEqual(me, 'AbstractVolume:PlusDimensionMismatch', EM.identifier);
-%             end
-%         end
-%         
-%         function testMinusMismatch(me)
-%             try
-%                 diff = me.Gtv1 - me.mismatchGtv1; %#ok<NASGU>
-%             catch EM
-%                 verifyEqual(me, 'AbstractVolume:MinusDimensionMismatch', EM.identifier);
-%             end
-%         end
     end
 end

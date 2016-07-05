@@ -37,7 +37,7 @@ classdef validateDoseCalculations < matlab.unittest.TestCase
         %there are some unused values in here, leave them for reference
         %purposes
         
-        relativeError = 0.0035;
+        relativeError = 0.0050;
 
         % Required for setup
         oldPath;

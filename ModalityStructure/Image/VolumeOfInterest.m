@@ -15,11 +15,6 @@ classdef VolumeOfInterest < Image
             [pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, pixelData] = VolumeOfInterest.parseConstructorInput(varargin);
             this = this@Image(pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, pixelData);
         end
-       
-        function this = addpixelData(this, pixelData)
-            this = this.addpixelData@Image(pixelData);
-            this = this.compressBitmask();
-        end
         
         function out = get.uncompressedPixelData(this)
             out = false(this.columns, this.slices, this.rows);
@@ -40,7 +35,11 @@ classdef VolumeOfInterest < Image
             end
         end
         
-        function this = addPixelData(this, pixelData)            
+        function this = addPixelData(this, pixelData, compression)
+            if nargin == 2
+                compression = true;
+            end
+            
             if size(pixelData,1) ~= this.columns || ...
                size(pixelData,2) ~= this.slices || ...
                size(pixelData,3) ~= this.rows
@@ -50,7 +49,9 @@ classdef VolumeOfInterest < Image
             
             try
                 this.pixelData = logical(pixelData);
-                this = this.compress();
+                if compression
+                    this = this.compress();
+                end
             catch
                 this.pixelData = [];
                 warning('could not convert pixel data to logical');

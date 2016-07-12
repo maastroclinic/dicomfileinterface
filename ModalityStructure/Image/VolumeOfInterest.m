@@ -7,7 +7,7 @@ classdef VolumeOfInterest < Image
         zCompressed = []
         
         uncompressedPixelData
-        EDGE_BUFFER = 5
+        EDGE_BUFFER = 0
     end
     
     methods

@@ -35,18 +35,18 @@ classdef testRtDose < matlab.unittest.TestCase
 
     methods(Test)
         function testConstructor(me)
-            rtDose = RtDose(me.RTDose, me.calcGrid);
+            rtDose = RtDose(me.RTDose, me.calcGrid.PixelSpacing, me.calcGrid.Origin, me.calcGrid.Axis, me.calcGrid.Dimensions);
             verifyEqual(me, rtDose.fittedDoseCube, me.REF_DOSE, 'AbsTol', me.PERCISION);
         end
         
         function testConstructorFileName(me)
-            rtDose = RtDose(fullfile(me.BasePath, 'RTDOSE' , me.RTDoseFile), me.calcGrid);
+            rtDose = RtDose(fullfile(me.BasePath, 'RTDOSE' , me.RTDoseFile), me.calcGrid.PixelSpacing, me.calcGrid.Origin, me.calcGrid.Axis, me.calcGrid.Dimensions);
             verifyEqual(me, rtDose.fittedDoseCube, me.REF_DOSE, 'AbsTol', me.PERCISION);
         end
         
         function testFileLoadError(me)
             try
-                RtDose(fullfile(me.BasePath, 'ERROR' , me.RTDoseFile), me.calcGrid);
+                RtDose(fullfile(me.BasePath, 'ERROR' , me.RTDoseFile), me.calcGrid.PixelSpacing, me.calcGrid.Origin, me.calcGrid.Axis, me.calcGrid.Dimensions);
             catch EM
                 verifyEqual(me, 'Matlab:FileNotFound', EM.identifier)
             end
@@ -56,7 +56,7 @@ classdef testRtDose < matlab.unittest.TestCase
             brokenDose = me.RTDose;
             brokenDose.Is3DDoseMap = 0;
             try
-                RtDose(brokenDose, me.calcGrid);
+                RtDose(brokenDose, me.calcGrid.PixelSpacing, me.calcGrid.Origin, me.calcGrid.Axis, me.calcGrid.Dimensions);
             catch EM
                 verifyEqual(me, 'RtDose:ErrorRescalingDose', EM.identifier)
             end

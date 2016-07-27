@@ -30,7 +30,7 @@ classdef testRtStruct < matlab.unittest.TestCase
             ct = Ct(fullfile(me.BasePath, 'CT'), 'folder', false);
             me.calcGrid = CalculationGrid(ct, 'ct');       
             me.rtStructDicom = read_dicomrtstruct(fullfile(me.BasePath, 'RTSTRUCT' , me.RTStructFile));
-            me.rtStruct = RtStruct(me.rtStructDicom, me.calcGrid);
+            me.rtStruct = RtStruct(me.rtStructDicom, me.calcGrid.PixelSpacing, me.calcGrid.Origin, me.calcGrid.Axis, me.calcGrid.Dimensions);
 
             load(fullfile(me.BasePath, me.refAxisPath));
             me.REF_AXIS = refAxis;
@@ -63,7 +63,7 @@ classdef testRtStruct < matlab.unittest.TestCase
         end
         
         function testReadFileConstructor(me)
-            rtStructFileread = RtStruct(fullfile(me.BasePath, 'RTSTRUCT' , me.RTStructFile), me.calcGrid);
+            rtStructFileread = RtStruct(fullfile(me.BasePath, 'RTSTRUCT' , me.RTStructFile), me.calcGrid.PixelSpacing, me.calcGrid.Origin, me.calcGrid.Axis, me.calcGrid.Dimensions);
             rtStructFileread.getRoiMask('GTV-1');
             rtStructFileread.getRoiMask('GTV-2');
             verifyEqual(me, rtStructFileread, me.rtStruct);
@@ -72,7 +72,7 @@ classdef testRtStruct < matlab.unittest.TestCase
         
         function testRtstructFileNotFound(me)
             try
-                RtStruct(fullfile(me.BasePath, 'ERROR' , me.RTStructFile), me.calcGrid);
+                RtStruct(fullfile(me.BasePath, 'ERROR' , me.RTStructFile), me.calcGrid.PixelSpacing, me.calcGrid.Origin, me.calcGrid.Axis, me.calcGrid.Dimensions);
             catch EM
                 verifyEqual(me, 'Matlab:FileNotFound', EM.identifier);
             end

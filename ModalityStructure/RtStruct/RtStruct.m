@@ -10,12 +10,8 @@ classdef RtStruct < DicomObj
     end
     
     methods
-        function this = RtStruct(varargin)
-            if nargin == 0 %preserve standard empty constructor
-                return;
-            end
-                
-            this = constructorParser(this, 'rtstruct', varargin{1}, varargin{2});
+        function this = RtStruct(location, useVrHeuristic)
+            this = constructorParser(this, 'rtstruct', location, useVrHeuristic);
         end
         
         function readDicomData(~)

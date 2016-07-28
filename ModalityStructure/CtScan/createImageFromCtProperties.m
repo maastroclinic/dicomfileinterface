@@ -16,6 +16,9 @@ function image = createImageFromCtProperties(ctProperties)
         convertToDouble(ctProperties.Rows);
     ctProperties.Columns = ...
         convertToDouble(ctProperties.Columns);
+    ctProperties.CTFileLength = ...
+        convertToDouble(ctProperties.CTFileLength);
+        
 
     IEC_MM_TO_CM = 10;
     image = [];

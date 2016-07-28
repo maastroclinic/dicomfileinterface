@@ -42,9 +42,9 @@ classdef DoseVolumeHistogram
             % want to leave this in for documentation purposes!
             
             this.vDose   = (0:binsize:(sortedDose(end)+binsize));
-            this.vVolume = zeros(length(this.vDose),1);
 
-            vHistogram = histcounts (dose, this.vDose,'Normalization', 'cumcount'); 
+            vHistogram = histcounts (dose, this.vDose,'Normalization', 'cumcount');
+            vHistogram = [0, vHistogram]; %need to ad a leading 0 to make sure the vector is alligned with the dose vector
             this.vVolume = abs(vHistogram - max(vHistogram)); % Inverse
             this.vVolume = this.vVolume.*(image.pixelSpacingX*image.pixelSpacingY*image.pixelSpacingZ);
         end

@@ -19,7 +19,7 @@ classdef Image
         volume
     end
     
-    methods
+    methods        
         function this = Image(pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, pixelData)
             if nargin == 0 %preserve standard empty constructor
                 return;

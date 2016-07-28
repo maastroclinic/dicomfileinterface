@@ -15,7 +15,7 @@ function image = createVolumeOfInterest(contour, refImage)
             image.columns,image.rows);
     end
     pixelData(pixelData > 1) = 1;
-    image = image.addPixelData((permute(pixelData,[1 3 2])));
+    image = image.addPixelData((permute(pixelData,[1 3 2])), false);
     
     if image.is3d
         image = matchImageRepresentation(image, refImage);

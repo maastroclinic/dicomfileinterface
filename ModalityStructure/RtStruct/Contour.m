@@ -135,7 +135,11 @@ classdef Contour
         function out = get.y(this)
             out = zeros(this.numberOfContourSlices,1);
             for i = 1:this.numberOfContourSlices
-                out(i) = this.contourSlices(i).y(1); 
+                if ~isempty(this.contourSlices(i).y)
+                    out(i) = this.contourSlices(i).y(1); (1); 
+                else
+                    out(i) = [];
+                end
             end
         end
         

@@ -41,7 +41,7 @@ classdef DoseVolumeHistogram
             % the 0 resulted in an error, because an addition voxel is created.
             % want to leave this in for documentation purposes!
             
-            this.vDose   = (0:binsize:(sortedDose(end)+binsize));
+            this.vDose   = (0:binsize:(sortedDose(size(sortedDose,1))+binsize));
 
             vHistogram = histcounts (dose, this.vDose,'Normalization', 'cumcount');
             vHistogram = [0, vHistogram]; %need to ad a leading 0 to make sure the vector is alligned with the dose vector

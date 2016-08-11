@@ -1,24 +1,9 @@
 function image = createImageFromCtProperties(ctProperties)
-    validateCtProperties(ctProperties);
-    ctProperties.ImagePositionPatient(1) = ...
-        convertToDouble(ctProperties.ImagePositionPatient(1));
-    ctProperties.ImagePositionPatient(2) = ...
-        convertToDouble(ctProperties.ImagePositionPatient(2));
-    ctProperties.ImagePositionPatient(3) = ...
-        convertToDouble(ctProperties.ImagePositionPatient(3));
-    ctProperties.PixelSpacing(1) = ...
-        convertToDouble(ctProperties.PixelSpacing(1));
-    ctProperties.PixelSpacing(2) = ...
-        convertToDouble(ctProperties.PixelSpacing(2));
-    ctProperties.SliceThickness = ...
-        convertToDouble(ctProperties.SliceThickness);
-    ctProperties.Rows = ...
-        convertToDouble(ctProperties.Rows);
-    ctProperties.Columns = ...
-        convertToDouble(ctProperties.Columns);
-    ctProperties.CTFileLength = ...
-        convertToDouble(ctProperties.CTFileLength);
-        
+    validateCtProperties(ctProperties)
+    names = fieldnames(ctProperties);
+    for i = 1:length(names)
+        ctProperties.(names{i}) = convertToDouble(ctProperties.(names{i}));
+    end       
 
     IEC_MM_TO_CM = 10;
     image = [];
@@ -46,8 +31,6 @@ function image = createImageFromCtProperties(ctProperties)
             (image.pixelSpacingZ * (ctProperties.Rows - 1));
     end
 
-
-    %out = (this.originX : this.pixelSpacingX : (this.originX + (this.ctSlices(1).columns - 1) * this.pixelSpacingX))';
     image.realX = (originX : image.pixelSpacingX : ...
         (originX + ...
         (double(ctProperties.Columns) - 1) * image.pixelSpacingX))';
@@ -58,9 +41,9 @@ function image = createImageFromCtProperties(ctProperties)
         (originZ + ...
         (ctProperties.Rows - 1) * image.pixelSpacingZ))';
     image.is3d = 1;
-    end
+end
 
-    function doubleNumber = convertToDouble(number)
+function doubleNumber = convertToDouble(number)
     if(~isa(number,'double'))
         doubleNumber = double(number);
     else

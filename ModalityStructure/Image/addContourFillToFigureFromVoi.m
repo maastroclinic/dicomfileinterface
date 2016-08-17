@@ -22,7 +22,7 @@ function hFig = addContourFillToFigureFromVoi(voi, sliceNr, color, hFig)
         hPath = patch(zContour, xContour, 1:length(zContour), 'FaceColor', color);
         set(hPath,'FaceAlpha', 0.5);
         set(hPath,'EdgeColor','none');
-        i = pointsInCurrentContour+1; %go to next contour
+        i = i + pointsInCurrentContour + 1; %go to next contour
     end
     hold off;
 end

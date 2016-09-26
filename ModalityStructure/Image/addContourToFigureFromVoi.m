@@ -21,7 +21,7 @@ function hFig = addContourToFigureFromVoi(voi, sliceNr, lineSpec, hFig)
         pointsInCurrentContour = drawContour(2,i);
         xContour = drawContour(2, i+1:i+pointsInCurrentContour);
         zContour = drawContour(1, i+1:i+pointsInCurrentContour);
-        plot(zContour,xContour, lineSpec);
+        plot(zContour,xContour, lineSpec, 'LineWidth', 2);
         i = i + pointsInCurrentContour + 1; %go to next contour
     end
     hold off;

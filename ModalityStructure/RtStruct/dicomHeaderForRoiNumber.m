@@ -1,4 +1,11 @@
 function out = dicomHeaderForRoiNumber(rtStruct, number)
+%DICOMHEADERFORROINUMBER parses the rtStruct dicom header to find all relevant tags for the contour
+%object using the (3006,0022) ROINumber tag
+%
+% out = dicomHeaderForRoiNumber(rtStruct, number) returns the dicom header for the specified ROI
+%  number
+%
+% See also: RTSTRUCT, CONTOUR, CONTOURSLICE, DICOMHEADERFORROINAME
     out = [];
 
     item = itemForRoiNumber(rtStruct.structureSetSequence, number, 'ROINumber');

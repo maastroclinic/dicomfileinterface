@@ -1,5 +1,11 @@
 classdef Contour
-    %CONTOUR ...
+%CONTOUR represents a singe contour of an RtStruct.
+%
+%CONSTRUCTOR
+% this = Contour(dicomHeader) creates a contour object of the parsed dicom header created with
+% dicomHeaderForRoiName or dicomHeaderForRoiNumber function
+%
+% See also: RTSTRUCT, CONTOURSLICE, CREATECONTOUR, DICOMHEADERFORROINAME, DICOMHEADERFORROINUMBER
     
     properties
         dicomHeader

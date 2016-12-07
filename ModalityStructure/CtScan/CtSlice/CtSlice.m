@@ -5,7 +5,7 @@ classdef CtSlice < DicomObj
     % this = CtSlice(dicomItem, useVrHeuristics) creates a CtSlice object
     %  using the full file path (or a DicomObj) and boolean to deterine the use of VR Heuristics
     %
-    % See also: DICOMOBJ, CTSCAN
+    % See also: DICOMOBJ, CTSCAN, CONTOURSLICE
     properties
         rescaleSlope
         rescaleIntercept

@@ -1,5 +1,11 @@
 classdef RtStruct < DicomObj
     %RTSTRUCT Representation of a DICOM RTSTRUCT
+    %
+    %CONSTRUCTOR
+    % this = RtStruct(dicomItem, useVrHeuristics) creates a RtStruct object
+    %  using the full file path (or a DicomObj) and boolean to deterine the use of VR Heuristics
+    %
+    % See also: DICOMOBJ, CONTOUR, CONTOURSLICE, DICOMHEADERFORROINUMBER, DICOMHEADERFORROINAME
     
     properties
         structureSetSequence
@@ -10,8 +16,12 @@ classdef RtStruct < DicomObj
     end
     
     methods
-        function this = RtStruct(location, useVrHeuristic)
-            this = constructorParser(this, 'rtstruct', location, useVrHeuristic);
+        function this = RtStruct(dicomItem, useVrHeuristics)
+            if nargin == 0 %preserve standard empty constructor
+                return;
+            end
+            
+            this = constructorParser(this, 'rtstruct', dicomItem, useVrHeuristics);
         end
         
         function readDicomData(~)

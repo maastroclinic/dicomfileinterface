@@ -1,5 +1,11 @@
 classdef RtPlan < DicomObj
-    %RTPLAN
+    %RTPLAN represents a RtPlan DicomObj
+    %
+    %CONSTRUCTOR:
+    % this = RtPlan(dicomItem, useVrHeuristics) creates a RtPlan object
+    %  using the full file path (or a DicomObj) and boolean to deterine the use of VR Heuristics
+    %
+    % See also: DICOMOBJ
     
     properties
         planLabel
@@ -7,12 +13,12 @@ classdef RtPlan < DicomObj
     end
     
     methods
-        function this = RtPlan(varargin)
+        function this = RtPlan(dicomItem, useVrHeuristics)
             if nargin == 0 %preserve standard empty constructor
                 return;
             end
             
-            this = constructorParser(this, 'rtplan', varargin{1}, varargin{2});
+            this = constructorParser(this, 'rtplan', dicomItem, useVrHeuristics);
         end
         
         function readDicomData(~)

@@ -1,8 +1,13 @@
-function [x, y, z] = determineDoseVectors( dose, doseCutOff)
+function [x, y, z] = determineDoseVectors(dose, doseCutOff)
+%DETERMINEDOSEVECTORS returns 3 axis of the RtDose object to represent the RtDose binary data as an
+% Image object
+%
+% [x, y, z] = determineDoseVectors(dose, doseCutOff) creates an axis array using the RtDose object
+% and a doseCutOff is percentage (example, 50 provides the [x,y,z] to create a 50% dose image). 
+%
+% See also: RTDOSE, CREATEIMAGEFROMRTDOSE
     if doseCutOff == 0
-%         yStart      = dose.originY;
         yStartIndex = 1;
-%         yEnd        = dose.originY+dose.gridFrameOffsetVector(end);
         yEndIndex   = dose.numberOfFrames;
     else
         yStart = [];

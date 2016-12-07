@@ -1,18 +1,22 @@
 classdef RtImage < DicomObj
-    %RTIMAGE Summary of this class goes here
-    %   Detailed explanation goes here
-    
+    %RTIMAGE represents a RtImage DicomObj
+    %
+    %CONSTRUCTOR:
+    % this = RtImage(dicomItem, useVrHeuristics) creates a RtImage object
+    %  using the full file path (or a DicomObj) and boolean to deterine the use of VR Heuristics
+    %
+    % See also: DICOMOBJ
     properties
         referencedRtPlanUid
     end
     
     methods
-        function this = RtImage(varargin)
+        function this = RtImage(dicomItem, useVrHeuristics)
             if nargin == 0 %preserve standard empty constructor
                 return;
             end
             
-            this = constructorParser(this, 'rtimage', varargin{1}, varargin{2});
+            this = constructorParser(this, 'rtimage', dicomItem, useVrHeuristics);
         end
         
         function out = get.referencedRtPlanUid(this)

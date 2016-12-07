@@ -10,8 +10,6 @@ function image = createImageFromCt(ctScan, loadImageData)
     
     if loadImageData
         ctScan = ctScan.readDicomData();
-        image = Image(ctScan.pixelSpacingX, ctScan.pixelSpacingY, ctScan.pixelSpacingZ, ctScan.realX, ctScan.realY, ctScan.realZ, ctScan.pixelData);
-    else
-        image = Image(ctScan.pixelSpacingX, ctScan.pixelSpacingY, ctScan.pixelSpacingZ, ctScan.realX, ctScan.realY, ctScan.realZ, []);
     end
+    image = Image(ctScan.pixelSpacingX, ctScan.pixelSpacingY, ctScan.pixelSpacingZ, ctScan.realX, ctScan.realY, ctScan.realZ, ctScan.pixelData);
 end

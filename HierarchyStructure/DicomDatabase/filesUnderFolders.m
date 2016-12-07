@@ -193,8 +193,15 @@ for i=1:length(folders)
     %first build the new search condition made of all files satistying the
     %search condition and all directories under the current one
     val = []; val1 = []; val2 = []; cnval1 = {}; cnval2 = {}; cdval = {}; cdva2 = {};   %initialize helper variables
-    [pth,fname,ext] = fileparts(folders{i});            
+    [pth,fname,ext] = fileparts(folders{i});   
+    
     cd(pth);                                            %move to the directory: isdir only recognizes directories on the Matlab search path or the current one!
+    % HACK FOR DICOM FOLDERS
+    if isdir([fname, ext])
+        fname = [fname, ext];
+        ext = [];
+    end
+    % END HACK
     if isdir(fname)   
         wild = '';
         cd(fname)

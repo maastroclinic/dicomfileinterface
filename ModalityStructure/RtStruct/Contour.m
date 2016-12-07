@@ -38,19 +38,12 @@ classdef Contour
             this.contourSlices = header;
         end
         
-        function this = set.dicomHeader(this, header)
-            if isfield(header, 'ROIName') && ...
-               isfield(header, 'ROINumber') && ...
-               isfield(header, 'ContourSequence') && ...
-               isfield(header, 'ROIDisplayColor')
-                
-                this.dicomHeader = header;
-            else
-                throw(MException('MATLAB:Contour', 'invalid partial dicom header input'));
-            end
-        end
-        
         function this = set.contourSlices(this, dicomHeader)
+            if ~isfield(dicomHeader, 'ContourSequence')
+                this.contourSlices = [];
+                return; 
+            end
+            
             items = fieldnames(dicomHeader.ContourSequence);
             this.contourSlices(1:length(items)) = ContourSlice();
             for i = 1:length(items)
@@ -59,11 +52,19 @@ classdef Contour
         end
         
         function out = get.name(this)
-            out = this.dicomHeader.ROIName;
+            if isfield(this.dicomHeader, 'ROIName')
+                out = this.dicomHeader.ROIName;
+            else
+                out = 'N/A';
+            end
         end
         
         function out = get.number(this)
-            out = this.dicomHeader.ROINumber;
+            if isfield(this.dicomHeader, 'ROINumber')
+                out = this.dicomHeader.ROINumber;
+            else
+                out = 'N/A';
+            end
         end
         
         function out = get.referencedFrameOfReferenceUid(this)

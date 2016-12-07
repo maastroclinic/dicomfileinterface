@@ -6,6 +6,12 @@ function image = matchImageRepresentation( image, refImage, defaultValue, method
     if nargin < 4
         method = 'linear';
     end
+    
+    if ~coordinatesInRange(image, refImage)
+%         throw(MException('Matlab:matchImageRepresentation:InvalidInput','Warning! The image is not within the specified reference image coordinate range'));
+        image = Image();
+        return;
+    end
 
     newImage = interp3(...
         double(image.realY),...
@@ -31,6 +37,21 @@ function image = matchImageRepresentation( image, refImage, defaultValue, method
         image = image.addPixelData(newImage);
     else
         image = image.addPixelData(newImage);
+    end
+end
+
+function out = coordinatesInRange(image, refImage)    
+    xIsInRange = (image.realX(1) >= refImage.realX(1)) && (image.realX(end) <= refImage.realX(end));
+%     yIsInRange = (image.realY(1) >= refImage.realY(1)) && (image.realY(end) <= refImage.realY(end));
+    zIsInRange = (image.realZ(1) >= refImage.realZ(1)) && (image.realZ(end) <= refImage.realZ(end));
+    
+    out = xIsInRange && zIsInRange; %&& yIsInRange
+    
+    if out == false
+        warning(['The image is not within the specified reference image coordinate range' 10 ...
+            'newX = ' sprintf('%5.2f', image.realX(1)) ',' sprintf('%5.2f', image.realX(end)) ', refX = ' sprintf('%5.2f', refImage.realX(1)) ',' sprintf('%5.2f', refImage.realX(end)) 10 ...
+            ...% 'newY = ' sprintf('%5.2f', image.realY(1)) ',' sprintf('%5.2f', image.realY(end)) ', refY = ' sprintf('%5.2f', refImage.realY(1)) ',' sprintf('%5.2f', refImage.realY(end)) 10 ...
+            'newZ = ' sprintf('%5.2f', image.realZ(1)) ',' sprintf('%5.2f', image.realZ(end)) ', refZ = ' sprintf('%5.2f', refImage.realZ(1)) ',' sprintf('%5.2f', refImage.realZ(end))]);
     end
 end
 

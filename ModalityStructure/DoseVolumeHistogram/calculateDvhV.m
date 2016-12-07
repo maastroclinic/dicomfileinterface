@@ -1,11 +1,20 @@
-function out = calculateDvhV( dvh, doseLimit, relative )
+function out = calculateDvhV(dvh, doseLimit, relativeOutput)
+%CALCULATEDVHV uses a DoseVolumeHistogram to calculate a wanted DVH-V parameter in cc/Percentage
+%
+% out = calculateDvhV(dvh, doseLimit) is the simple calculation where the output is 
+%  assumed to be absolute
+%
+% out = calculateDvhV( dvh, doseLimit, relative ) providing more
+%  inputs will enable an relative output
+%
+% See alse: DOSEVOLUMEHISTOGRAM, CALCULATEDVHD
     if nargin == 2
-        relative = false;
+        relativeOutput = false;
     end
 
     index = find((dvh.vDose(:) >= doseLimit), 1, 'first');
     out = dvh.vVolume(index);
-    if relative
+    if relativeOutput
         out = out / dvh.volume * 100;
     end
 end

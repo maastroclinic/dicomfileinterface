@@ -1,4 +1,12 @@
 classdef DoseVolumeHistogram
+% DOSEVOLUMEHISTOGRAM converts the data of a VolumeOfInterest clipped dose Image to a sampled
+%  DoseVolumeHistogram
+%
+% CONSTRUCTOR
+%  this = DoseVolumeHistogram(image, binsize) samples an image object with the size of binsize
+%
+% See also: VOLUMEOFINTEREST, CALCULATEDVHD, CALCULATEDVHV, CREATEDOSEVOLUMEHISTOGRAMDTA,
+% CREATEDOSEVOLUMEHISTOGRAMFROMDTO
     properties
         prescribedDose
         volume

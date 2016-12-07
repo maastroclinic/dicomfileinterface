@@ -1,4 +1,10 @@
-function out = calculateImageStatistics( image, operation )
+function out = calculateImageStatistics(image, operation)
+%CALCULATEIMAGESTATISTICS can calculate statistics for an Image object.
+%
+% out = calculateImageStatistics(image, operation) applies to operation to the provided image object
+%  valid operations are: mean, max, min, sdt, median, sum
+%
+% See also: Image, VolumeOfInterest
     out = NaN;
     if ~isa(image, 'Image') && isempty(image.pixelData)
         throw(MException('MATLAB:calculateImageStatistics', 'please provide image object with pixel data'))

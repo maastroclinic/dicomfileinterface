@@ -8,7 +8,6 @@ classdef DicomObj
     %  perform a dicomread on the file to get the binary data if it is available
     
     properties
-        %store the unprocessed DICOM header in here.
         dicomHeader
        
         patientId

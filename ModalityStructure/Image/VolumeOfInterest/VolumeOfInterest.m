@@ -1,5 +1,14 @@
 classdef VolumeOfInterest < Image
-    %VOLUMEOFINTEREST
+    %VOLUMEOFINTEREST is a specialized kind of image to represent a bitmask
+    %
+    % CONSTRUCTORS
+    %  this = VolumeOfInterest(Image) convert an Image object to a VolumeOfInterest.
+    %
+    %  this = VolumeOfInterest(pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, pixelData)
+    %    the same constructor as the ImageObject
+    %
+    % See also: IMAGE, CREATEIMAGEFROMCONTOUR, CREATEIMAGEDATAFORVOI, CREATECONTOURMASKFROMVOI,
+    % ADDCONTOURTOFIGUREFROMVOI, ADDCONTOURFILLTOFIGUREFROMVOI
     
     properties
         xCompressed = []
@@ -153,4 +162,3 @@ classdef VolumeOfInterest < Image
         end
     end
 end
-

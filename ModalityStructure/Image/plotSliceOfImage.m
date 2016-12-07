@@ -1,4 +1,12 @@
 function hFig = plotSliceOfImage(image, sliceNr, useDefaultColorMap, hFig)
+%PLOTSLICEOFIMAGE plots the pixel data of a certain slice in an Image object
+%
+% hFig = plotSliceOfImage(image, sliceNr) plots the slice with default settings
+%
+% hFig = plotSliceOfImage(image, sliceNr, useDefaultColorMap, hFig) allows to not apply the default
+% colormap and chooses a certain figure handle
+%
+% See also: IMAGE, VOLUMEOFINTEREST, ADDCONTOURFILLTOFIGUREFROMVOI, ADDCONTOURTOFIGUREFROMVOI
     if nargin < 3
         useDefaultColorMap = true;
         hFig = figure;

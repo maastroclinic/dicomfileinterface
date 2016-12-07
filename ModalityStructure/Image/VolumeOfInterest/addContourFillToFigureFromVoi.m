@@ -1,4 +1,13 @@
 function hFig = addContourFillToFigureFromVoi(voi, sliceNr, color, hFig)
+% ADDCONTOURFILLTOFIGUREFROMVOI adds a colored fill to an image
+%
+% hFig = addContourFillToFigureFromVoi(voi, sliceNr) simple mode to plot a slice
+%
+% hFig = addContourFillToFigureFromVoi(voi, sliceNr, color, hFig) allows to set color and current
+%  figure
+%
+% See also: VOLUMEOFINTEREST, ADDCONTOURTOFIGUREFROMVOI;
+
     if nargin == 2
         color = [0,0,0];
         hFig = figure;

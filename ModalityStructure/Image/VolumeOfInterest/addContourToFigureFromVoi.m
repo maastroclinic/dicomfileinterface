@@ -1,6 +1,13 @@
-%this function is used to add a contour to an UNALTERED figure produced by 
-% by the plotSliceOfCtScan function
 function hFig = addContourToFigureFromVoi(voi, sliceNr, lineSpec, hFig)
+%ADDCONTOURTOFIGUREFROMVOI is used to add a contour to an UNALTERED figure produced by 
+% by the plotCtSlice function
+%
+% hFig = addContourToFigureFromVoi(voi, sliceNr) basic plot
+%
+% hFig = addContourToFigureFromVoi(voi, sliceNr, lineSpec, hFig) specify the line options of the
+%  figure to use.
+%
+% See also: PLOTCTSLICE, VOLUMEOFINTEREST, ADDCONTOURFILLTOFIGUREFROMVOI
     if nargin == 2
         lineSpec = '-b';
         hFig = figure;

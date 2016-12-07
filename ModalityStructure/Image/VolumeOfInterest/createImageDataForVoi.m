@@ -1,10 +1,19 @@
-function [ voiImage ] = createImageDataForVoi( voi, refImage, forceFullGrid )
+function [ voiImage ] = createImageDataForVoi(voi, image, forceFullGrid)
+%CREATEIMAGEDATAFORVOI creates an image with values for a bitmask.
+%
+%createImageDataForVoi(voi, refImage) default mode. provide a VolumeOfInterest and an Image
+% with loaded pixel data
+%
+%createImageDataForVoi(voi, refImage, forceFullGrid) can force the output image to be on the full
+% grid instead of the compressed grid of volume of interest
+%
+% See also: VOLUMEOFINTEREST
     if nargin == 2
         forceFullGrid = false;
     end
     
     if ~forceFullGrid
-        image = refImage.pixelData(voi.xCompressed, voi.yCompressed, voi.zCompressed);
+        image = image.pixelData(voi.xCompressed, voi.yCompressed, voi.zCompressed);
         image = voi.pixelData .* image;
         image(image == 0) = NaN;
 
@@ -16,7 +25,7 @@ function [ voiImage ] = createImageDataForVoi( voi, refImage, forceFullGrid )
                         voi.realZ(voi.zCompressed), ...
                         image);
     else
-        image = voi.uncompressedpixelData .* refImage.pixelData;
+        image = voi.uncompressedpixelData .* image.pixelData;
         image(image == 0) = NaN;
 
         voiImage = Image(voi.pixelSpacingX, ...

@@ -1,7 +1,15 @@
 function image = createVolumeOfInterest(contour, refImage)
 %CREATEBITMASK for a contour object on a referenced image grid
     if ~refImage.is3d
-        throw(MException('MATLAB:createImageBitmask', 'function is made for 3d interpolation, please provide a 3D reference image'));
+        image = Image();
+        warning('function is made for 3d interpolation, could not project contour on image')
+        return;
+    end
+    
+    if contour.numberOfContourSlices == 0
+        image = Image();
+        warning('provided contour is not a valid contour, no contourSlices found in object')
+        return;
     end
     
     image = createImageFromContour(contour, refImage.pixelSpacingX, refImage.pixelSpacingY, refImage.pixelSpacingZ);

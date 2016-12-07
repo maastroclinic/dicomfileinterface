@@ -1,4 +1,4 @@
-function [ dicomObj ] = constructorParser( dicomObj, modality, varargin )
+function [ dicomObj ] = constructorParser(dicomObj, modality, varargin )
     if ischar(varargin{1})  
         dcm = DicomObj(varargin{1}, varargin{2});
         dicomObj.dicomHeader = dcm.dicomHeader;

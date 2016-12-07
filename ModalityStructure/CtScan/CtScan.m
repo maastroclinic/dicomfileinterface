@@ -1,6 +1,16 @@
 classdef CtScan
     %CTSCAN representation of an entire DICOM CT-SCAN
-    
+    %
+    %CONSTRUCTORS
+    % this = CtScan(pathStr, useVrHeuristics) creates this object using
+    %   a folder with CT dicom files + vrHeuristicsBoolean
+    %
+    % this = CtScan(dicomObjList, useVrHeuristics) creates this object using 
+    %   an array of DicomObj ct files + boolean useVrHeuristics
+    %
+    % this = CtScan(cellOfFiles, useVrHeuristics) creates this object using
+    %   a cell array with CT dicom file locations + boolean useVrHeuristics
+    %
     % This CT is given in the image coordinate system
     %               -----------         IEC
     %              /|         /|         Z
@@ -17,7 +27,8 @@ classdef CtScan
     %
     % Origin coordinates will be the bottom-left-corner. The CT cube will
     % be addressed in the following way pixelData(1:columns,1:numberOfSlices,1:rows)
-    
+    %
+    % See also: DICOMOBJ, CTSLICE, CREATEIMAGEFROMCT
     properties
         ctSlices = CtSlice()
         instanceSortedCtSlices
@@ -38,21 +49,20 @@ classdef CtScan
     end
     
     methods
-        function this = CtScan(varargin)
+        function this = CtScan(dataInput, useVrHeuristics)
             if nargin == 0 %preserve standard empty constructor
                 return;
             end
             
             %if the input is a folder, create file list array
-            if ischar(varargin{1})
-                fileNames = filesUnderFolders(varargin{1}, 'detail');
-                this = this.addListOfFiles(fileNames, varargin{2});
-            elseif isa(varargin{1}, 'DicomObj')
-                this = this.addListOfObjects(varargin{1});
-            elseif isa(varargin{1}, 'cell')
-                list = varargin{1};
-                if ischar(list{1}) && exist(list{1}, 'file')
-                    this = this.addListOfFiles(list, varargin{3});
+            if ischar(dataInput)
+                fileNames = filesUnderFolders(dataInput, 'detail');
+                this = this.addListOfFiles(fileNames, useVrHeuristics);
+            elseif isa(dataInput, 'DicomObj')
+                this = this.addListOfObjects(dataInput);
+            elseif isa(dataInput, 'cell')
+                if ischar(dataInput{1}) && exist(dataInput{1}, 'file')
+                    this = this.addListOfFiles(list, useVrHeuristics);
                 else
                     throw(MException('MATLAB:CtScan:constructor', 'invalid input, the first file in the file list does not exist'));
                 end

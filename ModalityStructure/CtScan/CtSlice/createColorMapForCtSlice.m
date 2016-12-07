@@ -1,5 +1,10 @@
-function color = createColorMapForCtSlice( ctSlice, center, window )
-    
+function color = createColorMapForCtSlice(ctSlice, center, window)
+%CREATECOLORMAPFORCTSLICE creates a color map using window/center settings for a certain CtSlice
+%
+% color = createColorMapForCtSlice(ctSlice, center, window)
+%
+% See also: CtSlice, plotCtSlice
+
 huMin = min(ctSlice.scaledImageData(:));
 huMax = max(ctSlice.scaledImageData(:));
 

@@ -158,10 +158,10 @@ classdef CtScan
         end
         
         function out = get.originX(this)
-            if this.ctSlices(1).imageOrientationPatient(1) == 1
-                out = this.ctSlices(1).x;
+            if this.ySortedCtSlices(1).imageOrientationPatient(1) == 1
+                out = this.ySortedCtSlices(1).x;
             elseif this.ySortedCtSlices(1).imageOrientationPatient(1) == -1
-                out = this.ctSlices(1).x - ...
+                out = this.ySortedCtSlices(1).x - ...
                         (this.pixelSpacingX * this.ctSlices(1).columns);
             else
                 out = [];
@@ -174,10 +174,10 @@ classdef CtScan
         end
         
         function out = get.originZ(this)
-            if this.ctSlices(1).imageOrientationPatient(5) == -1
-                out = -this.ctSlices(1).z;
-            elseif this.ctSlices(1).imageOrientationPatient(5) == 1
-                out = -this.ctSlices(1).z - ...
+            if this.ySortedCtSlices(1).imageOrientationPatient(5) == -1
+                out = -this.ySortedCtSlices(1).z;
+            elseif this.ySortedCtSlices(1).imageOrientationPatient(5) == 1
+                out = -this.ySortedCtSlices(1).z - ...
                         (this.pixelSpacingZ * (this.ySortedCtSlices(1).rows - 1));
             else
                 out = [];

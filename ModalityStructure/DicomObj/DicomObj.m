@@ -1,5 +1,11 @@
 classdef DicomObj
     %DICOMOBJ basic DICOM object that can be extended for other modalities
+    %
+    %CONSTRUCTORS
+    % this = DicomObj(fileStr, useVrHeuristic) creates DicomObj to represent the data of the dicom
+    %  header of a file
+    % this = DicomObj(fileStr, useVrHeuristic, readData) added the readData boolean will also
+    %  perform a dicomread on the file to get the binary data if it is available
     
     properties
         %store the unprocessed DICOM header in here.
@@ -39,16 +45,15 @@ classdef DicomObj
     end
     
     methods
-        function this = DicomObj(fileStr, useVrHeuristic, varargin) %do not know if this should be varargin            
+        function this = DicomObj(fileStr, useVrHeuristic, readData)           
             if nargin == 0 %preserve standard empty constructor
                 return;
             end
             
             this = this.readDicomHeader(fileStr, useVrHeuristic);
             
-            %optional boolean to read data when creating the object
-            if nargin > 2 && islogical(varargin{3})
-                if varargin{3} == true
+            if nargin > 2 && islogical(readData)
+                if readData
                     this = this.readDicomData();
                 end
             end

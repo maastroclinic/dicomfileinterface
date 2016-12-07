@@ -17,62 +17,7 @@ classdef RtStruct < DicomObj
         function readDicomData(~)
             warning('this standard dicom function is overwritten because the rtstruct dicom object does not contain an image block');
         end
-        
-        function out = dicomHeaderForRoiNumber(this, number)
-            out = [];
-            
-            item = this.itemForRoiNumber(this.structureSetSequence, number, 'ROINumber');
-            out = this.addFieldsToOutput(out, this.structureSetSequence, item);
-            
-            item = this.itemForRoiNumber(this.observationSequence, number, 'ReferencedROINumber');
-            out = this.addFieldsToOutput(out, this.observationSequence, item);
-            
-            item = this.itemForRoiNumber(this.contourSequence, number, 'ReferencedROINumber');
-            out = this.addFieldsToOutput(out, this.contourSequence, item);
-            
-            if ~isempty(out)
-                out = rmfield(out, 'ReferencedROINumber');
-            end
-        end
-        
-        function out = dicomHeaderForRoiName(this, name)    
-            %loop over the structureSetSequence to find the number for the wanted name
-            number = [];
-            items = fieldnames(this.structureSetSequence);
-            for i = 1:length(items)
-                item = items{i};
-                if strcmp(this.structureSetSequence.(item).ROIName, name)
-                    number = this.structureSetSequence.(item).ROINumber;
-                    break;
-                end
-            end
-            %use the dataForRoiNumber to get the data for the selected name
-            out = this.dicomHeaderForRoiNumber(number);
-        end
-        
-        function item = itemForRoiNumber(~, sequence, number, fieldName)
-            items = fieldnames(sequence);
-            for i = 1:length(items)
-                item = items{i};
-                if sequence.(item).(fieldName) == number
-                    return;
-                end
-            end
-            item = [];
-        end
-        
-        function out = addFieldsToOutput(~, out, structArray, item)
-            if isempty(item)
-                out =[];
-                return;
-            end
-            
-            fields = fieldnames(structArray.(item));
-            for i = 1:length(fields)
-                out.(fields{i}) = structArray.(item).(fields{i});
-            end
-        end
-        
+                
         function out = get.structureSetSequence(this)
             out = this.dicomHeader.StructureSetROISequence;
         end

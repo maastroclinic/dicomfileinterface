@@ -1,3 +1,4 @@
+function image = createImageFromCtProperties(ctProperties)
 %CREATEIMAGEFROMCTPROPERTIES creates an Image object using a struct of ctProperties
 %
 % image = createImageFromCtProperties(ctProperties) is used to construct a grid without having to
@@ -11,7 +12,6 @@
 % + (0028,0030) PixelSpacing
 % + CTFileLength -> this is not a dicom TAG but the amound of slices in the CT scan
 
-function image = createImageFromCtProperties(ctProperties)
     validateCtProperties(ctProperties)
     names = fieldnames(ctProperties);
     for i = 1:length(names)

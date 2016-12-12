@@ -1,4 +1,5 @@
 function dicomDb = addNewFolderToDatabase(dicomDb, folder)
+% ADDNEWFOLDERTODATABASE [please add info on me here :<]
     if ~exist(folder, 'dir')
         throw(MException('MATLAB:DicomDatabase:constructor', 'provided folder is not a valid folder'))
     end

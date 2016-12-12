@@ -1,5 +1,11 @@
 classdef ContourSlice
-    
+%CONTOURSLICE contains the information of a single ContourSlice
+%
+% CONSTRUCTOR
+%  this = ContourSlice(contourSequenceItem) translates the information of a single item in the
+%  (3006,0039) ROIContourSequence dicom tag
+%
+% See also: CONTOUR, CTSLICE
     properties
         x %in cm
         y %in cm

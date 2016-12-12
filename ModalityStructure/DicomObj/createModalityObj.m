@@ -1,4 +1,9 @@
 function dicomObj = createModalityObj(dicomObj)
+%CREATEMODALITYOBJ converts a dicomObj to the corresponding modality
+%
+% dicomObj = createModalityObj(dicomObj)
+%
+% See also: DICOMOBJ, CTSLICE, RTPLAN, RTSTRUCT, RTDOSE, RTIMAGE
     switch dicomObj.modality
         case 'ct'
             dicomObj = CtSlice(dicomObj, []);

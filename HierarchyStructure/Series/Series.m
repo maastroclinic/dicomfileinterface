@@ -1,5 +1,5 @@
 classdef Series
-    %SERIES 
+    %SERIES [please add info on me here :<]
     
     properties (SetAccess = 'private')
         id

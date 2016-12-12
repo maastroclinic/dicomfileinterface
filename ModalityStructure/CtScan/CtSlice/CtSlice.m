@@ -1,6 +1,11 @@
 classdef CtSlice < DicomObj
-    %CTSLICE 
-    
+    %CTSLICE represents a single CtSlice DicomObj
+    %
+    %CONSTRUCTOR:
+    % this = CtSlice(dicomItem, useVrHeuristics) creates a CtSlice object
+    %  using the full file path (or a DicomObj) and boolean to deterine the use of VR Heuristics
+    %
+    % See also: DICOMOBJ, CTSCAN, CONTOURSLICE
     properties
         rescaleSlope
         rescaleIntercept
@@ -11,12 +16,12 @@ classdef CtSlice < DicomObj
     end
     
     methods
-        function this = CtSlice(varargin)
+        function this = CtSlice(dicomItem, useVrHeuristics)
             if nargin == 0 %preserve standard empty constructor
                 return;
             end
             
-            this = constructorParser(this, 'ct', varargin{1}, varargin{2});
+            this = constructorParser(this, 'ct', dicomItem, useVrHeuristics);
         end
         
         function out = get.rescaleSlope(this)

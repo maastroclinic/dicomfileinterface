@@ -1,8 +1,18 @@
 classdef DicomObj
     %DICOMOBJ basic DICOM object that can be extended for other modalities
+    %
+    %CONSTRUCTORS
+    % this = DicomObj(fileStr, useVrHeuristic) creates DicomObj to represent the data of the dicom
+    %  header of a file. useVrHeuristics determines if the matlab datadictionary or the filemeta
+    %  data is leading in translating the header. useVrHeuristics prevents errors when reading
+    %  headers that are not conform the dicom dictionary of Matlab, but comes with a cost of slow
+    %  file reading. [help] dicominfo provides more info.
+    % this = DicomObj(fileStr, useVrHeuristic, readData) added the readData boolean will also
+    %  perform a dicomread on the file to get the binary data if it is available
+    %
+    % See also: DICOMINFO, DICOMREAD
     
     properties
-        %store the unprocessed DICOM header in here.
         dicomHeader
        
         patientId
@@ -39,16 +49,15 @@ classdef DicomObj
     end
     
     methods
-        function this = DicomObj(fileStr, useVrHeuristic, varargin) %do not know if this should be varargin            
+        function this = DicomObj(fileStr, useVrHeuristic, readData)           
             if nargin == 0 %preserve standard empty constructor
                 return;
             end
             
             this = this.readDicomHeader(fileStr, useVrHeuristic);
             
-            %optional boolean to read data when creating the object
-            if nargin > 2 && islogical(varargin{3})
-                if varargin{3} == true
+            if nargin > 2 && islogical(readData)
+                if readData
                     this = this.readDicomData();
                 end
             end

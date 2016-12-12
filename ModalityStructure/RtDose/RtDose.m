@@ -1,5 +1,11 @@
 classdef RtDose < DicomObj
-    %RTDOSE 
+    %RTDOSE represents a RTDOSE DicomObj
+    %
+    %CONSTRUCTOR
+    % this = RtDose(dicomItem, useVrHeuristics) creates a RtDose object
+    %  using the full file path (or a DicomObj) and boolean to deterine the use of VR Heuristics
+    %
+    % See also: DICOMOBJ, CREATEIMAGEFROMRTDOSE
     
     properties      
         is3dDose
@@ -24,12 +30,12 @@ classdef RtDose < DicomObj
     end
     
     methods
-        function this = RtDose(varargin)
+        function this = RtDose(dicomItem, useVrHeuristics)
             if nargin == 0 %preserve standard empty constructor
                 return;
             end
             
-            this = constructorParser(this, 'rtdose', varargin{1}, varargin{2});
+            this = constructorParser(this, 'rtdose', dicomItem, useVrHeuristics);
         end
         
         %overwrite function to add image permutation.

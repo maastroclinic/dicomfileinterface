@@ -1,4 +1,5 @@
 function rtdose = getRtDoseForPlan(patient, planUid)
+%GETRTDOSEFORPLAN [please add info on me here :<]
     if ~patient.planReferenceObjects.rtdoseForPlan.isKey(planUid)
         rtdose = [];
         return;

@@ -1,5 +1,5 @@
 classdef Patient
-    %PATIENT
+    %PATIENT [please add info on me here :<]
     
     properties (SetAccess = 'private')
         id

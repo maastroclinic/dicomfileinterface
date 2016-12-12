@@ -1,4 +1,4 @@
-function [ Xn, Yx, Zn ] = applyRigidTransformation( Xq, Yq, Zq, rigidTransformation)
+function [ Xn, Yn, Zn ] = applyRigidTransformation(Xq, Yq, Zq, rigidTransformation)
 %APPLYRIGIDTRANSFORMATION contains the DGRT code that is used to apply rigid transformation to the
 % image vectors. Do not understand this yes.
 

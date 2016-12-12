@@ -1,6 +1,16 @@
 classdef CtScan
     %CTSCAN representation of an entire DICOM CT-SCAN
-    
+    %
+    %CONSTRUCTORS
+    % this = CtScan(pathStr, useVrHeuristics) creates this object using
+    %   a folder with CT dicom files + vrHeuristicsBoolean
+    %
+    % this = CtScan(dicomObjList, useVrHeuristics) creates this object using 
+    %   an array of DicomObj ct files + boolean useVrHeuristics
+    %
+    % this = CtScan(cellOfFiles, useVrHeuristics) creates this object using
+    %   a cell array with CT dicom file locations + boolean useVrHeuristics
+    %
     % This CT is given in the image coordinate system
     %               -----------         IEC
     %              /|         /|         Z
@@ -17,7 +27,8 @@ classdef CtScan
     %
     % Origin coordinates will be the bottom-left-corner. The CT cube will
     % be addressed in the following way pixelData(1:columns,1:numberOfSlices,1:rows)
-    
+    %
+    % See also: DICOMOBJ, CTSLICE, CREATEIMAGEFROMCT
     properties
         ctSlices = CtSlice()
         instanceSortedCtSlices
@@ -38,24 +49,19 @@ classdef CtScan
     end
     
     methods
-        function this = CtScan(varargin)
+        function this = CtScan(dataInput, useVrHeuristics)
             if nargin == 0 %preserve standard empty constructor
                 return;
             end
             
             %if the input is a folder, create file list array
-            if ischar(varargin{1})
-                fileNames = filesUnderFolders(varargin{1}, 'detail');
-                this = this.addListOfFiles(fileNames, varargin{2});
-            elseif isa(varargin{1}, 'DicomObj')
-                this = this.addListOfObjects(varargin{1});
-            elseif isa(varargin{1}, 'cell')
-                list = varargin{1};
-                if ischar(list{1}) && exist(list{1}, 'file')
-                    this = this.addListOfFiles(list, varargin{3});
-                else
-                    throw(MException('MATLAB:CtScan:constructor', 'invalid input, the first file in the file list does not exist'));
-                end
+            if ischar(dataInput)
+                fileNames = filesUnderFolders(dataInput, 'detail');
+                this = this.addListOfFiles(fileNames, useVrHeuristics);
+            elseif isa(dataInput, 'DicomObj')
+                this = this.addListOfObjects(dataInput);
+            elseif iscellstr(dataInput)
+                this = this.addListOfFiles(dataInput, useVrHeuristics);
             else
                 throw(MException('MATLAB:CtScan:constructor', 'invalid input type, please give a folder location or a file list as a cell array'));
             end
@@ -148,10 +154,10 @@ classdef CtScan
         end
         
         function out = get.originX(this)
-            if this.ctSlices(1).imageOrientationPatient(1) == 1
-                out = this.ctSlices(1).x;
+            if this.ySortedCtSlices(1).imageOrientationPatient(1) == 1
+                out = this.ySortedCtSlices(1).x;
             elseif this.ySortedCtSlices(1).imageOrientationPatient(1) == -1
-                out = this.ctSlices(1).x - ...
+                out = this.ySortedCtSlices(1).x - ...
                         (this.pixelSpacingX * this.ctSlices(1).columns);
             else
                 out = [];
@@ -164,10 +170,10 @@ classdef CtScan
         end
         
         function out = get.originZ(this)
-            if this.ctSlices(1).imageOrientationPatient(5) == -1
-                out = -this.ctSlices(1).z;
-            elseif this.ctSlices(1).imageOrientationPatient(5) == 1
-                out = -this.ctSlices(1).z - ...
+            if this.ySortedCtSlices(1).imageOrientationPatient(5) == -1
+                out = -this.ySortedCtSlices(1).z;
+            elseif this.ySortedCtSlices(1).imageOrientationPatient(5) == 1
+                out = -this.ySortedCtSlices(1).z - ...
                         (this.pixelSpacingZ * (this.ySortedCtSlices(1).rows - 1));
             else
                 out = [];

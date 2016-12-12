@@ -1,4 +1,5 @@
 function [ dicomDb ] = addDicomObjToDatabase( dicomDb, files )
+%ADDDICOMOBJTODATABASE [please add info on me here :<]
     if isempty(files)
         return;
     end

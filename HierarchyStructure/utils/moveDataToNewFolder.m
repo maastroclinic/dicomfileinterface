@@ -1,4 +1,5 @@
 function [ status ] = moveDataToNewFolder(data, targetLocation )
+%MOVEDATATONEWFOLDER [please add info on me here :<]
     if ~exist(targetLocation, 'dir')
         throw(MException('MATLAB:moveDataToNewFolder', 'folder does not exist'));
     end

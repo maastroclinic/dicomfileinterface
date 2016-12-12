@@ -1,10 +1,25 @@
 function image = createVolumeOfInterest(contour, refImage)
-%CREATEBITMASK for a contour object on a referenced image grid
+%CREATEVOLUMEOFINTEREST for a contour object on a referenced image grid
+%
+% image = createVolumeOfInterest(contour, refImage) creates an VolumeOfInterest object by using
+%  poly2mask to convert the contour to multislice 2D matrix and is interpolated with the
+%  matchImageRepresentation function
+%  
+% See also: VOLUMEOFINTEREST, IMAGE, CREATEEMPTYIMAGEFROMCONTOUR, MATCHIMAGEREPRESENTATION,
+% POLY2MASK
     if ~refImage.is3d
-        throw(MException('MATLAB:createImageBitmask', 'function is made for 3d interpolation, please provide a 3D reference image'));
+        image = Image();
+        warning('function is made for 3d interpolation, could not project contour on image')
+        return;
     end
     
-    image = createImageFromContour(contour, refImage.pixelSpacingX, refImage.pixelSpacingY, refImage.pixelSpacingZ);
+    if contour.numberOfContourSlices == 0
+        image = Image();
+        warning('provided contour is not a valid contour, no contourSlices found in object')
+        return;
+    end
+    
+    image = createEmptyImageFromContour(contour, refImage.pixelSpacingX, refImage.pixelSpacingY, refImage.pixelSpacingZ);
 
     iY = contour.indexUniqueY;
     pixelData = zeros(image.columns,image.rows,image.slices);

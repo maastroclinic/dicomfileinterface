@@ -1,4 +1,5 @@
 function rtimage = getRtImageForPlan(patient, planUid)
+%GETRTIMAGEFORPLAN [please add info on me here :<]
     if ~patient.planReferenceObjects.rtimageForPlan.isKey(planUid)
         rtimage = [];
         return;

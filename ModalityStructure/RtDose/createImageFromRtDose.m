@@ -1,7 +1,14 @@
 function image = createImageFromRtDose(rtdose)
+%CREATEIMAGEFROMRTDOSE creates an Image object using the binary data of the RtDose file
+%
+% image = createImageFromRtDose(rtdose)
+%
+% See also: RTDOSE, DETERMINEDOSEVECTORS, IMAGE
     if ~isequal(rtdose.imageOrientationPatient,...
             [1;0;0;0;1;0]);
-        throw(MException('MATLAB:createImageFromCt', 'Unsupported ImagePostionPatient for provided rtdose'));
+        warning('Unsupported ImagePositionPatient for provided rtdose');
+        image =  Image();
+        return;
     end
     
     if isempty(rtdose.pixelData)

@@ -1,6 +1,12 @@
 classdef Image
-    %IMAGE contains sampled information of a real world space. 
-    
+    %IMAGE contains sampled information of a real world space. Representing the binary data of DicomObj 
+    %
+    %CONSTRUCTOR
+    % this = Image(pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, pixelData)
+    %  use the "createImage..." functions to properly create an image object 
+    %
+    % See also: MATCHIMAGEREPRESENTATION, VOLUMEOFINTEREST, CALCULATEIMAGESTATISTICS,
+    % PLOTSLICEOFIMAGE, CREATEIMAGEFROMRTDOSE, CREATEIMAGEFROMCT
     properties 
         pixelSpacingX %in cm
         pixelSpacingY %in cm

@@ -1,5 +1,11 @@
-function [ dto ] = createDoseVolumeHistogramDto( dvh )
-    
+function dto = createDoseVolumeHistogramDto(dvh)
+%CREATEDOSEVOLUMEHISTOGRAMDTO is a function to convert the DoseVolumeHistogram 
+% object to a JSON DTO object. This is used for REST communication.
+%
+% dto = createDoseVolumeHistogramDto(dvh)
+%
+% See also: DOSEVOLUMEHISTOGRAM, CREATEDOSEVOLUMEHISTOGRAMFROMDTO
+
     dvhOutput.volumeUnity = 'cc';
     dvhOutput.doseUnity = 'Gy';
     

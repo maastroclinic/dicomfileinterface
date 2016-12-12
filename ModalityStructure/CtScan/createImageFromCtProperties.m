@@ -1,4 +1,19 @@
 function image = createImageFromCtProperties(ctProperties)
+%CREATEIMAGEFROMCTPROPERTIES creates an Image object using a struct of ctProperties
+%
+% image = createImageFromCtProperties(ctProperties) is used to construct a grid without having to
+%  read the dicom files in matlab to save speed when using this library from java. This function
+%  converts the following CT dicom tags into the information that is needed to construct the image:
+% + (0018,0050) SliceThickness
+% + (0020,0032) ImagePositionPatient
+% + (0020,0037) ImageOrientationPatient
+% + (0028,0010) Rows
+% + (0028,0011) Columns
+% + (0028,0030) PixelSpacing
+% + CTFileLength -> this is not a dicom TAG but the amound of slices in the CT scan
+%
+% See also: CTSCAN, CTSLICE, CREATEIMAGEFROMCT
+
     validateCtProperties(ctProperties)
     names = fieldnames(ctProperties);
     for i = 1:length(names)

@@ -1,4 +1,5 @@
 function [plan, dose, struct, ct] = createPlanPackage(patient, planLabel)
+%CREATEPLANPACKAGE [please add info on me here :<]
     planUid = patient.planReferenceObjects.getPlanUidForLabel(planLabel);
     if isempty(planUid)
         throw(MException('MATLAB:Patient:createPlanPackage', 'planLabel not found for patient'))

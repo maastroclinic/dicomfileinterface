@@ -1,5 +1,5 @@
 classdef PlanReferenceObjects
-    %PLANREFERENCEOBJECTS
+    %PLANREFERENCEOBJECTS [please add info on me here :<]
     
     properties
         planUids

@@ -1,5 +1,5 @@
 classdef DicomDatabase
-    %DICOMDATABASE
+    %DICOMDATABASE [please add info on me here :<]
     
     properties
         patientIds

@@ -1,5 +1,10 @@
-function contourBitmask = createContourMaskFromVoi( voi )
-    
+function contourBitmask = createContourMaskFromVoi(voi)
+%CREATECONTOURMASKFROMVOI contours the VolumeOfInterest and creates a binary 3D voxel edge for the
+% VolumeOfInterest
+%
+% contourBitmask = createContourMaskFromVoi(voi)
+%
+% See also: VOLUMEOFINTEREST
     newPixelData = zeros(voi.columns, voi.slices, voi.rows);
     origPixelData = voi.uncompressedPixelData;
     

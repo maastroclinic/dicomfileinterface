@@ -1,0 +1,19 @@
+function [ voiImage ] = createImageDataForVoiFullGrid(voi, image)
+%CREATEIMAGEDATAFORVOIFULLGRID creates an image with values for a bitmask.
+%
+%createImageDataForVoi(voi, refImage) can force the output image to be on the full
+% grid instead of the compressed grid of volume of interest
+%
+% See also: VOLUMEOFINTEREST, CREATEIMAGEDATAFORVOI
+
+    image = voi.uncompressedpixelData .* image.pixelData;
+    image(image == 0) = NaN;
+
+    voiImage = Image(voi.pixelSpacingX, ...
+        voi.pixelSpacingY, ...
+        voi.pixelSpacingZ, ...
+        voi.realX, ...
+        voi.realY, ...
+        voi.realZ, ...
+        image);
+end

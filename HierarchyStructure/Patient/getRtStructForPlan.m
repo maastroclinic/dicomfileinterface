@@ -1,4 +1,5 @@
 function rtstruct = getRtStructForPlan(patient, planUid)
+%GETRTSTRUCTFORPLAN [please add info on me here :<]
     if ~patient.planReferenceObjects.rtstructsForPlan.isKey(planUid)
         rtstruct = [];
         return;

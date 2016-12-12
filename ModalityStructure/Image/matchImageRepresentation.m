@@ -21,10 +21,10 @@ function image = matchImageRepresentation(image, refImage, defaultValue, method)
         method = 'linear';
     end
     
-    if ~coordinatesInRange(image, refImage)
-        image = Image();
-        return;
-    end
+%     if ~coordinatesInRange(image, refImage)
+%         image = Image();
+%         return;
+%     end
 
     newImage = interp3(...
         double(image.realY),...

@@ -62,7 +62,7 @@ classdef CtScan
                 this = this.addListOfObjects(dataInput);
             elseif isa(dataInput, 'cell')
                 if ischar(dataInput{1}) && exist(dataInput{1}, 'file')
-                    this = this.addListOfFiles(list, useVrHeuristics);
+                    this = this.addListOfFiles(dataInput, useVrHeuristics);
                 else
                     throw(MException('MATLAB:CtScan:constructor', 'invalid input, the first file in the file list does not exist'));
                 end

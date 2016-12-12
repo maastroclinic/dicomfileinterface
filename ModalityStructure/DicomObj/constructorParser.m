@@ -1,5 +1,5 @@
 function dicomObj = constructorParser(dicomObj, modality, varargin )
-%CONSTRUCTOR PARSER is a helper function that is used the all the DicomObj based classes.
+%CONSTRUCTOR PARSER is a helper function that is used by all the DicomObj based classes.
 % this function is not required for anything else.
 % dicomObj = constructorParser(dicomObj, modality, varargin) 
 %  varargin{1} can be a DicomObj or a file path.

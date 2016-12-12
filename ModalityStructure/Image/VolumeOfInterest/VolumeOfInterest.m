@@ -7,7 +7,7 @@ classdef VolumeOfInterest < Image
     %  this = VolumeOfInterest(pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, pixelData)
     %    the same constructor as the ImageObject
     %
-    % See also: IMAGE, CREATEIMAGEFROMCONTOUR, CREATEIMAGEDATAFORVOI, CREATECONTOURMASKFROMVOI,
+    % See also: IMAGE, CREATEIMAGEDATAFORVOI, CREATEIMAGEDATAFORVOIFULLGRID, CREATECONTOURMASKFROMVOI,
     % ADDCONTOURTOFIGUREFROMVOI, ADDCONTOURFILLTOFIGUREFROMVOI
     
     properties

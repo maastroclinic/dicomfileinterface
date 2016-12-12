@@ -6,7 +6,7 @@ function image = createImageFromRtDose(rtdose)
 % See also: RTDOSE, DETERMINEDOSEVECTORS, IMAGE
     if ~isequal(rtdose.imageOrientationPatient,...
             [1;0;0;0;1;0]);
-        warning('Unsupported ImagePostionPatient for provided rtdose');
+        warning('Unsupported ImagePositionPatient for provided rtdose');
         image =  Image();
         return;
     end

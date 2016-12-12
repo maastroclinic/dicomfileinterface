@@ -31,7 +31,7 @@ end
 color = zeros((huMax-huMin), 3);
 color(iLowerLimit:iUpperLimit, :) = grayScale(iLowerScale:iUpperScale,:);
 color(iUpperLimit:end,:) = 1;
-% colormap(color);
+colormap(color);
 
 end
 

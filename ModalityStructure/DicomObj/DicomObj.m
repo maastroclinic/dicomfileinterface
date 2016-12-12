@@ -3,9 +3,14 @@ classdef DicomObj
     %
     %CONSTRUCTORS
     % this = DicomObj(fileStr, useVrHeuristic) creates DicomObj to represent the data of the dicom
-    %  header of a file
+    %  header of a file. useVrHeuristics determines if the matlab datadictionary or the filemeta
+    %  data is leading in translating the header. useVrHeuristics prevents errors when reading
+    %  headers that are not conform the dicom dictionary of Matlab, but comes with a cost of slow
+    %  file reading. [help] dicominfo provides more info.
     % this = DicomObj(fileStr, useVrHeuristic, readData) added the readData boolean will also
     %  perform a dicomread on the file to get the binary data if it is available
+    %
+    % See also: DICOMINFO, DICOMREAD
     
     properties
         dicomHeader

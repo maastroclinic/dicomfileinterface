@@ -7,7 +7,7 @@ function out = calculateDvhD(dvh, volumeLimit, volumeLimitInPercentage, dosePerc
 % out = calculateDvhD(dvh, volumeLimit, volumeLimitInPercentage, dosePercentage) providing more
 %  inputs will enable an absolute volumeLimit and an dose output in percentage
 %
-% See alse: DOSEVOLUMEHISTOGRAM, CALCULATEDVHV
+% See also: DOSEVOLUMEHISTOGRAM, CALCULATEDVHV
     if nargin < 4
         volumeLimitInPercentage = true;
         dosePercentage = false;

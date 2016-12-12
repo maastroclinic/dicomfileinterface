@@ -11,7 +11,7 @@ function image = matchImageRepresentation(image, refImage, defaultValue, method)
 % image = matchImageRepresentation(image, refImage, defaultValue, method) use to set a different
 %  default value and interpolation method. Warning! The funtion does not check if interpolation method is valid.
 %
-% See alse: IMAGE, VOLUMEOFINTEREST
+% See also: IMAGE, VOLUMEOFINTEREST
 
     if nargin < 3
         defaultValue = double(0);

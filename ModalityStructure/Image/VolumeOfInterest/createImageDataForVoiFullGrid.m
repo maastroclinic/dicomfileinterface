@@ -4,7 +4,7 @@ function [ voiImage ] = createImageDataForVoiFullGrid(voi, image)
 %createImageDataForVoi(voi, refImage) can force the output image to be on the full
 % grid instead of the compressed grid of volume of interest
 %
-% See also: VOLUMEOFINTEREST, CREATREIMAGEDATAFORVOI
+% See also: VOLUMEOFINTEREST, CREATEIMAGEDATAFORVOI
 
     image = voi.uncompressedpixelData .* image.pixelData;
     image(image == 0) = NaN;

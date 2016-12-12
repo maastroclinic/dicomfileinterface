@@ -7,7 +7,7 @@ function out = calculateDvhV(dvh, doseLimit, relativeOutput)
 % out = calculateDvhV( dvh, doseLimit, relative ) providing more
 %  inputs will enable an relative output
 %
-% See alse: DOSEVOLUMEHISTOGRAM, CALCULATEDVHD
+% See also: DOSEVOLUMEHISTOGRAM, CALCULATEDVHD
     if nargin == 2
         relativeOutput = false;
     end

@@ -11,6 +11,8 @@ function image = createImageFromCtProperties(ctProperties)
 % + (0028,0011) Columns
 % + (0028,0030) PixelSpacing
 % + CTFileLength -> this is not a dicom TAG but the amound of slices in the CT scan
+%
+% See also: CTSCAN, CTSLICE, CREATEIMAGEFROMCT
 
     validateCtProperties(ctProperties)
     names = fieldnames(ctProperties);

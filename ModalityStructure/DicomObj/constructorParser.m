@@ -4,6 +4,8 @@ function dicomObj = constructorParser(dicomObj, modality, varargin )
 % dicomObj = constructorParser(dicomObj, modality, varargin) 
 %  varargin{1} can be a DicomObj or a file path.
 %  varargin{2} must be a boolean for the useVrHeuristic setting when providing a file path
+%
+%See also: DICOMOBJ, RTDOSE, RTIMAGE, RTPLAN, RTSTRUCT
     if ischar(varargin{1})  
         dcm = DicomObj(varargin{1}, varargin{2});
         dicomObj.dicomHeader = dcm.dicomHeader;

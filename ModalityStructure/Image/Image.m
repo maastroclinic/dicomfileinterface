@@ -6,7 +6,7 @@ classdef Image
     %  use the "createImage..." functions to properly create an image object 
     %
     % See also: MATCHIMAGEREPRESENTATION, VOLUMEOFINTEREST, CALCULATEIMAGESTATISTICS,
-    % PLOTSLICEOFIMAGE, CREATEIMAGEFROMCONTOUR, CREATEIMAGEFROMRTDOSE, CREATEIMAGEFROMCTSCAN
+    % PLOTSLICEOFIMAGE, CREATEIMAGEFROMRTDOSE, CREATEIMAGEFROMCT
     properties 
         pixelSpacingX %in cm
         pixelSpacingY %in cm

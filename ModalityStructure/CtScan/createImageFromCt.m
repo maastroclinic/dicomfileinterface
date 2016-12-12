@@ -5,6 +5,8 @@ function image = createImageFromCt(ctScan, loadImageData)
 %  in the CtScan dicom object. loadImageData is a boolean to determine if the actual image data is loaded. If the image is only
 %  needed to define a grid for RTSTRUCT or RTDOSE reading the image data is unnecessary and will
 %  save time
+%
+% See also: CTSCAN, CTSLICE, CREATEIMAGEFROMCTPROPERTIES
 
     if ~ctScan.hasUniformThickness()
         throw(MException('MATLAB:createImageFromCt', 'CT scans with changing sliceThickness are not supported'));

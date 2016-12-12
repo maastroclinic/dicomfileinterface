@@ -14,6 +14,13 @@ function out = dicomHeaderForRoiName(rtStruct, name)
             break;
         end
     end
+    
+    if isempty(number)
+        warning('ROI not found');
+        out = [];
+        return;
+    end
+    
     out = dicomHeaderForRoiNumber(rtStruct, number);
 end
 

@@ -1,5 +1,5 @@
 function image = createImageFromRtDose(rtdose)
-%CREATEIMAGEFROMRTDOSE creates an Imge object using the binary data of the RtDose file
+%CREATEIMAGEFROMRTDOSE creates an Image object using the binary data of the RtDose file
 %
 % image = createImageFromRtDose(rtdose)
 %

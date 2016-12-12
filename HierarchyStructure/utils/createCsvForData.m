@@ -1,4 +1,5 @@
 function [ status ] = createCsvForData( data, filename )
+%CREATECSVFORDATA [please add info on me here :<]
     status = false;
     try
         pFile = fopen(filename, 'w+');

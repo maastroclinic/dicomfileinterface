@@ -1,5 +1,6 @@
 function [ dicomDb ] = addPatientToDb(dicomDb, patientDir)
-    disp('Adding RTPLAN objects')
+%ADDPATIENTTODB [please add info on me here :<]
+    disp('Adding RTPLAN objects') %iew, disp, create logger maybe?
     dicomDb = addModalityDirToDb(dicomDb, patientDir, 'RTPLAN');
     
     disp('Adding CT objects')

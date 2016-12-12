@@ -1,5 +1,5 @@
 classdef Study
-    %STUDY 
+    %STUDY [please add info on me here :<]
     
     properties
         id

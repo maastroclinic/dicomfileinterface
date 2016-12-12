@@ -1,4 +1,5 @@
 function [ dicomDb ] = addCtDirToDb(dicomDb, rootDir )
+%ADDCTDIRTODB [please add info on me here :<]
     modalityDir = fullfile(rootDir, 'CT');
     if exist(modalityDir, 'dir')
         seriesDirs = dir(modalityDir);

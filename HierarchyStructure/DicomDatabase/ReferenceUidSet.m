@@ -1,5 +1,6 @@
 classdef ReferenceUidSet
-    %UNTITLED small oject to hold the keys needed to get the objects from the dicomDatabase
+    %REFERENCEUIDSET [please add info on me here :<]
+    % small oject to hold the keys needed to get the objects from the dicomDatabase
     
     properties
         studyInstanceUid

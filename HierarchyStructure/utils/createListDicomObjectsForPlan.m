@@ -1,4 +1,5 @@
 function data = createListDicomObjectsForPlan(patientObj, planLabel, ctDir)
+%CREATELISTDICOMOBJECTSFORPLAN [please add info on me here :<]
     if nargin == 2
         ctDir = false; 
     end

@@ -1,4 +1,5 @@
 function ctScan = getCtScanForPlan(patient, planUid)
+%GETCTSCANFORPLAN [please add info on me here :<]
     structUid = patient.planReferenceObjects.rtstructsForPlan(planUid);
     if ~patient.planReferenceObjects.ctSeriesForStruct.isKey(structUid)
         ctScan = [];

@@ -14,7 +14,8 @@ function hFig = addContourToFigureFromVoi(voi, sliceNr, lineSpec, hFig)
     end
     
     if sliceNr > voi.slices
-        MException('MATLAB:dicom-file-interface:addContourToFigureFromVoi', 'Selected slice is not present in VOI');
+        warning('Selected slice is not present in VOI, returning');
+        return;
     end
     
     slice = double(squeeze(voi.uncompressedPixelData(:,sliceNr,:)));

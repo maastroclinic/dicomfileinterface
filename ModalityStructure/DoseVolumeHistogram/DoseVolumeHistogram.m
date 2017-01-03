@@ -5,7 +5,7 @@ classdef DoseVolumeHistogram
 % CONSTRUCTOR
 %  this = DoseVolumeHistogram(image, binsize) samples an image object with the size of binsize
 %
-% See also: VOLUMEOFINTEREST, CALCULATEDVHD, CALCULATEDVHV, CREATEDOSEVOLUMEHISTOGRAMDTA,
+% See also: VOLUMEOFINTEREST, CALCULATEDVHD, CALCULATEDVHV, CREATEDOSEVOLUMEHISTOGRAMDTO,
 % CREATEDOSEVOLUMEHISTOGRAMFROMDTO
     properties
         prescribedDose

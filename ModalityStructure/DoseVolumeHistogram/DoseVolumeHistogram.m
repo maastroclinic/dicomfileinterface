@@ -29,14 +29,11 @@ classdef DoseVolumeHistogram
             end
             
             this = this.parseImage(image, binsize);
-            this.binsize = binsize;
-            this.minDose = nanmin(image.pixelData(:));
-            this.meanDose = nanmean(image.pixelData(:));
-            this.maxDose = nanmax(image.pixelData(:));
-            this.volume = image.volume;
         end
         
         function this = parseImage(this, image, binsize)
+        %PARSEIMAGE(image, binsize) converts a provided dose image to a DoseVolumeHistogram
+        % in the provided binsize.
             if ~isnumeric(binsize) && length(binsize) == 1
                 throw(MException('DoseVolumeHistogram:parseImage','binsize should be single numeric value'));
             end
@@ -55,24 +52,17 @@ classdef DoseVolumeHistogram
             vHistogram = [0, vHistogram]; %need to ad a leading 0 to make sure the vector is alligned with the dose vector
             this.vVolume = abs(vHistogram - max(vHistogram)); % Inverse
             this.vVolume = this.vVolume.*(image.pixelSpacingX*image.pixelSpacingY*image.pixelSpacingZ);
+            
+            this.binsize = binsize;
+            this.minDose = nanmin(image.pixelData(:));
+            this.meanDose = nanmean(image.pixelData(:));
+            this.maxDose = nanmax(image.pixelData(:));
+            this.volume = image.volume;
         end
         
+        % -------- START GETTERS/SETTERS ----------------------------------
         function out = get.doseSamples(this)
             out = length(this.vDose);
-        end
-        
-        function this = set.prescribedDose(this, dose)
-            if ~isnumeric(dose) && length(dose) == 1
-                throw(MException('DoseVolumeHistogram:prescribedDose','prescribedDose should be single numeric value'));
-            end
-            this.prescribedDose = dose;
-        end
-        
-        function this = set.volume(this, volume)
-            if ~isnumeric(volume) && length(volume) == 1
-                throw(MException('DoseVolumeHistogram:prescribedDose','prescribedDose should be single numeric value'));
-            end
-            this.volume = volume;
         end
         
         function out = get.vVolumeRelative(this)
@@ -87,6 +77,20 @@ classdef DoseVolumeHistogram
             if ~isempty(this.prescribedDose)
                 out = (this.vDose / this.prescribedDose) * 100;
             end
+        end
+        
+        function this = set.prescribedDose(this, dose)
+            if ~isnumeric(dose) && length(dose) == 1
+                throw(MException('DoseVolumeHistogram:prescribedDose','prescribedDose should be single numeric value'));
+            end
+            this.prescribedDose = dose;
+        end
+        
+        function this = set.volume(this, volume)
+            if ~isnumeric(volume) && length(volume) == 1
+                throw(MException('DoseVolumeHistogram:prescribedDose','prescribedDose should be single numeric value'));
+            end
+            this.volume = volume;
         end
     end
 end

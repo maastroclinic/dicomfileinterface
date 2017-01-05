@@ -64,6 +64,8 @@ classdef DicomObj
         end
         
         function this = readDicomHeader(this, fileName, useVrHeuristic)
+        %READDICOMHEADER(fileName, useVrHeuristics) read the dicomheader of the file
+        % at the provided file location using the VrHeuristics (true/false) settings provided.
             if ~exist(fileName, 'file')
                 fnErrorString = regexprep(fileName,'\','\\\');
                 throw(MException('MATLAB:dicomObj:readDicomFile', ['DICOM file ''' fnErrorString ''' not found.''']));
@@ -78,6 +80,7 @@ classdef DicomObj
         end
         
         function this = readDicomData(this)
+        %READDICOMDATA() read the dicom pixel data of the file represented by the header
             if ~exist(this.filename, 'file')
                 fnErrorString = regexprep(this.filename,'\','\\\');
                 throw(MException('MATLAB:dicomObj:readDicomFile', ['DICOM file ''' fnErrorString ''' not found.''']));
@@ -87,7 +90,8 @@ classdef DicomObj
         end
         
         function status = writeToFile(this, path)
-            this.dicomHeader.Filename = fullfile(path, [this.sopInstanceUid '.dcm']);
+        % WRITETOFILE(path) writes the dicomObj represented to a new file at the provided location
+            this.dicomHeader.Filename = fullfile(path, [this.modality '_' this.sopInstanceUid '.dcm']);
             status = dicomwrite(this.pixelData, ...
                                 this.filename, ...
                                 this.dicomHeader, 'CreateMode', 'copy');
@@ -101,6 +105,7 @@ classdef DicomObj
             end
         end
         
+        % -------- START GETTERS/SETTERS ----------------------------------
         function out = get.patientId(this)
             out = this.dicomHeader.PatientID;
         end

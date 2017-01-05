@@ -1,9 +1,10 @@
 function out = createRescaledImageFromRtDoses(rtDoses, refImage)
-%CREATERESCALEDIMAGEFROMRTDOSES creates image from an array of rtDose objects.
+%CREATERESCALEDIMAGEFROMRTDOSES creates rescaled image from an array of rtDose objects.
 %
-% image = createImageFromRtDose(rtdose)
+% image = createImageFromRtDose(rtDoses, refImage) creates a new image object for each RTDOSE
+%   in the RtDose array on the refence spacing refImage and sums the pixelData
 %
-% See also: RTDOSE, IMAGE
+% See also: RTDOSE, IMAGE, CREATEIMAGEFROMRTDOSE
 if ~frameOfReferenceUidIsEqual(rtDoses)
     warning('cannot add doses that where not based on the same CT scan');
     out = Image();
@@ -14,8 +15,8 @@ newPixelData = 0;
 for i = 1:length(rtDoses)
     rtDose = rtDoses(i);
     doseImage = createImageFromRtDose(rtDose);
-    matchedRtDose = matchImageRepresentation(doseImage, refImage);
-    newPixelData = newPixelData + matchedRtDose.pixelData;
+    refDoseImage = matchImageRepresentation(doseImage, refImage);
+    newPixelData = newPixelData + refDoseImage.pixelData;
 end
 
 out = Image(refImage.pixelSpacingX, ...

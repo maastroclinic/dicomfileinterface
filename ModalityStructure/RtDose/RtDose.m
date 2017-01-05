@@ -5,7 +5,7 @@ classdef RtDose < DicomObj
     % this = RtDose(dicomItem, useVrHeuristics) creates a RtDose object
     %  using the full file path (or a DicomObj) and boolean to deterine the use of VR Heuristics
     %
-    % See also: DICOMOBJ, CREATEIMAGEFROMRTDOSE
+    % See also: DICOMOBJ, CREATEIMAGEFROMRTDOSE, CREATERESCALEDIMAGESFORRTDOSES
     
     properties      
         is3dDose

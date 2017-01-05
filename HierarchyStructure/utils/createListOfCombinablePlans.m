@@ -1,8 +1,11 @@
-function combinablePlanUids = createListOfCombinablePlans(patientObj, refPlanUid)
+function combinablePlanUids = createListOfCombinablePlans(patient, refPlanUid)
 %CREATELISTOFCOMBINABLEPLANS creates a dicomObj Array that containes the objects of two
 %plans than can be combined into one because it is based on the same anatomy.
-    
-    [plans, refPlan] = collectPlansFromPatient(patientObj, refPlanUid);
+%
+% combinablePlanUids = createListOfCombinablePlans(patient, refPlanUid)
+%
+% See also: PATIENT, COMBINEDOSEPIXELDATA, CREATEDOSESERIESFORCOMBINABLEPLANS
+    [plans, refPlan] = collectPlansFromPatient(patient, refPlanUid);
     
     if isempty(refPlan)
         throw(MException('MATLAB:createListOfCombinableDosesForPlan:ObjectNotFound', ...
@@ -23,15 +26,15 @@ function combinablePlanUids = createListOfCombinablePlans(patientObj, refPlanUid
     end
 end
 
-function [plans, refPlan] = collectPlansFromPatient(patientObj, refPlanUid)
+function [plans, refPlan] = collectPlansFromPatient(patient, refPlanUid)
     plans = containers.Map;
     refPlan = [];
-    for i = 1:length(patientObj.planReferenceObjects.planUids)
-        uid = patientObj.planReferenceObjects.planUids{i};
+    for i = 1:length(patient.planReferenceObjects.planUids)
+        uid = patient.planReferenceObjects.planUids{i};
         if strcmp(refPlanUid, uid)
-            refPlan = patientObj.getDicomObject(uid);
+            refPlan = patient.getDicomObject(uid);
         else
-            plans(uid) = patientObj.getDicomObject(uid);
+            plans(uid) = patient.getDicomObject(uid);
         end
     end
 end

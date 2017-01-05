@@ -1,5 +1,9 @@
 function [series, pixelData] = createDoseSeriesForCombinablePlans(patient, planUids)
 %CREATECOMBINEDDOSE add a combined dicom set to patient
+%
+% [series, pixelData] = createDoseSeriesForCombinablePlans(patient, planUids)
+%
+% See also: PATIENT, SERIES, COMBINEDOSEPIXELDATA, CREATELISTOFCOMBINABLEPLANS
     series = Series();
     pixelData = [];
     

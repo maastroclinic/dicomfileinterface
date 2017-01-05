@@ -9,7 +9,7 @@ function rtdose = getRtDoseForPlan(patient, planUid)
     j = 1;
     for i = 1:length(list)
         tmpDose = createModalityObj(patient.getDicomObject(list(i).sopInstanceUid));
-        if strcmpi('plan',tmpDose.doseSummationType) && ~strcmpi('maastro clinic',tmpDose.manufacturer)
+        if strcmpi('plan',tmpDose.doseSummationType) && ~strcmpi('maastro clinic',tmpDose.manufacturer) && ~strcmpi('maastro sdt',tmpDose.manufacturer)
             rtdose(j) = tmpDose;
             j = j + 1;
         end

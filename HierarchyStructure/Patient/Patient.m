@@ -69,15 +69,16 @@ classdef Patient
         function series = getDicomObjectSeries(this, sopInstanceUid)
         %GETDICOMOBJECTSERIES(sopInstanceUid) returns the series that contains the object of
         %provided sopInstanceUid
-            study = this.getDicomObjectStudy(sopInstanceUid);
-            series = study.getSeriesObject(uids.seriesInstanceUid);
+            refUids = this.planReferenceObjects.refUids(sopInstanceUid);
+            study = this.getStudyObject(refUids.studyInstanceUid);
+            series = study.getSeriesObject(refUids.seriesInstanceUid);
         end
         
         function study = getDicomObjectStudy(this, sopInstanceUid)
         %GETDICOMOBJECTSTUDY(sopInstanceUid) returns the study that contains the object of provided
         %sopInstanceUid
-            uids = this.planReferenceObjects.refUids(sopInstanceUid);
-            study = this.getStudyObject(uids.studyInstanceUid);
+            refUids = this.planReferenceObjects.refUids(sopInstanceUid);
+            study = this.getStudyObject(refUids.studyInstanceUid);
         end
         
         % -------- START GETTERS/SETTERS ----------------------------------

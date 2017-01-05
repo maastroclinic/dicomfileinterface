@@ -86,6 +86,13 @@ classdef DicomObj
             this.pixelData = dicomread(this.filename);
         end
         
+        function status = writeToFile(this, path)
+            this.dicomHeader.Filename = fullfile(path, [this.sopInstanceUid '.dcm']);
+            status = dicomwrite(this.pixelData, ...
+                                this.filename, ...
+                                this.dicomHeader, 'CreateMode', 'copy');
+        end
+        
         function this = set.dicomHeader(this, header)
             if isfield(header, 'Format') && strcmpi(header.Format, 'dicom')
                 this.dicomHeader = header;

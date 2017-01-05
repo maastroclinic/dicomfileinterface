@@ -35,6 +35,7 @@ classdef ContourSlice
             end
         end
         
+        % -------- START GETTERS/SETTERS ----------------------------------
         function this = set.referencedSopInstanceUid(this, uid)
             if ~ischar(uid)
                 throw(MException('MATLAB:ContourSlice', 'invalid uid for referencedSopInstanceUid'))

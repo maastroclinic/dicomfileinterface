@@ -5,7 +5,7 @@ classdef RtDose < DicomObj
     % this = RtDose(dicomItem, useVrHeuristics) creates a RtDose object
     %  using the full file path (or a DicomObj) and boolean to deterine the use of VR Heuristics
     %
-    % See also: DICOMOBJ, CREATEIMAGEFROMRTDOSE, CREATERESCALEDIMAGESFORRTDOSES
+    % See also: DICOMOBJ, CREATEIMAGEFROMRTDOSE, CREATERESCALEDIMAGEFROMRTDOSES
     
     properties      
         is3dDose
@@ -38,14 +38,16 @@ classdef RtDose < DicomObj
             this = constructorParser(this, 'rtdose', dicomItem, useVrHeuristics);
         end
         
-        %overwrite function to add image permutation.
         function this = readDicomData(this)
+        %READDICOMDATA() is a overwritten function for RtDose to apply RtDose specific
+        % conversions to the raw pixel data
             this = readDicomData@DicomObj(this);
             this.pixelData(:,:,:,:) = this.pixelData(end:-1:1,:,:,:);
             this.pixelData = permute(this.pixelData,[2 4 3 1]);
             this.scaledImageData = double(this.pixelData) .* this.doseGridScaling;
         end
         
+        % -------- START GETTERS/SETTERS ----------------------------------
         function out = get.referencedRtPlanUid(this)
             out = [];
             if isfield(this.dicomHeader, 'ReferencedRTPlanSequence')

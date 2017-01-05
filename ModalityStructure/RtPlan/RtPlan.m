@@ -23,9 +23,11 @@ classdef RtPlan < DicomObj
         end
         
         function readDicomData(~)
+        %READDICOMDATA is overwritten for RTPLAN because RTPLANS do not contain pixel data, just
+        % header info.
             warning('this standard dicom function is overwritten because the rtstruct dicom object does not contain an image block');
         end
-        
+        % -------- START GETTERS/SETTERS ----------------------------------
         function out = get.planLabel(this)
             out = this.dicomHeader.RTPlanLabel; 
         end

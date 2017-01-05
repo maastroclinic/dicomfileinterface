@@ -1,11 +1,11 @@
 classdef Contour
-%CONTOUR represents a singe contour of an RtStruct.
-%
-%CONSTRUCTOR
-% this = Contour(dicomHeader) creates a contour object of the parsed dicom header created with
-% dicomHeaderForRoiName or dicomHeaderForRoiNumber function
-%
-% See also: RTSTRUCT, CONTOURSLICE, CREATECONTOUR, DICOMHEADERFORROINAME, DICOMHEADERFORROINUMBER
+    %CONTOUR represents a singe contour of an RtStruct.
+    %
+    %CONSTRUCTOR
+    % this = Contour(dicomHeader) creates a contour object of the parsed dicom header created with
+    % dicomHeaderForRoiName or dicomHeaderForRoiNumber function
+    %
+    % See also: RTSTRUCT, CONTOURSLICE, CREATECONTOUR, DICOMHEADERFORROINAME, DICOMHEADERFORROINUMBER
     
     properties
         dicomHeader
@@ -40,23 +40,13 @@ classdef Contour
         end
         
         function this = parseDicomHeader(this, header)
+        %PARSEDICOMHEADER(header) parses the information of the contour specific header information
+        % to create ContourSlice objects that build the contour
             this.dicomHeader = header;
             this.contourSlices = header;
         end
         
-        function this = set.contourSlices(this, dicomHeader)
-            if ~isfield(dicomHeader, 'ContourSequence')
-                this.contourSlices = [];
-                return; 
-            end
-            
-            items = fieldnames(dicomHeader.ContourSequence);
-            this.contourSlices(1:length(items)) = ContourSlice();
-            for i = 1:length(items)
-                this.contourSlices(i) = ContourSlice(dicomHeader.ContourSequence.(items{i}));
-            end
-        end
-        
+        % -------- START GETTERS/SETTERS ----------------------------------
         function out = get.name(this)
             if isfield(this.dicomHeader, 'ROIName')
                 out = this.dicomHeader.ROIName;
@@ -82,7 +72,7 @@ classdef Contour
         end
         
         function out = get.numberOfContourSlices(this)
-            out = length(this.contourSlices); 
+            out = length(this.contourSlices);
         end
         
         function out = get.numberOfCtSlices(this)
@@ -93,10 +83,10 @@ classdef Contour
             out = true;
             if this.numberOfContourSlices > 0
                 for i = 1:this.numberOfContourSlices
-                     if ~this.contourSlices(i).closedPlanar
-                         out = false;
-                         return;
-                     end
+                    if ~this.contourSlices(i).closedPlanar
+                        out = false;
+                        return;
+                    end
                 end
             else
                 out = [];
@@ -107,8 +97,8 @@ classdef Contour
             if isfield(this.dicomHeader, 'ROIDisplayColor')
                 out = this.dicomHeader.ROIDisplayColor./256;
             else
-                %when no color settings are available set to white. 
-                out = [1 1 1]; 
+                %when no color settings are available set to white.
+                out = [1 1 1];
             end
         end
         
@@ -143,7 +133,7 @@ classdef Contour
             out = zeros(this.numberOfContourSlices,1);
             for i = 1:this.numberOfContourSlices
                 if ~isempty(this.contourSlices(i).y)
-                    out(i) = this.contourSlices(i).y(1); (1); 
+                    out(i) = this.contourSlices(i).y(1); (1);
                 else
                     out(i) = [];
                 end
@@ -152,7 +142,7 @@ classdef Contour
         
         function out = get.uniqueY(this)
             [out, ~, ~] = unique(this.y);
-        end  
+        end
         
         function out = get.indexUniqueY(this)
             [~, ~, out] = unique(this.y);
@@ -161,7 +151,7 @@ classdef Contour
         function out = get.lowerX(this)
             out = min(this.contourSlices(1).x);
             for i = 2:this.numberOfContourSlices
-                 out = min([out, min(this.contourSlices(i).x)]);
+                out = min([out, min(this.contourSlices(i).x)]);
             end
         end
         
@@ -172,14 +162,14 @@ classdef Contour
         function out = get.lowerZ(this)
             out = min(this.contourSlices(1).z);
             for i = 2:this.numberOfContourSlices
-                 out = min([out, min(this.contourSlices(i).z)]);
+                out = min([out, min(this.contourSlices(i).z)]);
             end
         end
         
         function out = get.upperX(this)
             out = max(this.contourSlices(1).x);
             for i = 2:this.numberOfContourSlices
-                 out = max([out, max(this.contourSlices(i).x)]);
+                out = max([out, max(this.contourSlices(i).x)]);
             end
         end
         
@@ -190,7 +180,20 @@ classdef Contour
         function out = get.upperZ(this)
             out = max(this.contourSlices(1).z);
             for i = 2:this.numberOfContourSlices
-                 out = max([out, max(this.contourSlices(i).z)]);
+                out = max([out, max(this.contourSlices(i).z)]);
+            end
+        end
+        
+        function this = set.contourSlices(this, dicomHeader)
+            if ~isfield(dicomHeader, 'ContourSequence')
+                this.contourSlices = [];
+                return;
+            end
+            
+            items = fieldnames(dicomHeader.ContourSequence);
+            this.contourSlices(1:length(items)) = ContourSlice();
+            for i = 1:length(items)
+                this.contourSlices(i) = ContourSlice(dicomHeader.ContourSequence.(items{i}));
             end
         end
     end

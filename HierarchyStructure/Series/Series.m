@@ -60,7 +60,7 @@ classdef Series
             keys = this.images.keys;
             out = DicomObj();
             for i = 1:this.images.Count
-                out(i) = this.images(keys{i});
+                out(i) = modalityToDicomObj(this.images(keys{i}));
             end
         end
     end

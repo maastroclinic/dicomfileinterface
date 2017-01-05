@@ -1,5 +1,10 @@
 classdef Patient
-    %PATIENT [please add info on me here :<]
+    %PATIENT is a colletion of studies that belong to this DICOM patient set
+    %
+    %CONSTRUCTORS
+    % this = Patient(dicomObj) returns a patient object for the provided dicomObj
+    %
+    % See also: DICOMDATABASE, STUDY, SERIES, DICOMOBJ, PLANREFERENCEOBJECTS, CREATEPLANPACKAGE 
     
     properties (SetAccess = 'private')
         id
@@ -33,6 +38,8 @@ classdef Patient
         end
 
         function this = parseDicomObj(this, dicomObj)
+        %PARSEDICOMOBJ(dicomObj) parses the DicomObj, creates a new Study obj if the study is
+        % new to the Patient. And updates the planReferenceObject.
             uid = dicomObj.studyInstanceUid;
             if ~this.studies.isKey(uid)               
                 this.studies(uid) = Study(dicomObj);
@@ -42,11 +49,38 @@ classdef Patient
 
             this.planReferenceObjects = this.planReferenceObjects.parseDicomObject(dicomObj);
             
-            if ~this.parsed %only parse info for first object
+            if ~this.parsed
                 this = this.parsePatientInfo(dicomObj);
             end
         end
         
+        function dicomObj = getDicomObject(this, sopInstanceUid)
+        %GETDICOMOBJECT(sopInstanceUid) returns a dicomObj with provided sopInstanceUid
+            series = this.getDicomObjectSeries(sopInstanceUid);
+            dicomObj = series.getDicomObject(sopInstanceUid);
+        end
+        
+        function dicomObj = getDicomModalityObject(this, sopInstanceUid)
+        %GETDICOMMODALITYOBJECT(sopInstanceUid) returns a modality specific dicomObj with provided sopInstanceUid
+            series = this.getDicomObjectSeries(sopInstanceUid);
+            dicomObj = series.getModalityObject(sopInstanceUid);
+        end
+       
+        function series = getDicomObjectSeries(this, sopInstanceUid)
+        %GETDICOMOBJECTSERIES(sopInstanceUid) returns the series that contains the object of
+        %provided sopInstanceUid
+            study = this.getDicomObjectStudy(sopInstanceUid);
+            series = study.getSeriesObject(uids.seriesInstanceUid);
+        end
+        
+        function study = getDicomObjectStudy(this, sopInstanceUid)
+        %GETDICOMOBJECTSTUDY(sopInstanceUid) returns the study that contains the object of provided
+        %sopInstanceUid
+            uids = this.planReferenceObjects.refUids(sopInstanceUid);
+            study = this.getStudyObject(uids.studyInstanceUid);
+        end
+        
+        % -------- START GETTERS/SETTERS ----------------------------------
         function out = get.nrOfStudies(this)
             out = this.studies.Count;
         end
@@ -60,22 +94,6 @@ classdef Patient
         
         function out = get.studyUids(this)
             out = this.studies.keys;
-        end
-        
-        function dicomObj = getDicomObject(this, sopInstanceUid)
-            series = this.getDicomObjectSeries(sopInstanceUid);
-            dicomObj = series.getDicomObject(sopInstanceUid);
-        end
-        
-        function dicomObj = getDicomModalityObject(this, sopInstanceUid)
-            series = this.getDicomObjectSeries(sopInstanceUid);
-            dicomObj = series.getModalityObject(sopInstanceUid);
-        end
-        
-        function series = getDicomObjectSeries(this, sopInstanceUid)
-            uids = this.planReferenceObjects.refUids(sopInstanceUid);
-            study = this.getStudyObject(uids.studyInstanceUid);
-            series = study.getSeriesObject(uids.seriesInstanceUid);
         end
     end
     

@@ -18,7 +18,7 @@ classdef RtImage < DicomObj
             
             this = constructorParser(this, 'rtimage', dicomItem, useVrHeuristics);
         end
-        
+        % -------- START GETTERS/SETTERS ----------------------------------
         function out = get.referencedRtPlanUid(this)
             out = [];
             if isfield(this.dicomHeader, 'ReferencedRTPlanSequence')

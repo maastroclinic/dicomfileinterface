@@ -16,6 +16,7 @@ function dto = createDoseVolumeHistogramDto(dvh)
     
     dvhOutput.vVolume = dvh.vVolume;
     dvhOutput.vDose = dvh.vDose;
+    dvhOutput.binSize = dvh.binsize;
 
     dto = savejson('',dvhOutput);
 end

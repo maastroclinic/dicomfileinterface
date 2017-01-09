@@ -1,6 +1,6 @@
 function combinablePlanUids = createListOfCombinablePlans(patient, refPlanUid)
-%CREATELISTOFCOMBINABLEPLANS creates a dicomObj Array that containes the objects of two
-%plans than can be combined into one because it is based on the same anatomy.
+%CREATELISTOFCOMBINABLEPLANS creates a dicomObj Array that contains the objects of two (or more)
+%plans which can be combined into one because it is based on the same anatomy.
 %
 % combinablePlanUids = createListOfCombinablePlans(patient, refPlanUid)
 %
@@ -20,7 +20,7 @@ function combinablePlanUids = createListOfCombinablePlans(patient, refPlanUid)
     
     for i = 1:length(keys)
         plan = plans(keys{i});
-        if planIsEqual(plan, refPlan)
+        if planHasSameSpacialDefinitions(plan, refPlan)
             combinablePlanUids{end+1} = plan.sopInstanceUid; %#ok<AGROW>
         end
     end
@@ -39,7 +39,7 @@ function [plans, refPlan] = collectPlansFromPatient(patient, refPlanUid)
     end
 end
 
-function out = planIsEqual(plan, refPlan)
+function out = planHasSameSpacialDefinitions(plan, refPlan)
     out = false;
     
     if strcmp(refPlan.studyInstanceUid, plan.studyInstanceUid) || ...

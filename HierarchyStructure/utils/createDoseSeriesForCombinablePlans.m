@@ -9,7 +9,7 @@ function [series, pixelData] = createDoseSeriesForCombinablePlans(patient, planU
     
     nrOfPlans = length(planUids);
     if nrOfPlans == 1
-        warning('only one plan provided, returned original RtDose for this plan');
+        warning('only one plan provided, nothing to do here!');
         return;
     end
     

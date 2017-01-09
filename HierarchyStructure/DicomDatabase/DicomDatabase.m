@@ -40,7 +40,7 @@ classdef DicomDatabase
         end
         
         function out = getPatientObject(this, patientId)
-        %GETPATIENTOBJ(this, patientId) returns Patient matchting patientId
+        %GETPATIENTOBJ(this, patientId) returns Patient matching patientId
             out = [];
             if this.patients.isKey(patientId)
                 out = this.patients(patientId);

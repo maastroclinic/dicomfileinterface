@@ -23,11 +23,14 @@ classdef RtStruct < DicomObj
             
             this = constructorParser(this, 'rtstruct', dicomItem, useVrHeuristics);
         end
-        
+
         function readDicomData(~)
+        %READDICOMDATA is overwritten for RTSTRUCT because RTSTRUCTS do not contain pixel data, just
+        % header info.
             warning('this standard dicom function is overwritten because the rtstruct dicom object does not contain an image block');
         end
                 
+        % -------- START GETTERS/SETTERS ----------------------------------
         function out = get.structureSetSequence(this)
             out = this.dicomHeader.StructureSetROISequence;
         end

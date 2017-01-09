@@ -24,36 +24,19 @@ classdef VolumeOfInterest < Image
             [pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, pixelData] = VolumeOfInterest.parseConstructorInput(varargin);
             this = this@Image(pixelSpacingX, pixelSpacingY, pixelSpacingZ, realX, realY, realZ, pixelData);
         end
-        
-        function out = get.uncompressedPixelData(this)
-            out = false(this.columns, this.slices, this.rows);
-            out(this.xCompressed, this.yCompressed, this.zCompressed) = this.pixelData;
-        end
-        
-        function this = compress(this)
-            [x,y,z] = findVolumeEdges(this);
-            if ~isempty(x)
-                this.xCompressed = x;
-                this.yCompressed = y;
-                this.zCompressed = z;
-                this.pixelData = this.pixelData(x,y,z);
-            else
-                this.xCompressed = 1:this.columns;
-                this.yCompressed = 1:this.slices;
-                this.zCompressed = 1:this.rows;
-            end
-        end
-        
-        function this = addPixelData(this, pixelData, compression)
+               
+         function this = addPixelData(this, pixelData, compression)
+         %ADDPIXELDATA(pixelData, compression) is a overwritten function of Image()
+         % which adds compressions functionality and concerst the image to a logical matrix.
             if nargin == 2
                 compression = true;
             end
             
             if size(pixelData,1) ~= this.columns || ...
-               size(pixelData,2) ~= this.slices || ...
-               size(pixelData,3) ~= this.rows
+                    size(pixelData,2) ~= this.slices || ...
+                    size(pixelData,3) ~= this.rows
                 throw(MException('MATLAB:VolumeOfInterest:addPixelData', ['Dimension mismatch! The real axis properties' ...
-                                  ' do not match the dimensions of the image you are trying to store']));
+                    ' do not match the dimensions of the image you are trying to store']));
             end
             
             try
@@ -71,20 +54,40 @@ classdef VolumeOfInterest < Image
         function out = plus(first, second)
             out = combine(first, second, '+');
         end
-
+        
         function out = minus(first, second)
             out = combine(first, second, '-');
+        end
+        
+        % -------- START GETTERS/SETTERS ----------------------------------
+        function out = get.uncompressedPixelData(this)
+            out = false(this.columns, this.slices, this.rows);
+            out(this.xCompressed, this.yCompressed, this.zCompressed) = this.pixelData;
         end
     end
     
     methods (Access = protected)
+        function this = compress(this)
+            [x,y,z] = findVolumeEdges(this);
+            if ~isempty(x)
+                this.xCompressed = x;
+                this.yCompressed = y;
+                this.zCompressed = z;
+                this.pixelData = this.pixelData(x,y,z);
+            else
+                this.xCompressed = 1:this.columns;
+                this.yCompressed = 1:this.slices;
+                this.zCompressed = 1:this.rows;
+            end
+        end
+        
         function [x,y,z] = findVolumeEdges(this)
             [x,y,z]=ind2sub(size(this.pixelData),find(this.pixelData));
             x = sort(unique(x));
             y = sort(unique(y));
             z = sort(unique(z));
             
-            if ~isempty(x)   
+            if ~isempty(x)
                 x = this.determineIndexArray(x, this.columns);
                 y = this.determineIndexArray(y, this.slices);
                 z = this.determineIndexArray(z, this.rows);
@@ -120,7 +123,7 @@ classdef VolumeOfInterest < Image
                 else
                     new = first.uncompressedPixelData &~ second.uncompressedPixelData;
                 end
-
+                
                 out = first;
                 out = out.addPixelData(new);
             else
@@ -157,7 +160,7 @@ classdef VolumeOfInterest < Image
                 pixelData = input{7};
             else
                 throw(MException('MATLAB:VolumeOfInterest:parseConstructorInput', ['Invalid constructor, empty, Image ' ...
-                                 'based or the standard Image constructor are supported']))
+                    'based or the standard Image constructor are supported']))
             end
         end
     end

@@ -6,7 +6,7 @@ function [ voiImage ] = createImageDataForVoiFullGrid(voi, image)
 %
 % See also: VOLUMEOFINTEREST, CREATEIMAGEDATAFORVOI
 
-    image = voi.uncompressedpixelData .* image.pixelData;
+    image = voi.uncompressedPixelData .* image.pixelData;
     image(image == 0) = NaN;
 
     voiImage = Image(voi.pixelSpacingX, ...

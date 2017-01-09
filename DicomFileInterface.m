@@ -6,7 +6,16 @@
 %       |Study
 %           |Series
 %               |DicomObj 
-% *** more info will be added here later! ***
+% 
+% The DicomDatabase is meant to manage your dicom cohorts and provide some help with sorting the
+% files. It creates a collection of ValueClass objects to model the data set.
+% Use DicomDb for:
+%  1) Modelling the DICOM reference tree
+%  2) Collecting the TPS package for a specific plan for a patient
+%  3) Create modality objects for unorted DICOM files
+%
+% *** WARNING *** all objects are kept in memory, when reading large data sets (>100 studies)
+%   Matlab could run into memory issues!
 %
 % ************ ModalityStructure ************* 
 % CtScan

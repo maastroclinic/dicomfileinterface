@@ -23,7 +23,7 @@ classdef CtSlice < DicomObj
             
             this = constructorParser(this, 'ct', dicomItem, useVrHeuristics);
         end
-        
+        % -------- START GETTERS/SETTERS ----------------------------------
         function out = get.rescaleSlope(this)
             out = this.dicomHeader.RescaleSlope;
         end

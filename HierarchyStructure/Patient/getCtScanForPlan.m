@@ -8,5 +8,9 @@ function ctScan = getCtScanForPlan(patient, planUid)
     uids = patient.planReferenceObjects.refUids(structUid); %assume struct and ct are in same study
     study = patient.getStudyObject(uids.studyInstanceUid);
     series = study.getSeriesObject(patient.planReferenceObjects.ctSeriesForStruct(structUid));
+    if isempty(series)
+        ctScan = [];
+        return;
+    end
     ctScan = CtScan(series.getDicomObjectArray);
 end

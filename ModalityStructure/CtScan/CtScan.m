@@ -68,6 +68,8 @@ classdef CtScan
         end
         
         function this = addListOfObjects(this, dicomObj)
+        % ADDLISTOFOBJECTS(dicomObj) loops over an array of DicomObjs to construct
+        %  the CtSlices that provide info of the CtScan
             for i = 1:length(dicomObj)
                 if ~isa(dicomObj(i), 'CtSlice')
                     ctSlice = CtSlice(dicomObj(i), []);
@@ -80,21 +82,30 @@ classdef CtScan
         end
         
         function this = addListOfFiles(this, files, UseVrHeuristic)
+        %ADDLISTOFFILES(files, UseVrHeuaristics) loops over a cell array of fullfile locations
+        % to construct a CtScan by reading each individual slice.
             for i = 1:length(files)
                 ctSlice = CtSlice(files{i}, UseVrHeuristic);
                 this = this.addCtSlices(ctSlice); 
             end
         end
         
-        function this = addCtSlices(this, ctSlice)
-            if isempty(this.ctSlices(1).dicomHeader)
-                this.ctSlices(1) = ctSlice;
-            else
-                index = length(this.ctSlices) + 1;
-                this.ctSlices(index) = ctSlice;
+        function this = readDicomData(this)
+        % READDICOMDATA() loops over all CtSlices in the CtScan and read the
+        %  binary image data of the DicomFiles and converts them to the previously
+        %  mentioned coordinate system
+            if ~isempty(this.pixelData)
+                warning('pixel data already loaded, skipping ctScan.readDicomData');
+                return;
             end
+           
+            for i = 1:this.numberOfSlices
+                this.ctSlices(i) = this.ctSlices(i).readDicomData();
+            end
+            this.pixelData = this.createIecImage();
         end
-   
+        
+        % -------- START GETTERS/SETTERS ----------------------------------
         function out = get.ctSlices(this)
             if ~isempty(this.ctSlices(1).dicomHeader)
                 out = this.ctSlices;
@@ -192,21 +203,18 @@ classdef CtScan
         function out = get.realZ(this)
             out = (this.originZ : this.pixelSpacingZ : (this.originZ + (this.ctSlices(1).rows - 1) * this.pixelSpacingZ))';
         end
-        
-        function this = readDicomData(this)
-            if ~isempty(this.pixelData)
-                warning('pixel data already loaded, skipping ctScan.readDicomData');
-                return;
-            end
-           
-            for i = 1:this.numberOfSlices
-                this.ctSlices(i) = this.ctSlices(i).readDicomData();
-            end
-            this.pixelData = this.createIecImage();
-        end
     end
     
     methods (Access = 'private')
+        function this = addCtSlices(this, ctSlice)
+            if isempty(this.ctSlices(1).dicomHeader)
+                this.ctSlices(1) = ctSlice;
+            else
+                index = length(this.ctSlices) + 1;
+                this.ctSlices(index) = ctSlice;
+            end
+        end
+        
         function image = createIecImage(this)
             slices = this.ySortedCtSlices;
             image = zeros(slices(1).columns, slices(1).rows, this.numberOfSlices);
